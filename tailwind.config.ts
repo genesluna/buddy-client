@@ -9,10 +9,10 @@ const config: Config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    colors: {
-      ...colors,
-    },
     extend: {
+      colors: {
+        ...colors,
+      },
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
       },
