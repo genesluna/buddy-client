@@ -1,9 +1,10 @@
-import type { Metadata } from 'next';
+import ReactQueryProvider from '@lib/react-query-provider';
 import { Poppins as FontSans } from 'next/font/google';
-import { cn } from '@lib/utils';
-import '@styles/globals.css';
 import { PageHeader } from '@components/page-header';
 import PageFooter from '@components/page-footer';
+import type { Metadata } from 'next';
+import { cn } from '@lib/utils';
+import '@styles/globals.css';
 
 const fontSans = FontSans({
   weight: ['400', '600', '800'],
@@ -30,11 +31,13 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <PageHeader />
-        <main className='flex w-[90%] max-w-[83.3125rem] flex-1 flex-col sm:w-[80%]'>
-          {children}
-        </main>
-        <PageFooter />
+        <ReactQueryProvider>
+          <PageHeader />
+          <main className='flex w-[90%] max-w-[83.3125rem] flex-1 flex-col sm:w-[80%]'>
+            {children}
+          </main>
+          <PageFooter />
+        </ReactQueryProvider>
       </body>
     </html>
   );
