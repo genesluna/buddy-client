@@ -1,6 +1,6 @@
-import { SearchParams } from '@app/page';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { SearchParams } from './search-params';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
