@@ -1,7 +1,19 @@
-export default function Home() {
+import { PetFilter } from '@components/pet-filter';
+import { buildSearchParamsPath } from '@lib/utils';
+import { SearchParams } from '@lib/search-params';
+import PetsList from '@components/pets-list';
+
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const searchParamsPath = buildSearchParamsPath('', searchParams);
+
   return (
-    <div className='flex min-h-screen flex-col items-center justify-between'>
-      <div className='z-10 w-full items-center justify-between text-sm lg:flex'></div>
+    <div>
+      <PetFilter />
+      <PetsList searchParamsPath={searchParamsPath} />
     </div>
   );
 }
