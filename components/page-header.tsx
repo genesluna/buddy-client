@@ -25,6 +25,7 @@ export function PageHeader() {
             className='2xl:mx-auto'
             width={160}
             height={160}
+            priority
           />
         </Link>
 
