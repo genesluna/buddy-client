@@ -3,4 +3,6 @@ export interface SearchParams {
   weightRange?: string;
   gender?: string;
   species?: string;
+  page?: number;
+  size?: number;
 }

@@ -1,4 +1,4 @@
-import colors from './colors';
+import colors from './config/colors';
 import type { Config } from 'tailwindcss';
 import { fontFamily } from 'tailwindcss/defaultTheme';
 
