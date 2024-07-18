@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { SearchParams } from './search-params';
+import { SearchParams } from './types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -36,7 +36,7 @@ export function buildSearchParamsPath(
   });
 
   if (urlSearchParams.toString() === '') {
-    return path;
+    return path + '?';
   }
 
   return path + '?' + urlSearchParams.toString();
