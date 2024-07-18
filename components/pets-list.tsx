@@ -1,36 +1,83 @@
 'use client';
 
-// TODO: Move to SSR in the future. Not possible now because
-// suspense is not working in the current version of Next.js
-
+import { fetchPetsInfinite } from '@server/actions/pet-actions';
+import { buildSearchParamsPath } from '@lib/utils';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInView } from 'react-intersection-observer';
+import PetListSkeleton from './pet-list-skeleton';
+import { useEffect, useState } from 'react';
+import { SearchParams } from '@lib/types';
 import PetCard from './pet-card';
-import { useQuery } from '@tanstack/react-query';
-import { fetchPets } from '@server/actions/pet-actions';
-import PetCardSkeleton from './pet-card-skeleton';
 
 export default function PetsList({
-  searchParamsPath,
+  searchParams,
 }: {
-  searchParamsPath: string;
+  searchParams: SearchParams;
 }) {
-  const {
-    data: pets,
-    error,
-    isLoading,
-  } = useQuery({
-    queryFn: async () => fetchPets(searchParamsPath),
-    queryKey: ['pets-list', searchParamsPath],
-  });
+  const [limit, setLimit] = useState<number>(0);
+  const searchParamsPath = buildSearchParamsPath('', searchParams);
 
-  return isLoading ? (
-    <section className='mb-14 mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
-      {Array.from({ length: 8 }).map((_, index) => (
-        <PetCardSkeleton key={index} />
-      ))}
-    </section>
-  ) : (
-    <section className='mb-14 mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
-      {pets?.map((pet) => <PetCard key={pet.id} pet={pet} />)}
-    </section>
+  const { data, error, isLoading, fetchNextPage, isFetchingNextPage, refetch } =
+    useInfiniteQuery({
+      queryKey: ['pets', searchParamsPath],
+      queryFn: (pageParams) =>
+        fetchPetsInfinite(pageParams.pageParam, searchParamsPath, limit),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage) => lastPage.nextPage,
+      enabled: limit > 0,
+    });
+
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, inView]);
+
+  useEffect(() => {
+    const width = window.innerWidth;
+
+    if (width >= 1536) {
+      setLimit(8);
+    } else if (width >= 1280) {
+      setLimit(6);
+    } else {
+      setLimit(4);
+    }
+  }, []);
+
+  console.log(limit);
+
+  if (isLoading) {
+    return <PetListSkeleton numberOfItems={limit} />;
+  }
+
+  if (error) {
+    console.error(error);
+    // TODO: Handle error. Toast?
+  }
+
+  return (
+    <div className='mb-14'>
+      {data?.pages.map((page) => {
+        return (
+          <div key={page.currentPage}>
+            <section
+              key={page.currentPage}
+              className='mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'
+            >
+              {page.data.map((pet) => {
+                return <PetCard key={pet.id} pet={pet} />;
+              })}
+            </section>
+          </div>
+        );
+      })}
+
+      <div ref={ref}>
+        {isFetchingNextPage && <PetListSkeleton numberOfItems={limit} />}
+      </div>
+    </div>
   );
 }

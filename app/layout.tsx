@@ -1,8 +1,8 @@
-import ReactQueryProvider from '@lib/react-query-provider';
+import ReactQueryProvider from '@lib/providers/react-query-provider';
 import { Poppins as FontSans } from 'next/font/google';
 import { PageHeader } from '@components/page-header';
 import PageFooter from '@components/page-footer';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { cn } from '@lib/utils';
 import '@styles/globals.css';
 
@@ -16,6 +16,13 @@ const fontSans = FontSans({
 export const metadata: Metadata = {
   title: 'Buddy',
   description: 'Aplicativo de adoção de animais de estimação.',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
