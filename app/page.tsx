@@ -1,19 +1,17 @@
-import { PetFilter } from '@components/pet-filter';
 import { buildSearchParamsPath } from '@lib/utils';
-import { SearchParams } from '@lib/search-params';
+import { PetFilter } from '@components/pet-filter';
 import PetsList from '@components/pets-list';
+import { SearchParams } from '@lib/types';
 
 export default async function Home({
   searchParams,
 }: {
   searchParams: SearchParams;
 }) {
-  const searchParamsPath = buildSearchParamsPath('', searchParams);
-
   return (
     <div>
       <PetFilter />
-      <PetsList searchParamsPath={searchParamsPath} />
+      <PetsList searchParams={searchParams} />
     </div>
   );
 }
