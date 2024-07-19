@@ -8,6 +8,27 @@
   --background-end-rgb: 210, 234, 255;
 }
 
+::-webkit-scrollbar {
+  width: 13px;
+}
+
+::-webkit-scrollbar-track {
+  background: #CDE8E5;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #7AB2B2;
+  border-radius: #4D869C;
+  border: 2px solid #CDE8E5;
+  cursor: pointer;
+
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6a9c9c;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(to bottom,
