@@ -1,13 +1,24 @@
-export default function ImageSkeleton() {
+import { cn } from '@lib/utils';
+
+interface ImageSkeletonProps {
+  className?: string;
+}
+
+export default function ImageSkeleton({ className }: ImageSkeletonProps) {
   return (
-    <div className='bg-gray-300 flex h-full w-full animate-pulse items-center justify-center rounded-2xl'>
+    <div
+      className={cn(
+        'flex h-full w-full animate-pulse items-center justify-center bg-gray-300',
+        className
+      )}
+    >
       <svg
         xmlns='http://www.w3.org/2000/svg'
         fill='none'
         viewBox='0 0 24 24'
         strokeWidth={2}
         stroke='currentColor'
-        className='text-gray-400 h-14 w-14'
+        className='h-7 w-7 text-gray-400 sm:h-10 sm:w-10 lg:h-14 lg:w-14' //TODO: Add classname to props to fix main image responsiveness
       >
         <path
           strokeLinecap='round'

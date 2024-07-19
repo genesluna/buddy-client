@@ -1,4 +1,4 @@
-import PetCardSkeleton from './pet-card-skeleton';
+import PetCardSkeleton from './pet-list-card-skeleton';
 
 export default function PetListSkeleton({
   numberOfItems,

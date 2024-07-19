@@ -1,60 +1,34 @@
 'use client';
 
-import { fetchPetsInfinite } from '@server/actions/pet-actions';
-import { buildSearchParamsPath } from '@lib/utils';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useFetchPetsListInfinite } from '@hooks/use-pet-data';
+import PetListSkeleton from './skeletons/pet-list-skeleton';
 import { useInView } from 'react-intersection-observer';
-import PetListSkeleton from './pet-list-skeleton';
+import { buildSearchParamsPath } from '@lib/utils';
 import { useEffect, useState } from 'react';
 import { SearchParams } from '@lib/types';
-import PetCard from './pet-card';
+import PetListCard from './pet-list-card';
 
 export default function PetsList({
   searchParams,
 }: {
   searchParams: SearchParams;
 }) {
-  const [limit, setLimit] = useState<number>(0);
   const searchParamsPath = buildSearchParamsPath('', searchParams);
 
-  const { data, error, isLoading, fetchNextPage, isFetchingNextPage, refetch } =
-    useInfiniteQuery({
-      queryKey: ['pets', searchParamsPath],
-      queryFn: (pageParams) =>
-        fetchPetsInfinite(pageParams.pageParam, searchParamsPath, limit),
-      initialPageParam: 0,
-      getNextPageParam: (lastPage) => lastPage.nextPage,
-      enabled: limit > 0,
-    });
+  const pageLimit = usePageLimit();
 
-  const { ref, inView } = useInView();
+  const { data, error, isLoading, fetchNextPage, isFetchingNextPage } =
+    useFetchPetsListInfinite(searchParamsPath, pageLimit);
 
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [fetchNextPage, inView]);
-
-  useEffect(() => {
-    const width = window.innerWidth;
-
-    if (width >= 1536) {
-      setLimit(8);
-    } else if (width >= 1280) {
-      setLimit(6);
-    } else {
-      setLimit(4);
-    }
-  }, []);
-
-  console.log(limit);
+  const ref = useInfiniteScroll(fetchNextPage);
 
   if (isLoading) {
-    return <PetListSkeleton numberOfItems={limit} />;
+    return <PetListSkeleton numberOfItems={pageLimit} />;
   }
 
   if (error) {
-    console.error(error);
+    console.error('Pet data Error:', error);
+    return null;
     // TODO: Handle error. Toast?
   }
 
@@ -68,7 +42,7 @@ export default function PetsList({
               className='mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'
             >
               {page.data.map((pet) => {
-                return <PetCard key={pet.id} pet={pet} />;
+                return <PetListCard key={pet.id} pet={pet} />;
               })}
             </section>
           </div>
@@ -76,8 +50,38 @@ export default function PetsList({
       })}
 
       <div ref={ref}>
-        {isFetchingNextPage && <PetListSkeleton numberOfItems={limit} />}
+        {isFetchingNextPage && <PetListSkeleton numberOfItems={pageLimit} />}
       </div>
     </div>
   );
+}
+
+function usePageLimit() {
+  const [limit, setLimit] = useState<number>(0);
+
+  useEffect(() => {
+    const width = window.innerWidth;
+
+    if (width >= 1536) {
+      setLimit(8);
+    } else if (width >= 1280) {
+      setLimit(6);
+    } else {
+      setLimit(4);
+    }
+  }, []);
+
+  return limit;
+}
+
+function useInfiniteScroll(fetchNextPage: () => void) {
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, inView]);
+
+  return ref;
 }
