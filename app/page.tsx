@@ -1,5 +1,4 @@
-import { buildSearchParamsPath } from '@lib/utils';
-import { PetFilter } from '@components/pet-filter';
+import { PetListFilter } from '@components/pet-list-filter';
 import PetsList from '@components/pets-list';
 import { SearchParams } from '@lib/types';
 
@@ -10,7 +9,7 @@ export default async function Home({
 }) {
   return (
     <div>
-      <PetFilter />
+      <PetListFilter />
       <PetsList searchParams={searchParams} />
     </div>
   );

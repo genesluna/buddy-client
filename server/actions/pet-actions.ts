@@ -20,22 +20,23 @@ export async function fetchPets(params?: string): Promise<{ pets: Pet[] }> {
 export async function fetchPetsInfinite(
   pageParam: number,
   searchParams: string,
-  limit: number
+  pageLimit: number
 ): Promise<{
   data: Pet[];
   currentPage: number;
   nextPage: number | null;
 }> {
-  //const LIMIT = 8;
-
-  console.log('Chamou');
-  console.log(limit);
-
   const response = await axios.get(
-    `${process.env.API_URL}/pets${searchParams}&page=${pageParam}&size=${limit}`
+    `${process.env.API_URL}/pets${searchParams}&page=${pageParam}&size=${pageLimit}`
   );
 
-  // await new Promise((resolve) => setTimeout(resolve, 5000));
+  if (!response.data) {
+    return {
+      data: [],
+      currentPage: 0,
+      nextPage: null,
+    };
+  }
 
   return {
     data: response.data._embedded.petParamsResponseList,
@@ -45,4 +46,12 @@ export async function fetchPetsInfinite(
         ? response.data.page.number + 1
         : null,
   };
+}
+
+export async function fetchPetById(id: string): Promise<Pet[]> {
+  const response = await axios.get(`${process.env.API_URL}/pets?id=${id}`);
+
+  const pet = response.data._embedded.petParamsResponseList;
+
+  return pet;
 }

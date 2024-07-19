@@ -1,13 +1,14 @@
 'use client';
 
 import { MagnifyingGlass } from '@phosphor-icons/react/dist/ssr';
-import { useForm } from 'react-hook-form';
-import { string, z } from 'zod';
+import { filterOptions } from '@config/filter-options';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { buildSearchParamsPath } from '@lib/utils';
 import Combobox from '@components/ui/combobox';
 import Button from '@components/ui/button';
-import { buildSearchParamsPath } from '@lib/utils';
 import { navigate } from '@server/actions';
+import { useForm } from 'react-hook-form';
+import { string, z } from 'zod';
 
 const filterSchema = z.object({
   species: string(),
@@ -16,41 +17,7 @@ const filterSchema = z.object({
   weightRange: string(),
 });
 
-const filterOptions = [
-  {
-    label: 'Espécie',
-    placeHolder: '---',
-    name: 'species',
-    options: ['Cão', 'Gato', 'Réptil', 'Peixe'],
-  },
-  {
-    label: 'Sexo',
-    placeHolder: '---',
-    name: 'gender',
-    options: ['Macho', 'Fêmea'],
-  },
-  {
-    label: 'Idade',
-    placeHolder: '---',
-    name: 'ageRange',
-    options: [
-      '0-1 anos',
-      '1-2 anos',
-      '2-3 anos',
-      '3-5 anos',
-      '5-10 anos',
-      '10+ anos',
-    ],
-  },
-  {
-    label: 'Peso',
-    placeHolder: '---',
-    name: 'weightRange',
-    options: ['0-5 kg', '5-10 kg', '10-20 kg', '20-30 kg', '30+ kg'],
-  },
-];
-
-export function PetFilter() {
+export function PetListFilter() {
   const { register, handleSubmit } = useForm<FilterData>({
     mode: 'onChange',
     criteriaMode: 'all',
