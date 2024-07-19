@@ -1,4 +1,6 @@
+import VerticalLayout from '@components/layouts/vertical-layout';
 import PetDetails from '@components/pet-details';
+import MaxWidthWrapper from '@components/ui/max-width-wrapper';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -11,5 +13,11 @@ export default function PetDetailsPage({
 }: {
   searchParams: { id: string };
 }) {
-  return <PetDetails petId={searchParams.id} />;
+  return (
+    <VerticalLayout>
+      <MaxWidthWrapper>
+        <PetDetails petId={searchParams.id} />
+      </MaxWidthWrapper>
+    </VerticalLayout>
+  );
 }
