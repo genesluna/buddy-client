@@ -25,6 +25,9 @@ export default function HamburgerNav({
     <div {...props}>
       <button
         onClick={handleClick}
+        id='hamburger'
+        aria-label='Menu'
+        aria-expanded={isOpen}
         className='inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-secondary hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white'
       >
         <svg
@@ -71,6 +74,7 @@ export default function HamburgerNav({
             >
               <Link
                 href={href}
+                aria-label={`Menu item ${name}`}
                 className={cn({
                   'border-b-2 border-solid border-white': pathname === href,
                 })}
