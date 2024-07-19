@@ -8,10 +8,10 @@ interface PetCardProps {
   pet: Pet;
 }
 
-export default function PetCard({ pet }: PetCardProps) {
+export default function PetListCard({ pet }: PetCardProps) {
   return (
     <Link
-      href={`petdetails/${pet.id}`}
+      href={`pet/details?id=${pet.id}#`}
       className='h-[310px] w-auto rounded-3xl bg-white p-3 transition duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl'
     >
       <div className='relative h-[200px] w-full'>

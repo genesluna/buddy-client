@@ -1,10 +1,10 @@
-import ImageSkeleton from './ui/image-skeleton';
+import ImageSkeleton from './image-skeleton';
 
 export default function PetCardSkeleton() {
   return (
     <div className='h-[310px] w-auto animate-pulse rounded-3xl bg-white p-3 transition duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl'>
       <div className='relative h-[200px] w-full'>
-        <ImageSkeleton />
+        <ImageSkeleton className='rounded-2xl' />
       </div>
 
       <div className='px-3 pt-2'>
