@@ -43,7 +43,9 @@ export default function PetDetailsCard({ pet }: PetDetailsCardProps) {
         </div>
         <p className='mt-7 text-content-300'>{pet.description}</p>
         <div className='flex items-center justify-center'>
-          <Link href={`/adoption/${pet.id}/${pet.name}/${pet.gender}`}>
+          <Link
+            href={`/pet/adoption?id=${pet.id}&name=${pet.name}&gender=${pet.gender}`}
+          >
             <Button
               label='Solicitar adoção'
               className='mt-7 w-72'
