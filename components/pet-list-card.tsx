@@ -12,6 +12,7 @@ export default function PetListCard({ pet }: PetCardProps) {
   return (
     <Link
       href={`pet/details?id=${pet.id}#`}
+      aria-label={pet.name}
       className='h-[310px] w-auto rounded-3xl bg-white p-3 transition duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl'
     >
       <div className='relative h-[200px] w-full'>
@@ -21,6 +22,7 @@ export default function PetListCard({ pet }: PetCardProps) {
           sizes='(max-width: 768px) 90vw, (max-width: 1280px) 40vw, (max-width: 1536px) 26vw, 18vw'
           fill
           className='rounded-2xl object-cover'
+          priority
         />
       </div>
 
