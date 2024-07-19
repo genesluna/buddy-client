@@ -21,7 +21,7 @@ export default function PetListCard({ pet }: PetCardProps) {
           alt='pet photo'
           sizes='(max-width: 768px) 90vw, (max-width: 1280px) 40vw, (max-width: 1536px) 26vw, 18vw'
           fill
-          className='rounded-2xl object-cover'
+          className='rounded-2xl object-cover grayscale-0 transition duration-700 ease-in-out hover:grayscale'
           priority
         />
       </div>
