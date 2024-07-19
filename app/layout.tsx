@@ -1,7 +1,5 @@
 import ReactQueryProvider from '@lib/providers/react-query-provider';
 import { Poppins as FontSans } from 'next/font/google';
-import { PageHeader } from '@components/page-header';
-import PageFooter from '@components/page-footer';
 import type { Metadata, Viewport } from 'next';
 import { cn } from '@lib/utils';
 import '@styles/globals.css';
@@ -32,17 +30,11 @@ export default function RootLayout({
     <html lang='pt-br'>
       <body
         className={cn(
-          'flex min-h-screen w-full flex-col items-center overflow-x-hidden scroll-auto font-sans antialiased',
+          'min-h-screen overflow-x-hidden scroll-auto font-sans antialiased',
           fontSans.variable
         )}
       >
-        <ReactQueryProvider>
-          <PageHeader />
-          <main className='flex w-[90%] max-w-[83.3125rem] flex-1 flex-col sm:w-[80%]'>
-            {children}
-          </main>
-          <PageFooter />
-        </ReactQueryProvider>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
   );

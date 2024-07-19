@@ -1,5 +1,7 @@
+import VerticalLayout from '@components/layouts/vertical-layout';
 import { PetListFilter } from '@components/pet-list-filter';
 import PetsList from '@components/pets-list';
+import MaxWidthWrapper from '@components/ui/max-width-wrapper';
 import { SearchParams } from '@lib/types';
 
 export default async function Home({
@@ -8,9 +10,11 @@ export default async function Home({
   searchParams: SearchParams;
 }) {
   return (
-    <div>
-      <PetListFilter />
-      <PetsList searchParams={searchParams} />
-    </div>
+    <VerticalLayout>
+      <MaxWidthWrapper>
+        <PetListFilter />
+        <PetsList searchParams={searchParams} />
+      </MaxWidthWrapper>
+    </VerticalLayout>
   );
 }
