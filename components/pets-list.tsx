@@ -1,11 +1,11 @@
 'use client';
 
-import { useFetchPetsListInfinite } from '@hooks/use-pet-data';
+import { useFetchPetsListInfinite } from '@/hooks/use-pet-data';
 import PetListSkeleton from './skeletons/pet-list-skeleton';
 import { useInView } from 'react-intersection-observer';
-import { buildSearchParamsPath } from '@lib/utils';
+import { buildSearchParamsPath } from '@/lib/utils';
 import { useEffect, useState } from 'react';
-import { SearchParams } from '@lib/types';
+import { SearchParams } from '@/lib/types';
 import PetListCard from './pet-list-card';
 
 export default function PetsList({

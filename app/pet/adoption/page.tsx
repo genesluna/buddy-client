@@ -1,5 +1,5 @@
-import HorizontalLayout from '@components/layouts/horizontal-layout';
-import AdoptionForm from '@components/forms/adoption-form';
+import HorizontalLayout from '@/components/layouts/horizontal-layout';
+import AdoptionForm from '@/components/forms/adoption-form';
 
 interface AdoptionPageProps {
   searchParams: {

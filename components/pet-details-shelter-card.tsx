@@ -1,4 +1,4 @@
-import { Pet } from '@lib/models/pet';
+import { Pet } from '@/lib/models/pet';
 import Image from 'next/image';
 
 interface PetDetailsCardProps {
