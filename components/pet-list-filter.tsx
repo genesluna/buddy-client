@@ -1,12 +1,12 @@
 'use client';
 
 import { MagnifyingGlass } from '@phosphor-icons/react/dist/ssr';
-import { filterOptions } from '@config/filter-options';
+import { filterOptions } from '@/config/filter-options';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { buildSearchParamsPath } from '@lib/utils';
-import Combobox from '@components/ui/combobox';
-import Button from '@components/ui/button';
-import { navigate } from '@server/actions';
+import { buildSearchParamsPath } from '@/lib/utils';
+import Combobox from '@/components/ui/combobox';
+import Button from '@/components/ui/button';
+import { navigate } from '@/server/actions';
 import { useForm } from 'react-hook-form';
 import { string, z } from 'zod';
 

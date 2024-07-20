@@ -1,5 +1,5 @@
-import VerticalLayout from '@components/layouts/vertical-layout';
-import MaxWidthWrapper from '@components/ui/max-width-wrapper';
+import VerticalLayout from '@/components/layouts/vertical-layout';
+import MaxWidthWrapper from '@/components/ui/max-width-wrapper';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

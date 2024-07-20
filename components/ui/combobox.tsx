@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@lib/utils';
+import { cn } from '@/lib/utils';
 import { CaretDown } from '@phosphor-icons/react';
 import { InputHTMLAttributes, forwardRef, useState } from 'react';
 

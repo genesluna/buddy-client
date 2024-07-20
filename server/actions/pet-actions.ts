@@ -1,5 +1,5 @@
 'use server';
-import type { Pet } from '@lib/models/pet';
+import type { Pet } from '@/lib/models/pet';
 import axios from 'axios';
 
 export interface Page {

@@ -2,9 +2,9 @@
 
 import { Envelope, LockSimple, SignIn } from '@phosphor-icons/react/dist/ssr';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Button from '@components/ui/button';
+import Button from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
-import Input from '@components/ui/input';
+import Input from '@/components/ui/input';
 import { string, z } from 'zod';
 import Link from 'next/link';
 

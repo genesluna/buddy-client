@@ -1,4 +1,4 @@
-import { fetchPetById, fetchPetsInfinite } from '@server/actions/pet-actions';
+import { fetchPetById, fetchPetsInfinite } from '@/server/actions/pet-actions';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
 export function useFetchPetsListInfinite(

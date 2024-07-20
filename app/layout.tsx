@@ -1,8 +1,8 @@
-import ReactQueryProvider from '@lib/providers/react-query-provider';
+import ReactQueryProvider from '@/lib/providers/react-query-provider';
 import { Poppins as FontSans } from 'next/font/google';
 import type { Metadata, Viewport } from 'next';
-import { cn } from '@lib/utils';
-import '@styles/globals.css';
+import { cn } from '@/lib/utils';
+import '@/styles/globals.css';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const fontSans = FontSans({
@@ -31,7 +31,7 @@ export default function RootLayout({
     <html lang='pt-br'>
       <body
         className={cn(
-          'min-h-screen overflow-x-hidden scroll-auto font-sans antialiased',
+          'relative min-h-screen overflow-x-hidden scroll-auto font-sans antialiased',
           fontSans.variable
         )}
       >
