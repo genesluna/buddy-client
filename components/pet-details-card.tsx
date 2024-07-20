@@ -5,7 +5,7 @@ import {
 } from '@phosphor-icons/react/dist/ssr';
 import { calculateAge } from '@/lib/utils';
 import Scale from '@/assets/scale.svg';
-import { Pet } from '@/lib/models/pet';
+import { Pet } from '@/types/pet';
 import Button from './ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
