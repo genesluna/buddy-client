@@ -1,7 +1,7 @@
-import RoundLogo from '@assets/logo_round.svg';
+import RoundLogo from '@/assets/logo_round.svg';
 import Link from 'next/link';
 import Image from 'next/image';
-import BackButton from '@components/ui/back-button';
+import BackButton from '@/components/ui/back-button';
 
 export default function HorizontalLayout({
   children,

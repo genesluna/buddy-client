@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { MainNav } from './main-nav';
 import HamburgerNav from './hamburguer-nav';
-import RoundLogo from '@assets/logo_round.svg';
+import RoundLogo from '@/assets/logo_round.svg';
 import Image from 'next/image';
 
 export function PageHeader() {

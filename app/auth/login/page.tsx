@@ -1,5 +1,5 @@
-import HorizontalLayout from '@components/layouts/horizontal-layout';
-import LoginForm from '@components/forms/login-form';
+import HorizontalLayout from '@/components/layouts/horizontal-layout';
+import LoginForm from '@/components/forms/login-form';
 
 export default function LoginPage() {
   return (

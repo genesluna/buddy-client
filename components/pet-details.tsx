@@ -3,8 +3,8 @@
 import PetDetailsPageSkeleton from './skeletons/pet-details-page-skeleton';
 import PetDetailsImgageGallery from './pet-details-image-gallery';
 import PetDetailsShelterCard from './pet-details-shelter-card';
-import { useFetchPetById } from '@hooks/use-pet-data';
-import { useScrollTop } from '@hooks/use-scroll-top';
+import { useFetchPetById } from '@/hooks/use-pet-data';
+import { useScrollTop } from '@/hooks/use-scroll-top';
 import PetDetailsCard from './pet-details-card';
 
 export default function PetDetails({ petId }: { petId: string }) {

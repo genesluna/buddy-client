@@ -6,9 +6,9 @@ import {
   PaperPlaneRight,
   User,
 } from '@phosphor-icons/react/dist/ssr';
-import Button from '@components/ui/button';
+import Button from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
-import Input from '@components/ui/input';
+import Input from '@/components/ui/input';
 import { string, z } from 'zod';
 
 const contactSchema = z.object({

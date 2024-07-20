@@ -1,5 +1,5 @@
-import RegisterForm from '@components/forms/register-form';
-import HorizontalLayout from '@components/layouts/horizontal-layout';
+import RegisterForm from '@/components/forms/register-form';
+import HorizontalLayout from '@/components/layouts/horizontal-layout';
 
 export default function RegisterPage() {
   return (

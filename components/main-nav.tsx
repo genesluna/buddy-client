@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@lib/utils';
+import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ComponentProps } from 'react';
@@ -19,7 +19,7 @@ export function MainNav({ navLinks, ...props }: MainNavProps) {
           name.toLowerCase() === 'login' ? (
             <li
               key={name}
-              className='hover:drop-shadow-glow flex h-[3.25rem] w-[5.625rem] cursor-pointer items-center justify-center rounded-[1.25rem] bg-white duration-300 ease-in-out'
+              className='flex h-[3.25rem] w-[5.625rem] cursor-pointer items-center justify-center rounded-[1.25rem] bg-white duration-300 ease-in-out hover:drop-shadow-glow'
             >
               <Link
                 href={href}
@@ -31,7 +31,7 @@ export function MainNav({ navLinks, ...props }: MainNavProps) {
           ) : (
             <li
               key={name}
-              className='hover:drop-shadow-glow text-xl font-medium capitalize text-white duration-300 ease-in-out'
+              className='text-xl font-medium capitalize text-white duration-300 ease-in-out hover:drop-shadow-glow'
             >
               <Link
                 href={href}
