@@ -1,9 +1,9 @@
 version: 2
 updates:
-  - package-ecosystem: 'npm'
-    directory: '/'
-    schedule:
-      interval: 'weekly'
-    target-branch: 'develop'
-    labels:
+ - package-ecosystem: "devcontainers"
+   directory: "/"
+   schedule:
+     interval: weekly
+   target-branch: 'develop'
+     labels:
       - 'npm dependencies'
