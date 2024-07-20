@@ -3,6 +3,7 @@ import { Poppins as FontSans } from 'next/font/google';
 import type { Metadata, Viewport } from 'next';
 import { cn } from '@lib/utils';
 import '@styles/globals.css';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const fontSans = FontSans({
   weight: ['400', '600', '800'],
@@ -34,7 +35,10 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ReactQueryProvider>
+          {children}
+          <SpeedInsights />
+        </ReactQueryProvider>
       </body>
     </html>
   );
