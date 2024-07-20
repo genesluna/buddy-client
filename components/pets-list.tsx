@@ -5,7 +5,7 @@ import PetListSkeleton from './skeletons/pet-list-skeleton';
 import { useInView } from 'react-intersection-observer';
 import { buildSearchParamsPath } from '@/lib/utils';
 import { useEffect, useState } from 'react';
-import { SearchParams } from '@/lib/types';
+import { SearchParams } from '@/types';
 import PetListCard from './pet-list-card';
 
 export default function PetsList({
