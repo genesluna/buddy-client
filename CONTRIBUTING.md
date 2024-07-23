@@ -68,7 +68,6 @@ Contribuições são bem-vindas! Siga os passos abaixo para contribuir:
 ### Opções de merge:
 
 - **Squash and merge:** Combina todas as alterações da sua branch em um único commit antes de mesclar na branch `develop`. Utilize este método para merge de pull requests em branches de desenvolvimento (feature e fix).
-- **Merge commit:** Cria um novo commit de merge que inclui todas as alterações da sua branch. Utilize este método para merge da branch develop na main.
 
 Escolha a opção de merge de acordo com as diretrizes do projeto.
 
