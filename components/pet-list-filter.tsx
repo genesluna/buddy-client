@@ -6,8 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { buildSearchParamsPath } from '@/lib/utils';
 import Combobox from '@/components/ui/combobox';
 import Button from '@/components/ui/button';
-import { navigate } from '@/server/actions';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { string, z } from 'zod';
 
 const filterSchema = z.object({
@@ -24,12 +24,14 @@ export function PetListFilter() {
     resolver: zodResolver(filterSchema),
   });
 
+  const router = useRouter();
+
   type FilterData = z.infer<typeof filterSchema>;
 
   function handleFilter(filterData: FilterData) {
     const searchParamsPath = buildSearchParamsPath('/', filterData);
 
-    navigate(searchParamsPath);
+    router.push(searchParamsPath);
   }
 
   return (
