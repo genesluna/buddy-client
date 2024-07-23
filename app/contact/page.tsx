@@ -1,5 +1,5 @@
-import ContactForm from '@/components/forms/contact-form';
-import HorizontalLayout from '@/components/layouts/horizontal-layout';
+import HorizontalLayout from '@/app/_components/horizontal-layout';
+import ContactForm from './_components/contact-form';
 
 export default function ContactPage() {
   return (
