@@ -1,10 +1,10 @@
-import ReactQueryProvider from '@/lib/providers/react-query-provider';
+import ReactQueryProvider from '@/app/_lib/providers/react-query-provider';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Poppins as FontSans } from 'next/font/google';
 import type { Metadata, Viewport } from 'next';
-import { cn } from '@/lib/utils';
-import '@/styles/globals.css';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Toaster } from 'react-hot-toast';
+import { cn } from '@/app/_lib/utils';
+import '@/styles/globals.css';
 
 const fontSans = FontSans({
   weight: ['400', '600', '800'],
