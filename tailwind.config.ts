@@ -1,6 +1,6 @@
-import colors from './config/colors';
-import type { Config } from 'tailwindcss';
 import { fontFamily } from 'tailwindcss/defaultTheme';
+import colors from './app/_config/theme-colors';
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
