@@ -26,10 +26,29 @@ export default function PetsList({
     return <PetListSkeleton numberOfItems={pageLimit} />;
   }
 
+  const noPetsFound = data?.pages[0].data.length === 0;
+
+  if (noPetsFound) {
+    return (
+      <div className='flex flex-grow flex-col items-center justify-center'>
+        <span className='text-5xl'>😿</span>
+        <span className='mt-2 text-lg text-content-200'>Sem resultados.</span>
+      </div>
+    );
+  }
+
   if (error) {
-    console.error('Pet data Error:', error);
-    return null;
-    // TODO: Handle error. Toast?
+    return (
+      <div className='flex flex-grow flex-col items-center justify-center'>
+        <span className='text-6xl'>😿</span>
+        <span className='mt-2 text-lg text-content-200'>
+          Algo não saiu como esperado.
+        </span>
+        <span className='text-md text-content-200'>
+          Tente novamente mais tarde.
+        </span>
+      </div>
+    );
   }
 
   return (

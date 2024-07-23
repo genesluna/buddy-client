@@ -30,16 +30,8 @@ export async function fetchPetsInfinite(
     `${process.env.API_URL}/pets${searchParams}&page=${pageParam}&size=${pageLimit}`
   );
 
-  if (!response.data) {
-    return {
-      data: [],
-      currentPage: 0,
-      nextPage: null,
-    };
-  }
-
   return {
-    data: response.data._embedded.petParamsResponseList,
+    data: response.data._embedded?.petParamsResponseList || [],
     currentPage: response.data.page.number,
     nextPage:
       response.data.page.number + 1 < response.data.page.totalPages

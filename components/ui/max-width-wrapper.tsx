@@ -4,7 +4,7 @@ export default function MaxWidthWrapper({
   children: React.ReactNode;
 }) {
   return (
-    <div className='w-[90%] max-w-[83.3125rem] flex-1 sm:w-[80%]'>
+    <div className='flex w-[90%] max-w-[83.3125rem] flex-1 flex-col sm:w-[80%]'>
       {children}
     </div>
   );
