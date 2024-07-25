@@ -3,8 +3,8 @@ import {
   MapPin,
   PawPrint,
 } from '@phosphor-icons/react/dist/ssr';
+import { birthDateToHumanReadableAge } from '@/app/_lib/utils';
 import Button from '@/app/_components/ui/button';
-import { calculateAge } from '@/app/_lib/utils';
 import Scale from '@/app/_assets/scale.svg';
 import { Pet } from '@/app/pet/_types/pet';
 import Image from 'next/image';
@@ -23,9 +23,9 @@ export default function PetDetailsCard({ pet }: PetDetailsCardProps) {
       <div>
         <div className='mt-10 flex items-center gap-1'>
           <CalendarBlank size={18} className='text-accent' weight='bold' />
-          <span className='ms-2 text-content-300'>{`${
-            pet ? calculateAge(pet.birthDate) : 0
-          } anos de idade.`}</span>
+          <span className='ms-2 text-content-300'>
+            {birthDateToHumanReadableAge(pet.birthDate)}
+          </span>
         </div>
         <div className='mt-5 flex items-center gap-1'>
           <MapPin size={18} className='text-accent' weight='bold' />
