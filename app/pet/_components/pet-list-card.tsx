@@ -1,5 +1,5 @@
 import { CalendarBlank, MapPin } from '@phosphor-icons/react/dist/ssr';
-import { calculateAge } from '@/app/_lib/utils';
+import { birthDateToHumanReadableAge } from '@/app/_lib/utils';
 import { Pet } from '@/app/pet/_types/pet';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -31,9 +31,9 @@ export default function PetListCard({ pet }: PetCardProps) {
 
         <div className='mt-1 flex items-center gap-1'>
           <CalendarBlank size={18} className='text-accent' />
-          <span className='text-sm'>{`${calculateAge(
-            pet.birthDate
-          )} anos de idade.`}</span>
+          <span className='text-sm'>
+            {birthDateToHumanReadableAge(pet.birthDate)}
+          </span>
         </div>
 
         <div className='mt-1 flex items-center gap-1'>
