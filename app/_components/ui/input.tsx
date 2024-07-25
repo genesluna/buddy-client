@@ -14,9 +14,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={className}>
         {label && (
-          <label htmlFor={props.id} className='text-md mb-2 block text-black'>
-            {label}
-          </label>
+          <label className='text-md mb-2 block text-black'>{label}</label>
         )}
         <div className='relative flex items-center'>
           <input

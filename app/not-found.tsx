@@ -3,8 +3,8 @@ import React from 'react';
 
 export default function NotFound() {
   return (
-    <main className='grid min-h-screen place-content-center bg-gradient-to-b from-primary to-content-500 px-4'>
-      <section className='text-center'>
+    <div className='grid min-h-screen place-content-center bg-gradient-to-b from-primary to-content-500 px-4'>
+      <div className='text-center'>
         <h1 className='text-9xl font-black text-secondary'>404</h1>
 
         <p className='mt-8 text-6xl'>😿</p>
@@ -19,7 +19,7 @@ export default function NotFound() {
         >
           Voltar para home page
         </Link>
-      </section>
-    </main>
+      </div>
+    </div>
   );
 }

@@ -73,9 +73,8 @@ export default function ContactForm() {
 
       <Button
         type='submit'
-        aria-label='Enviar mensagem'
         label='Enviar mensagem'
-        className='w-full lg:w-72'
+        className='mb-10 w-full lg:mb-auto xl:w-72'
         icon={<PaperPlaneRight size={28} />}
         isLoading={isLoading}
         disabled={!isValid}

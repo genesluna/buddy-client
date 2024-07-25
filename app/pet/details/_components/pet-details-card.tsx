@@ -47,7 +47,6 @@ export default function PetDetailsCard({ pet }: PetDetailsCardProps) {
             href={`/pet/adoption?id=${pet.id}&name=${pet.name}&gender=${pet.gender}`}
           >
             <Button
-              aria-label='Solicitar adoção'
               label='Solicitar adoção'
               className='mt-7 w-72'
               icon={<PawPrint size={24} />}

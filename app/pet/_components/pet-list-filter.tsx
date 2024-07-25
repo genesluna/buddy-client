@@ -35,7 +35,7 @@ export function PetListFilter() {
   }
 
   return (
-    <section className='mt-[-4.3125rem] flex items-center justify-between rounded-[1.875rem] bg-white px-[2.5rem] py-[1.875rem]'>
+    <div className='mt-[-4.3125rem] flex items-center justify-between rounded-[1.875rem] bg-white px-[2.5rem] py-[1.875rem]'>
       <form
         onSubmit={handleSubmit(handleFilter)}
         className='flex h-full w-full items-center gap-8'
@@ -77,6 +77,6 @@ export function PetListFilter() {
           />
         </div>
       </form>
-    </section>
+    </div>
   );
 }

@@ -9,28 +9,30 @@ export default function HorizontalLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className='flex min-h-screen w-full flex-col justify-center bg-white lg:flex-row'>
-      <header className='relative w-full items-center justify-center rounded-b-4xl bg-accent py-2 lg:flex lg:w-[44.5%] lg:rounded-bl-none lg:rounded-br-4xl lg:rounded-tr-4xl'>
+    <div className='mx-auto grid h-screen grid-cols-9 gap-0 bg-white'>
+      <div className='relative col-span-4 col-start-1 hidden items-center justify-center rounded-br-4xl rounded-tr-4xl bg-accent lg:flex'>
         <BackButton />
 
-        <Link
-          href='/'
-          aria-label='Home'
-          className='flex w-full items-center justify-center'
-        >
-          <Image
-            src={RoundLogo}
-            alt='Logo'
-            width={288}
-            height={288}
-            priority
-            className='h-32 w-32 lg:h-72 lg:w-72'
-          />
+        <Link href='/'>
+          <Image src={RoundLogo} alt='Logo' width={288} height={288} priority />
         </Link>
-      </header>
-      <main className='flex w-auto flex-1 flex-col items-center justify-center px-7 py-7 lg:w-[55.5%] lg:items-start lg:px-20 xl:px-32'>
+      </div>
+      <div className='col-span-9 col-start-1 mt-52 flex flex-col items-center px-8 lg:col-span-5 lg:col-start-5 lg:my-auto lg:items-start lg:px-32'>
+        <div className='absolute top-0 mx-auto flex w-full justify-center rounded-b-4xl bg-accent py-2 lg:hidden'>
+          <BackButton />
+
+          <Link href='/'>
+            <Image
+              src={RoundLogo}
+              alt='Logo'
+              width={128}
+              height={128}
+              priority
+            />
+          </Link>
+        </div>
         {children}
-      </main>
+      </div>
     </div>
   );
 }
