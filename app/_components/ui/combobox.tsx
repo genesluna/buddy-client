@@ -61,7 +61,9 @@ const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
     return (
       <label className={cn('relative w-full', className)}>
         {label && (
-          <span className='ms-2 text-sm text-content-200'>{label}</span>
+          <label htmlFor={id} className='ms-2 text-sm text-content-200'>
+            {label}
+          </label>
         )}
         <input
           id={id}
@@ -108,6 +110,7 @@ const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(
               <div className='' key={index}>
                 <input
                   type='button'
+                  aria-label={option}
                   value={option}
                   className='w-full cursor-pointer rounded-xl bg-transparent p-2 text-left text-content-200 duration-300 hover:bg-secondary hover:text-white'
                   onClick={() => {

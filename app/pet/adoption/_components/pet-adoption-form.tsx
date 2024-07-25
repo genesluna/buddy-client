@@ -86,8 +86,9 @@ export default function PetAdoptionForm({ petId }: AdoptionFormProps) {
 
       <Button
         type='submit'
+        aria-label='Enviar solicitação'
         label='Enviar solicitação'
-        className='mb-10 w-full lg:mb-auto xl:w-72'
+        className='w-full lg:w-72'
         icon={<PaperPlaneRight size={24} />}
         isLoading={isLoading}
         disabled={!isValid}
