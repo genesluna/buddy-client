@@ -12,10 +12,10 @@ interface AdoptionPageProps {
 export default function AdoptionPage({ searchParams }: AdoptionPageProps) {
   return (
     <HorizontalLayout>
-      <h1 className='text-3xl font-bold text-accent sm:text-4xl'>{`Adote ${
+      <h1 className='text-4xl font-bold text-accent'>{`Adote ${
         searchParams.gender === 'Macho' ? 'o' : 'a'
       } ${searchParams.name}`}</h1>
-      <p className='mt-2 max-w-[467px] text-content-300 sm:text-lg'>
+      <p className='mt-2 max-w-[467px] text-lg text-content-300'>
         Faça sua solicitação e entraremos em contato o mais rápido possível.
       </p>
       <PetAdoptionForm petId={searchParams.id} />

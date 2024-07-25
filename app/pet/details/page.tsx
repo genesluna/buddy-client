@@ -1,3 +1,4 @@
+import MaxWidthWrapper from '@/app/_components/ui/max-width-wrapper';
 import PetDetails from '@/app/pet/details/_components/pet-details';
 import VerticalLayout from '@/app/_components/vertical-layout';
 import { Metadata } from 'next';
@@ -14,7 +15,9 @@ export default function PetDetailsPage({
 }) {
   return (
     <VerticalLayout>
-      <PetDetails petId={searchParams.id} />
+      <MaxWidthWrapper>
+        <PetDetails petId={searchParams.id} />
+      </MaxWidthWrapper>
     </VerticalLayout>
   );
 }

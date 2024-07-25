@@ -32,7 +32,7 @@ export default function RootLayout({
     <html lang='pt-br'>
       <body
         className={cn(
-          'relative flex min-h-screen w-full flex-col items-center overflow-x-hidden scroll-auto font-sans antialiased',
+          'relative min-h-screen overflow-x-hidden scroll-auto font-sans antialiased',
           fontSans.variable
         )}
       >

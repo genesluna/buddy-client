@@ -30,16 +30,16 @@ export default function PetsList({
 
   if (noPetsFound) {
     return (
-      <section className='flex flex-grow flex-col items-center justify-center'>
+      <div className='flex flex-grow flex-col items-center justify-center'>
         <span className='text-5xl'>😿</span>
         <span className='mt-2 text-lg text-content-200'>Sem resultados.</span>
-      </section>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <section className='flex flex-grow flex-col items-center justify-center'>
+      <div className='flex flex-grow flex-col items-center justify-center'>
         <span className='text-6xl'>😿</span>
         <span className='mt-2 text-lg text-content-200'>
           Algo não saiu como esperado.
@@ -47,31 +47,31 @@ export default function PetsList({
         <span className='text-md text-content-200'>
           Tente novamente mais tarde.
         </span>
-      </section>
+      </div>
     );
   }
 
   return (
-    <section className='mb-14'>
+    <div className='mb-14'>
       {data?.pages.map((page) => {
         return (
-          <ul key={page.currentPage}>
-            <li
+          <div key={page.currentPage}>
+            <section
               key={page.currentPage}
               className='mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'
             >
               {page.data.map((pet) => {
                 return <PetListCard key={pet.id} pet={pet} />;
               })}
-            </li>
-          </ul>
+            </section>
+          </div>
         );
       })}
 
       <div ref={ref}>
         {isFetchingNextPage && <PetListSkeleton numberOfItems={pageLimit} />}
       </div>
-    </section>
+    </div>
   );
 }
 

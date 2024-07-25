@@ -56,7 +56,6 @@ export default function LoginForm() {
 
       <div className='flex flex-col items-center justify-center gap-4 lg:flex-row'>
         <Button
-          aria-label='Entrar'
           type='submit'
           label='Entrar'
           className='w-full xl:w-40'
@@ -64,16 +63,10 @@ export default function LoginForm() {
           isLoading={isLoading}
           disabled={!isValid}
         />
-        <Button
-          aria-label='Resetar a senha'
-          label='Resetar a senha'
-          className='w-full xl:w-72'
-          outline
-        />
+        <Button label='Resetar a senha' className='w-full xl:w-72' outline />
       </div>
       <Link href='/auth/register'>
         <Button
-          aria-label='Registrar novo abrigo'
           label='Registrar novo abrigo'
           className='mb-10 w-full lg:mb-auto xl:w-72'
           outline
