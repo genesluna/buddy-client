@@ -7,10 +7,13 @@ export default function VerticalLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className='flex min-h-screen w-full flex-col items-center'>
+    // <div className='flex min-h-screen w-full flex-col items-center'>
+    <>
       <PageHeader />
-      {children}
+      <main className='flex w-[90%] max-w-[83.3125rem] flex-1 flex-col sm:w-[80%]'>
+        {children}
+      </main>
       <PageFooter />
-    </div>
+    </>
   );
 }

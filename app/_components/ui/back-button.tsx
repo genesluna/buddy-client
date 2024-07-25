@@ -8,8 +8,9 @@ export default function BackButton() {
 
   return (
     <ArrowCircleLeft
+      aria-label='voltar'
       size={40}
-      className='absolute left-8 top-11 cursor-pointer text-white'
+      className='absolute left-8 top-12 cursor-pointer text-white'
       onClick={() => router.back()}
     />
   );
