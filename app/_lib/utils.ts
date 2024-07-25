@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function calculateAge(birthDate: string): number {
+export function calculateAgeFromBirthDate(birthDate: string): number {
   const birth = new Date(birthDate);
   const today = new Date();
 
@@ -21,6 +21,11 @@ export function calculateAge(birthDate: string): number {
   }
 
   return age;
+}
+
+export function birthDateToHumanReadableAge(birthDate: string): string {
+  const age = calculateAgeFromBirthDate(birthDate);
+  return `${age} ano${age > 1 ? 's' : ''} de idade`;
 }
 
 export function buildSearchParamsPath(
