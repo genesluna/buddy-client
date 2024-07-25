@@ -106,8 +106,9 @@ export default function RegisterForm() {
 
       <Button
         type='submit'
+        aria-label='Cadastrar novo abrigo'
         label='Cadastrar novo abrigo'
-        className='mb-10 w-full lg:mb-auto xl:w-72'
+        className='mt-4 w-full lg:mt-0 lg:w-72'
         icon={<FilePlus size={28} />}
         isLoading={isLoading}
         disabled={!isValid}
