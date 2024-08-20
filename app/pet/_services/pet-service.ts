@@ -28,7 +28,7 @@ export async function fetchPetsInfinite(
   nextPage: number | null;
 }> {
   const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/pets${searchParams}&page=${pageParam}&size=${pageLimit}`
+    `${process.env.NEXT_PUBLIC_API_URL}/pets${searchParams}&page=${pageParam}&size=${pageLimit}&sort=createDate,asc`
   );
 
   return {
