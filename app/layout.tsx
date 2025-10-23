@@ -43,7 +43,8 @@ export default function RootLayout({
           <SpeedInsights />
         </ReactQueryProvider>
         <Script
-          src="/app/_scripts/tracker-collector.js"
+          id="tracker-collector"
+          src="/scripts/tracker-collector.js"
           strategy="afterInteractive"
         />
       </body>
