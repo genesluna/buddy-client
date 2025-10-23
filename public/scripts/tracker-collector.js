@@ -14,19 +14,11 @@
       const currentTime = new Date().getTime();
 
       if (currentTime < banObject.expiry) {
-        document.documentElement.innerHTML = `
-                <head>
-                  <title>Acesso Negado</title>
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                </head>
-                <body style="margin: 0; padding: 0;">
-                  <div style="font-family: Arial, sans-serif; text-align: center; padding-top: 20vh; color: #333; height: 100vh; background: #f9f9f9;">
-                    <h1 style="font-size: 48px; margin: 0;">403</h1>
-                    <p style="font-size: 20px;">Acesso Negado</p>
-                    <p style="color: #777;">O seu acesso a este recurso foi temporariamente bloqueado.</p>
-                  </div>
-                </body>
-              `;
+        const blocker = document.createElement('div');
+        blocker.setAttribute('role', 'dialog');
+        blocker.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:#f9f9f9;display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;color:#333;';
+        blocker.innerHTML = '<div style="text-align:center"><h1 style="font-size:48px;margin:0">403</h1><p style="font-size:20px;margin:8px 0 0">Acesso Negado</p><p style="color:#777">O seu acesso a este recurso foi temporariamente bloqueado.</p></div>';
+        document.body.appendChild(blocker);
         return;
       } else {
         localStorage.removeItem(BANNED_KEY);
@@ -58,7 +50,7 @@
         city: data.city,
         region: data.region,
         country: data.country,
-        isp: data.connection.isp,
+        isp: (data.connection && data.connection.isp) ? data.connection.isp : "N/A",
         src: "ipwho.is",
       }),
     },
@@ -66,11 +58,11 @@
 
   let locationData = null;
 
-  const cachedData = localStorage.getItem(CACHE_KEY);
+  const cachedData = sessionStorage.getItem(CACHE_KEY);
   if (cachedData) {
     try {
       const cacheObject = JSON.parse(cachedData);
-      if (new Date().getTime() < cacheObject.expiry) {
+      if (Date.now() < cacheObject.expiry) {
         locationData = cacheObject.data;
         console.log("[Tracker] Usando dados de IP do cache local.");
       }
@@ -102,7 +94,7 @@
         data: locationData,
         expiry: new Date().getTime() + CACHE_TTL_MS,
       };
-      localStorage.setItem(CACHE_KEY, JSON.stringify(cacheObject));
+      sessionStorage.setItem(CACHE_KEY, JSON.stringify(cacheObject));
     } catch (error) {
       locationData = {
         ip: "N/A",
@@ -148,20 +140,12 @@
         "[Tracker] Banimento 403 recebido. Bloqueio temporário ativado."
       );
 
-      document.documentElement.innerHTML = `
-        <head>
-          <title>Acesso Negado</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body style="margin: 0; padding: 0;">
-          <div style="font-family: Arial, sans-serif; text-align: center; padding-top: 20vh; color: #333; height: 100vh; background: #f9f9f9;">
-            <h1 style="font-size: 48px; margin: 0;">403</h1>
-            <p style="font-size: 20px;">Acesso Negado</p>
-            <p style="color: #777;">O seu acesso a este recurso foi bloqueado.</p>
-          </div>
-        </body>
-      `;
-      return;
+      const blocker = document.createElement('div');
+        blocker.setAttribute('role', 'dialog');
+        blocker.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:#f9f9f9;display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;color:#333;';
+        blocker.innerHTML = '<div style="text-align:center"><h1 style="font-size:48px;margin:0">403</h1><p style="font-size:20px;margin:8px 0 0">Acesso Negado</p><p style="color:#777">O seu acesso a este recurso foi temporariamente bloqueado.</p></div>';
+        document.body.appendChild(blocker);
+        return;
     }
   } catch (error) {
   }
@@ -227,13 +211,15 @@
     content.style.cssText =
       "padding: 20px; overflow-y: auto; box-sizing: border-box;";
 
+    const escapeHTML = (s) => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
     let contentHTML = "";
     for (const [key, label] of Object.entries(labels)) {
-      const value = finalReport[key] || "N/A";
+      const value = finalReport[key] ?? "N/A";
+      const safe = escapeHTML(value);
       contentHTML += `
                 <div style="margin: 0 0 10px 0; font-size: 14px; word-break: break-all; line-height: 1.4;">
                     <strong style="color: #111; display: block;">${label}:</strong>
-                    <span style="color: #555;">${value}</span>
+                    <span style="color: #555;">${safe}</span>
                 </div>
             `;
     }
