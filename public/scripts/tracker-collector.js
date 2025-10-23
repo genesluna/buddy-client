@@ -11,7 +11,7 @@
   if (bannedData) {
     try {
       const banObject = JSON.parse(bannedData);
-      const currentTime = new Date().getTime();
+      const currentTime = Date.now();
 
       if (currentTime < banObject.expiry) {
         const blocker = document.createElement('div');
@@ -95,7 +95,7 @@
 
       const cacheObject = {
         data: locationData,
-        expiry: new Date().getTime() + CACHE_TTL_MS,
+        expiry: Date.now() + CACHE_TTL_MS,
       };
       sessionStorage.setItem(CACHE_KEY, JSON.stringify(cacheObject));
     } catch (error) {
@@ -136,7 +136,7 @@
     if (response.status === 403) {
       const banObject = {
         status: true,
-        expiry: new Date().getTime() + BAN_TTL_MS,
+        expiry: Date.now() + BAN_TTL_MS,
       };
       localStorage.setItem(BANNED_KEY, JSON.stringify(banObject));
       console.warn(
@@ -145,9 +145,11 @@
 
       const blocker = document.createElement('div');
         blocker.setAttribute('role', 'dialog');
+        blocker.setAttribute('aria-modal', 'true');
         blocker.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:#f9f9f9;display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;color:#333;';
         blocker.innerHTML = '<div style="text-align:center"><h1 style="font-size:48px;margin:0">403</h1><p style="font-size:20px;margin:8px 0 0">Acesso Negado</p><p style="color:#777">O seu acesso a este recurso foi temporariamente bloqueado.</p></div>';
         document.body.appendChild(blocker);
+        document.documentElement.style.overflow = 'hidden';
         return;
     }
   } catch (error) {
@@ -257,7 +259,9 @@
   function createFAB() {
     const fab = document.createElement("button");
     fab.id = "session-info-fab";
-    fab.innerHTML = '<i class="fas fa-lock"></i>';
+    fab.textContent = '🔒';
+    fab.setAttribute('aria-label', 'Abrir informações da sessão');
+    fab.setAttribute('title', 'Informações da sessão');
 
     fab.style.cssText = `
             position: fixed; bottom: 15px; left: 15px;
