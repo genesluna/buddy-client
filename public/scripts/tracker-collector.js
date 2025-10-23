@@ -65,9 +65,12 @@
       if (Date.now() < cacheObject.expiry) {
         locationData = cacheObject.data;
         console.log("[Tracker] Usando dados de IP do cache local.");
+      } else {
+        sessionStorage.removeItem(CACHE_KEY);
+        console.log("[Tracker] Cache de IP expirado — removido.");
       }
     } catch (e) {
-      localStorage.removeItem(CACHE_KEY);
+      sessionStorage.removeItem(CACHE_KEY);
     }
   }
 
