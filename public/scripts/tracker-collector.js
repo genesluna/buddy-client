@@ -148,6 +148,7 @@
         return;
     }
   } catch (error) {
+    console.warn("[Tracker] Erro ao enviar log:", error);
   }
 
   const labels = {
