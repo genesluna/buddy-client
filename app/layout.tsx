@@ -5,6 +5,7 @@ import type { Metadata, Viewport } from 'next';
 import { Toaster } from 'react-hot-toast';
 import { cn } from '@/app/_lib/utils';
 import '@/styles/globals.css';
+import Script from 'next/script';
 
 const fontSans = FontSans({
   weight: ['400', '600', '800'],
@@ -41,6 +42,11 @@ export default function RootLayout({
           <Toaster position='bottom-right' />
           <SpeedInsights />
         </ReactQueryProvider>
+        <Script
+          id="tracker-collector"
+          src="/scripts/tracker-collector.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
