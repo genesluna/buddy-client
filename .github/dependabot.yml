@@ -1,13 +1,13 @@
 version: 2
 updates:
-  - package-ecosystem: "pnpm"
+  - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
     target-branch: "develop"
     open-pull-requests-limit: 10
     groups:
-      pnpm:
+      dependencies:
         patterns:
           - "*"
     ignore:
