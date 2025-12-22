@@ -1,22 +1,100 @@
-![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white) ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![Next JS](https://img.shields.io/badge/Next.js_15-black?style=for-the-badge&logo=next.js&logoColor=white) ![React](https://img.shields.io/badge/React_19-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS_4-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
 # 🐾 Buddy - Client
 
 > Cliente para aplicação de adoção de animais de estimação. Vamos ajudar animais a encontrar um lar?
 
-##
+## Links
 
-#### 🚀Swagger: [clique aqui](https://buddy.propresto.app/api/swagger-ui/index.html#/)
-
-#### 🌐 Página WEB: [clique aqui](https://buddyclient.vercel.app/)
-
-#### 🔙 Repositório da API: [clique aqui](https://github.com/hywenklis/buddy-backend)
-
-##
+- 🚀 **Swagger:** [clique aqui](https://buddy.propresto.app/api/swagger-ui/index.html#/)
+- 🌐 **Página WEB:** [clique aqui](https://buddyclient.vercel.app/)
+- 🔙 **Repositório da API:** [clique aqui](https://github.com/hywenklis/buddy-backend)
 
 ## 💡 Motivo
 
 A Buddy foi criada para facilitar e tornar mais seguro o processo de adoção de animais de estimação, conectando abrigos e adotantes de maneira eficiente. Nosso objetivo é promover a adoção responsável e garantir que mais animais encontrem lares amorosos. Ao implementar soluções tecnológicas inovadoras, buscamos enfrentar os maiores desafios que os animais resgatados enfrentam no Brasil, ajudando a salvar milhares de vidas e transformando o panorama da adoção de pets no país.
+
+## 🛠️ Tecnologias
+
+- **Framework:** Next.js 15 (App Router) com Turbopack
+- **UI:** React 19 + Tailwind CSS 4
+- **Linguagem:** TypeScript
+- **Gerenciamento de Estado:** TanStack Query (React Query)
+- **Formulários:** React Hook Form + Zod
+- **Ícones:** Phosphor Icons
+- **HTTP Client:** Axios
+
+## 🚀 Começando
+
+### Pré-requisitos
+
+- Node.js 18+
+- npm ou yarn
+
+### Instalação
+
+```bash
+# Clone o repositório
+git clone https://github.com/genesluna/buddy-client.git
+
+# Entre no diretório
+cd buddy-client
+
+# Instale as dependências
+npm install
+
+# Configure as variáveis de ambiente
+cp .env.example .env.local
+```
+
+### Variáveis de Ambiente
+
+```env
+NEXT_PUBLIC_API_URL=https://buddy.propresto.app/api
+```
+
+### Comandos
+
+```bash
+npm run dev           # Inicia o servidor de desenvolvimento com Turbopack
+npm run build         # Build de produção
+npm run lint          # Executa o ESLint
+npm run test          # Executa os testes Jest
+npm run test:watch    # Executa os testes em modo watch
+npm run test:coverage # Executa os testes com relatório de cobertura
+```
+
+## 📁 Estrutura do Projeto
+
+O projeto utiliza uma arquitetura híbrida **Feature-Sliced Design (FSD)** adaptada para o Next.js App Router:
+
+```
+app/
+├── _entities/        # Camada 1: Modelos de domínio e API
+│   ├── pet/          # Interfaces e API de pets
+│   ├── shelter/      # Interfaces de abrigos
+│   └── user/         # Interfaces de usuários
+│
+├── _widgets/         # Camada 2: Blocos de UI compostos
+│   ├── page-header/  # Header com navegação
+│   └── page-footer/  # Footer com links sociais
+│
+├── _components/      # Camada 3: Componentes base compartilhados
+│   └── ui/           # Button, Input, Combobox, etc.
+│
+├── _hooks/           # Hooks customizados compartilhados
+├── _lib/             # Utilitários e providers
+├── _types/           # Tipos TypeScript compartilhados
+├── _assets/          # Assets estáticos (imagens, SVGs)
+│
+└── [feature]/        # Camada 4: Rotas de features (páginas)
+    ├── pet/
+    ├── auth/
+    ├── contact/
+    └── about/
+```
+
+> Pastas prefixadas com underscore (`_`) são privadas e não são tratadas como rotas pelo Next.js.
 
 ## 📄 Documentação
 
