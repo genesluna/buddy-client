@@ -29,7 +29,7 @@ A Buddy foi criada para facilitar e tornar mais seguro o processo de adoção de
 ### Pré-requisitos
 
 - Node.js 18+
-- npm ou yarn
+- pnpm 8+
 
 ### Instalação
 
@@ -41,7 +41,7 @@ git clone https://github.com/genesluna/buddy-client.git
 cd buddy-client
 
 # Instale as dependências
-npm install
+pnpm install
 
 # Configure as variáveis de ambiente
 cp .env.example .env.local
@@ -56,12 +56,12 @@ NEXT_PUBLIC_API_URL=https://buddy.propresto.app/api
 ### Comandos
 
 ```bash
-npm run dev           # Inicia o servidor de desenvolvimento com Turbopack
-npm run build         # Build de produção
-npm run lint          # Executa o ESLint
-npm run test          # Executa os testes Jest
-npm run test:watch    # Executa os testes em modo watch
-npm run test:coverage # Executa os testes com relatório de cobertura
+pnpm dev           # Inicia o servidor de desenvolvimento com Turbopack
+pnpm build         # Build de produção
+pnpm lint          # Executa o ESLint
+pnpm test          # Executa os testes Jest
+pnpm test:watch    # Executa os testes em modo watch
+pnpm test:coverage # Executa os testes com relatório de cobertura
 ```
 
 ## 📁 Estrutura do Projeto
