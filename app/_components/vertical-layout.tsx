@@ -1,5 +1,5 @@
-import { PageHeader } from '@/app/_components/page-header';
-import PageFooter from '@/app/_components/page-footer';
+import { PageHeader } from '@/app/_widgets/page-header';
+import { PageFooter } from '@/app/_widgets/page-footer';
 
 export default function VerticalLayout({
   children,

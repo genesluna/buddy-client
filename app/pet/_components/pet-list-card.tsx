@@ -1,6 +1,6 @@
 import { CalendarBlank, MapPin } from '@phosphor-icons/react/dist/ssr';
 import { birthDateToHumanReadableAge } from '@/app/_lib/utils';
-import { Pet } from '@/app/pet/_types/pet';
+import { Pet } from '@/app/_entities/pet/model';
 import Image from 'next/image';
 import Link from 'next/link';
 

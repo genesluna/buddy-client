@@ -1,5 +1,5 @@
 import HorizontalLogo from '@/app/_assets/logo_hor.svg';
-import SocialIcons from './ui/social-icons';
+import SocialIcons from './social-icons';
 import Image from 'next/image';
 import Link from 'next/link';
 

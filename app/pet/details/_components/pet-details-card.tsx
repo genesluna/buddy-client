@@ -6,7 +6,7 @@ import {
 import { birthDateToHumanReadableAge } from '@/app/_lib/utils';
 import Button from '@/app/_components/ui/button';
 import Scale from '@/app/_assets/scale.svg';
-import { Pet } from '@/app/pet/_types/pet';
+import { Pet } from '@/app/_entities/pet/model';
 import Image from 'next/image';
 import Link from 'next/link';
 

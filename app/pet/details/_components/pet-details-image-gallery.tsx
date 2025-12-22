@@ -1,5 +1,5 @@
 import noImg from '@/app/_assets/noimg.webp';
-import { Pet } from '@/app/pet/_types/pet';
+import { Pet } from '@/app/_entities/pet/model';
 import { useState } from 'react';
 import Image from 'next/image';
 
