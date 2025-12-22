@@ -16,7 +16,7 @@ interface PetDetailsCardProps {
 
 export default function PetDetailsCard({ pet }: PetDetailsCardProps) {
   return (
-    <div className='min-h-[480px] w-full rounded-[1.875rem] bg-white px-[2.5rem] py-[1.875rem] xl:mt-[-4.3125rem]'>
+    <div className='min-h-[480px] w-full rounded-[1.875rem] bg-white px-10 py-7.5 xl:-mt-17.25'>
       <h1 className='text-accent text-lg font-semibold md:text-xl lg:text-2xl'>
         {pet?.name}
       </h1>
