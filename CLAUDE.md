@@ -72,6 +72,38 @@ Underscore-prefixed folders are private and not treated as routes by Next.js.
 
 **Styling**: Tailwind CSS 4 with CSS-based theme configuration in `styles/globals.css` using `@theme` directive. Custom colors, fonts, and utilities are defined as CSS variables. The `cn()` utility in `app/_lib/utils.ts` merges Tailwind classes using clsx and tailwind-merge.
 
+### Theme
+
+The theme is defined in `styles/globals.css` using the Tailwind CSS 4 `@theme` directive.
+
+**Brand Colors**:
+- `primary` (#EEF7FF) - Light blue, used for backgrounds
+- `secondary` (#7AB2B2) - Teal, used for accents and interactive elements
+- `terciary` (#CDE8E5) - Light teal, used for subtle backgrounds
+- `accent` (#4D869C) - Dark teal, used for emphasis and CTAs
+
+**Content Colors** (grayscale + utility):
+- `content-100` (#ffffff) - White
+- `content-150` (#f9fafc) - Off-white
+- `content-200` (#575757) - Medium gray text
+- `content-300` (#4f4f4f) - Dark gray text
+- `content-400` (#131616) - Near-black text
+- `content-500` (#D2EAFF) - Light blue highlight
+- `content-600` (#F3F5F9) - Light gray background
+
+**Status Colors**:
+- `info` (#66c7ff) - Informational messages
+- `success` (#87cf3a) - Success states
+- `warning` (#f7c250) - Warning messages
+- `danger` (#ff6347) - Destructive actions
+- `error` (#ff6b6b) - Error states
+
+**Custom Utilities**:
+- `rounded-4xl` (2.25rem) - Extra-large border radius
+- `drop-shadow-glow` - White glow effect for elevated elements
+
+**Background**: The body uses a gradient from `--background-start-rgb` (#EEF7FF) to `--background-end-rgb` (#D2EAFF).
+
 **Forms**: React Hook Form with Zod validation (`@hookform/resolvers`).
 
 **Icons**: Phosphor Icons (`@phosphor-icons/react`).
