@@ -9,12 +9,12 @@ Buddy is a pet adoption web application built with Next.js 15 (App Router), Reac
 ## Commands
 
 ```bash
-npm run dev          # Start development server with Turbopack
-npm run build        # Production build
-npm run lint         # Run ESLint
-npm run test         # Run Jest tests
-npm run test:watch   # Run tests in watch mode
-npm run test:coverage # Run tests with coverage report
+pnpm dev          # Start development server with Turbopack
+pnpm build        # Production build
+pnpm lint         # Run ESLint
+pnpm test         # Run Jest tests
+pnpm test:watch   # Run tests in watch mode
+pnpm test:coverage # Run tests with coverage report
 ```
 
 ## Architecture
