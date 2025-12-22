@@ -1,12 +1,5 @@
-import { Pet } from '../_types/pet';
 import axios from 'axios';
-
-export interface Page {
-  size: number;
-  totalElements: number;
-  totalPages: number;
-  number: number;
-}
+import { Pet, PetInfiniteResponse } from './model';
 
 export async function fetchPets(params?: string): Promise<{ pets: Pet[] }> {
   const response = await axios.get(
@@ -22,11 +15,7 @@ export async function fetchPetsInfinite(
   pageParam: number,
   searchParams: string,
   pageLimit: number
-): Promise<{
-  data: Pet[];
-  currentPage: number;
-  nextPage: number | null;
-}> {
+): Promise<PetInfiniteResponse> {
   const response = await axios.get(
     `${process.env.NEXT_PUBLIC_API_URL}/pets${searchParams}&page=${pageParam}&size=${pageLimit}&sort=createDate,asc`
   );

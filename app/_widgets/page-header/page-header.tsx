@@ -1,5 +1,5 @@
 import RoundLogo from '@/app/_assets/logo_round.svg';
-import HamburgerNav from './hamburguer-nav';
+import HamburgerNav from './hamburger-nav';
 import { MainNav } from './main-nav';
 import Image from 'next/image';
 import Link from 'next/link';
