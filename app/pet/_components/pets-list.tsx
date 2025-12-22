@@ -30,7 +30,7 @@ export default function PetsList({
 
   if (noPetsFound) {
     return (
-      <section className='flex flex-grow flex-col items-center justify-center'>
+      <section className='flex grow flex-col items-center justify-center'>
         <span className='text-5xl'>😿</span>
         <span className='mt-2 text-lg text-content-200'>Sem resultados.</span>
       </section>
@@ -39,7 +39,7 @@ export default function PetsList({
 
   if (error) {
     return (
-      <section className='flex flex-grow flex-col items-center justify-center'>
+      <section className='flex grow flex-col items-center justify-center'>
         <span className='text-6xl'>😿</span>
         <span className='mt-2 text-lg text-content-200'>
           Algo não saiu como esperado.

@@ -7,14 +7,15 @@ export const metadata: Metadata = {
   description: 'Detalhes do animal',
 };
 
-export default function PetDetailsPage({
+export default async function PetDetailsPage({
   searchParams,
 }: {
-  searchParams: { id: string };
+  searchParams: Promise<{ id: string }>;
 }) {
+  const { id } = await searchParams;
   return (
     <VerticalLayout>
-      <PetDetails petId={searchParams.id} />
+      <PetDetails petId={id} />
     </VerticalLayout>
   );
 }
