@@ -1,4 +1,4 @@
-import { Pet } from '@/app/pet/_types/pet';
+import { Pet } from '@/app/_entities/pet/model';
 import Image from 'next/image';
 
 interface PetDetailsCardProps {
