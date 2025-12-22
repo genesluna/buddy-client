@@ -1,6 +1,40 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  /* Font Family */
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+
+  /* Custom Colors from theme-colors.ts */
+  --color-transparent: transparent;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-primary: #EEF7FF;
+  --color-secondary: #7AB2B2;
+  --color-terciary: #CDE8E5;
+  --color-accent: #4D869C;
+
+  /* Content colors */
+  --color-content-100: #ffffff;
+  --color-content-150: #f9fafc;
+  --color-content-200: #575757;
+  --color-content-300: #4f4f4f;
+  --color-content-400: #131616;
+  --color-content-500: #D2EAFF;
+  --color-content-600: #F3F5F9;
+
+  /* Status colors */
+  --color-info: #66c7ff;
+  --color-success: #87cf3a;
+  --color-warning: #f7c250;
+  --color-danger: #ff6347;
+  --color-error: #ff6b6b;
+
+  /* Custom Border Radius */
+  --radius-4xl: 2.25rem;
+
+  /* Custom Drop Shadow */
+  --drop-shadow-glow: 0 0px 20px rgba(255, 255, 255, 0.35), 0 0px 65px rgba(255, 255, 255, 0.2);
+}
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -19,10 +53,9 @@
 
 ::-webkit-scrollbar-thumb {
   background: #7AB2B2;
-  border-radius: #4D869C;
+  border-radius: 5px;
   border: 2px solid #CDE8E5;
   cursor: pointer;
-
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -31,7 +64,9 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgb(var(--background-end-rgb))
+  ) rgb(var(--background-start-rgb));
 }

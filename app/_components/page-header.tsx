@@ -17,7 +17,7 @@ export function PageHeader() {
       <div className='mx-auto grid w-[90%] max-w-[83.3125rem] grid-cols-8 items-center gap-4 pb-7 pt-1 sm:w-[80%]'>
         <Link
           href='/'
-          className='col-span-5 col-start-1 flex-grow justify-start 2xl:col-span-2 2xl:col-start-4'
+          className='col-span-5 col-start-1 grow justify-start 2xl:col-span-2 2xl:col-start-4'
         >
           <Image
             src={RoundLogo}
