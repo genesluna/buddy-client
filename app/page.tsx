@@ -6,12 +6,13 @@ import { SearchParams } from './_types/props';
 export default async function HomePage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }) {
+  const resolvedParams = await searchParams;
   return (
     <VerticalLayout>
       <PetListFilter />
-      <PetsList searchParams={searchParams} />
+      <PetsList searchParams={resolvedParams} />
     </VerticalLayout>
   );
 }
