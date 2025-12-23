@@ -9,7 +9,7 @@ import { AxiosError } from 'axios';
 
 type VerificationStatus = 'loading' | 'success' | 'error';
 
-const TOKEN_PATTERN = /^[a-zA-Z0-9_-]+$/;
+const TOKEN_PATTERN = /^[a-zA-Z0-9_.-]+$/;
 const MAX_TOKEN_LENGTH = 512;
 
 function isValidTokenFormat(token: string): boolean {
