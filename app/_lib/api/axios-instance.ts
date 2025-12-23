@@ -1,4 +1,4 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError, CreateAxiosDefaults, InternalAxiosRequestConfig } from 'axios';
 
 function getApiUrl(): string {
   const url = process.env.NEXT_PUBLIC_API_URL;
@@ -11,23 +11,18 @@ function getApiUrl(): string {
   return url;
 }
 
-const api = axios.create({
+const baseAxiosConfig: CreateAxiosDefaults = {
   baseURL: getApiUrl(),
   withCredentials: true,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
   },
-});
+};
 
-export const refreshApi = axios.create({
-  baseURL: getApiUrl(),
-  withCredentials: true,
-  timeout: 30000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+const api = axios.create(baseAxiosConfig);
+
+export const refreshApi = axios.create(baseAxiosConfig);
 
 let isRefreshing = false;
 let failedQueue: Array<{
