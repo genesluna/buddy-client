@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { string, z } from 'zod';
 import { useState } from 'react';
+import { AxiosError } from 'axios';
 
 const loginSchema = z.object({
   email: string().email('Insira um email válido'),
@@ -30,10 +31,14 @@ export default function LoginForm() {
       router.push('/');
     },
     onError: (error) => {
-      if (error.response?.status === 401) {
-        setApiError('Email ou senha inválidos');
-      } else if (error.response?.status === 429) {
-        setApiError('Muitas tentativas. Aguarde antes de tentar novamente.');
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          setApiError('Email ou senha inválidos');
+        } else if (error.response?.status === 429) {
+          setApiError('Muitas tentativas. Aguarde antes de tentar novamente.');
+        } else {
+          setApiError('Erro ao fazer login. Tente novamente.');
+        }
       } else {
         setApiError('Erro ao fazer login. Tente novamente.');
       }

@@ -110,6 +110,20 @@ describe('user-storage', () => {
       expect(result.data).toBeNull();
       expect(result.error).toBeInstanceOf(UserStorageError);
     });
+
+    it('returns error and clears storage when profileType is invalid', () => {
+      mockLocalStorage.setItem(
+        'buddy_user',
+        JSON.stringify({
+          profiles: [{ name: 'Test', description: 'desc', profileType: 'INVALID_TYPE' }],
+        })
+      );
+
+      const result = getStoredUser();
+      expect(result.data).toBeNull();
+      expect(result.error).toBeInstanceOf(UserStorageError);
+      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('buddy_user');
+    });
   });
 
   describe('saveUser', () => {
@@ -159,6 +173,37 @@ describe('user-storage', () => {
         throw new Error('Remove failed');
       });
 
+      expect(() => clearStoredUser()).not.toThrow();
+    });
+  });
+
+  describe('SSR behavior', () => {
+    const originalWindow = global.window;
+
+    beforeEach(() => {
+      // @ts-expect-error - simulating SSR environment
+      delete global.window;
+    });
+
+    afterEach(() => {
+      global.window = originalWindow;
+    });
+
+    it('getStoredUser returns null without error in SSR environment', () => {
+      const result = getStoredUser();
+      expect(result.data).toBeNull();
+      expect(result.error).toBeUndefined();
+    });
+
+    it('saveUser returns error in SSR environment', () => {
+      const result = saveUser({
+        profiles: [{ name: 'Test', description: 'desc', profileType: 'SHELTER' }],
+      });
+      expect(result.success).toBe(false);
+      expect(result.error?.message).toBe('Not in browser environment');
+    });
+
+    it('clearStoredUser does not throw in SSR environment', () => {
       expect(() => clearStoredUser()).not.toThrow();
     });
   });

@@ -25,8 +25,8 @@ export interface AuthContextValue {
   isAuthenticated: boolean;
   isLoading: boolean;
   storageError: UserStorageError | null;
-  login: (authResponse: AuthResponse) => void;
-  clearAuthState: () => void;
+  setAuthUser: (authResponse: AuthResponse) => void;
+  clearAuthState: () => Promise<void>;
   clearStorageError: () => void;
 }
 
@@ -40,11 +40,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     null
   );
 
-  const clearAuthState = useCallback(() => {
+  const clearAuthState = useCallback(async () => {
     clearStoredUser();
     setUser(null);
     setStorageError(null);
-    queryClient.cancelQueries();
+    await queryClient.cancelQueries();
     queryClient.removeQueries({
       predicate: (query) => {
         const key = query.queryKey[0];
@@ -81,7 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, [clearAuthState]);
 
-  const login = useCallback((authResponse: AuthResponse) => {
+  const setAuthUser = useCallback((authResponse: AuthResponse) => {
     const authUser: AuthUser = { profiles: authResponse.profiles };
 
     setUser(authUser);
@@ -104,11 +104,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       isAuthenticated: !!user,
       isLoading,
       storageError,
-      login,
+      setAuthUser,
       clearAuthState,
       clearStorageError,
     }),
-    [user, isLoading, storageError, login, clearAuthState, clearStorageError]
+    [user, isLoading, storageError, setAuthUser, clearAuthState, clearStorageError]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

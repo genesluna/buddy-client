@@ -1,4 +1,8 @@
-import { ProfileResponse } from '@/app/_entities/auth/model';
+'use client';
+
+import { ProfileResponse, ProfileType } from '@/app/_entities/auth/model';
+
+const VALID_PROFILE_TYPES: ProfileType[] = ['SHELTER', 'ADOPTER', 'ADMIN'];
 
 const USER_STORAGE_KEY = 'buddy_user';
 
@@ -36,7 +40,8 @@ function isValidStoredUser(data: unknown): data is StoredUser {
     return (
       typeof p.name === 'string' &&
       typeof p.description === 'string' &&
-      typeof p.profileType === 'string'
+      typeof p.profileType === 'string' &&
+      VALID_PROFILE_TYPES.includes(p.profileType as ProfileType)
     );
   });
 }

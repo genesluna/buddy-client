@@ -28,7 +28,7 @@ function createWrapper() {
 }
 
 describe('useLogin', () => {
-  const mockLoginFn = jest.fn();
+  const mockSetAuthUser = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -37,7 +37,7 @@ describe('useLogin', () => {
       isAuthenticated: false,
       isLoading: false,
       storageError: null,
-      login: mockLoginFn,
+      setAuthUser: mockSetAuthUser,
       clearAuthState: jest.fn(),
       clearStorageError: jest.fn(),
     });
@@ -64,7 +64,7 @@ describe('useLogin', () => {
       email: 'test@test.com',
       password: 'password123',
     });
-    expect(mockLoginFn).toHaveBeenCalledWith(authResponse);
+    expect(mockSetAuthUser).toHaveBeenCalledWith(authResponse);
     expect(onSuccess).toHaveBeenCalled();
   });
 
@@ -85,10 +85,10 @@ describe('useLogin', () => {
     });
 
     expect(onError).toHaveBeenCalledWith(axiosError);
-    expect(mockLoginFn).not.toHaveBeenCalled();
+    expect(mockSetAuthUser).not.toHaveBeenCalled();
   });
 
-  it('does not call setAuthState on failure', async () => {
+  it('does not call setAuthUser on failure', async () => {
     mockAuthMutations.login.mockRejectedValue(new Error('Network error'));
 
     const { result } = renderHook(() => useLogin(), {
@@ -101,7 +101,7 @@ describe('useLogin', () => {
       expect(result.current.isError).toBe(true);
     });
 
-    expect(mockLoginFn).not.toHaveBeenCalled();
+    expect(mockSetAuthUser).not.toHaveBeenCalled();
   });
 
   it('returns isPending true while mutation is in progress', async () => {

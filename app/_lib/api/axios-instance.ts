@@ -29,6 +29,10 @@ const api = axios.create(baseAxiosConfig);
  */
 export const refreshApi = axios.create(baseAxiosConfig);
 
+/**
+ * Module-level state for token refresh coordination.
+ * This module should only be used client-side to avoid state leakage between SSR requests.
+ */
 let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (value?: unknown) => void;

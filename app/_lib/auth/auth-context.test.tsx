@@ -29,8 +29,8 @@ function TestConsumer() {
       <div data-testid="isAuthenticated">{String(auth.isAuthenticated)}</div>
       <div data-testid="isLoading">{String(auth.isLoading)}</div>
       <div data-testid="storageError">{auth.storageError?.message || 'null'}</div>
-      <button onClick={() => auth.login({ profiles: [{ name: 'Test', description: 'desc', profileType: 'SHELTER' }] })}>
-        Login
+      <button onClick={() => auth.setAuthUser({ profiles: [{ name: 'Test', description: 'desc', profileType: 'SHELTER' }] })}>
+        SetAuthUser
       </button>
       <button onClick={() => auth.clearAuthState()}>Clear</button>
     </div>
@@ -111,7 +111,7 @@ describe('AuthContext', () => {
       });
     });
 
-    it('login sets user and saves to storage', async () => {
+    it('setAuthUser sets user and saves to storage', async () => {
       renderWithProviders(
         <AuthProvider>
           <TestConsumer />
@@ -123,7 +123,7 @@ describe('AuthContext', () => {
       });
 
       act(() => {
-        screen.getByText('Login').click();
+        screen.getByText('SetAuthUser').click();
       });
 
       await waitFor(() => {
@@ -133,7 +133,7 @@ describe('AuthContext', () => {
       expect(mockSaveUser).toHaveBeenCalled();
     });
 
-    it('login sets storage error when save fails', async () => {
+    it('setAuthUser sets storage error when save fails', async () => {
       const error = new UserStorageError('Save failed');
       mockSaveUser.mockReturnValue({ success: false, error });
 
@@ -148,7 +148,7 @@ describe('AuthContext', () => {
       });
 
       act(() => {
-        screen.getByText('Login').click();
+        screen.getByText('SetAuthUser').click();
       });
 
       await waitFor(() => {
@@ -208,6 +208,30 @@ describe('AuthContext', () => {
       await waitFor(() => {
         expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('false');
       });
+    });
+
+    it('cleans up event listener on unmount', async () => {
+      const addEventListenerSpy = jest.spyOn(window, 'addEventListener');
+      const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
+
+      const { unmount } = renderWithProviders(
+        <AuthProvider>
+          <TestConsumer />
+        </AuthProvider>
+      );
+
+      await waitFor(() => {
+        expect(screen.getByTestId('isLoading')).toHaveTextContent('false');
+      });
+
+      expect(addEventListenerSpy).toHaveBeenCalledWith('auth:logout', expect.any(Function));
+
+      unmount();
+
+      expect(removeEventListenerSpy).toHaveBeenCalledWith('auth:logout', expect.any(Function));
+
+      addEventListenerSpy.mockRestore();
+      removeEventListenerSpy.mockRestore();
     });
   });
 });
