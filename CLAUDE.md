@@ -28,30 +28,60 @@ The project uses a hybrid Feature-Sliced Design architecture adapted for Next.js
 ```
 app/
 ├── _entities/        # Layer 1: Domain models and API
+│   ├── account/
+│   │   ├── model.ts     # AccountRequest, ConfirmEmailRequest, ResendVerificationRequest
+│   │   └── mutations.ts # registerAccount, requestEmailVerification, confirmEmailVerification
+│   ├── auth/
+│   │   ├── model.ts     # AuthRequest, AuthResponse, ProfileResponse, ProfileType
+│   │   └── mutations.ts # login, logout
 │   ├── pet/
-│   │   ├── model.ts     # Pet, PetImage, PetPage interfaces
+│   │   ├── model.ts     # Pet, PetImage, PetPage, PetInfiniteResponse interfaces
 │   │   ├── queries.ts   # Read operations (fetchPets, fetchPetById, fetchPetsInfinite)
-│   │   └── mutations.ts # Write operations (create, update, delete)
+│   │   ├── mutations.ts # Write operations (create, update, delete)
+│   │   └── query-keys.ts # PET_QUERY_KEYS constants
 │   ├── shelter/
-│   │   └── model.ts  # Shelter interfaces
+│   │   └── model.ts     # Shelter, ShelterFull interfaces
 │   └── user/
-│       └── model.ts  # User, UserCredentials interfaces
+│       └── model.ts     # User, UserCredentials, UserRegistration interfaces
 │
 ├── _widgets/         # Layer 2: Composed UI blocks
-│   ├── page-header/  # Header with navigation
+│   ├── page-header/  # Header with navigation (main-nav, hamburger-nav)
 │   └── page-footer/  # Footer with social links
 │
 ├── _components/      # Layer 3: Shared base UI components
-│   └── ui/           # Button, Input, Combobox, etc.
+│   ├── ui/           # Button, Input, Combobox, BackButton, ImageSkeleton
+│   ├── horizontal-layout.tsx  # Layout for auth pages (logo left, content right)
+│   ├── vertical-layout.tsx    # Main page layout (header, content, footer)
+│   └── loading-spinner.tsx    # Generic loading spinner
 │
-├── _hooks/           # Shared custom hooks
+├── _hooks/           # Shared custom hooks (use-scroll-top)
 ├── _lib/             # Utilities and providers
+│   ├── api/
+│   │   └── axios-instance.ts  # Configured axios with 401 refresh interceptor
+│   ├── auth/
+│   │   ├── auth-context.tsx   # React Context for auth state
+│   │   ├── use-auth.ts        # useAuth hook
+│   │   ├── user-storage.ts    # localStorage management for user data
+│   │   └── use-logout.ts      # useLogout hook
+│   ├── providers/
+│   │   └── react-query-provider.tsx  # TanStack Query setup
+│   ├── query-keys.ts  # Public query key aggregator
+│   └── utils.ts       # cn(), calculateAge(), buildSearchParamsPath()
 ├── _types/           # Shared TypeScript types
 ├── _assets/          # Static assets (images, SVGs)
 │
 └── [feature]/        # Layer 4: Feature routes (pages)
     ├── pet/
+    │   ├── _components/   # Feature-specific components
+    │   ├── _hooks/        # Feature-specific hooks (use-pet-data)
+    │   ├── _config/       # Feature config (filter-options)
+    │   ├── details/       # Pet detail page
+    │   └── adoption/      # Pet adoption form
     ├── auth/
+    │   ├── login/         # Login page with _components/, _hooks/
+    │   ├── register/      # Registration page with _components/, _hooks/, _config/
+    │   ├── verify-email/  # Email verification page
+    │   └── verification-pending/  # Pending verification page
     ├── contact/
     └── about/
 ```
@@ -112,6 +142,23 @@ The theme is defined in `styles/globals.css` using the Tailwind CSS 4 `@theme` d
 ### Environment Variables
 
 - `NEXT_PUBLIC_API_URL` - Backend API base URL
+
+### Testing
+
+Tests are co-located with source files using the `.test.ts` or `.test.tsx` extension.
+
+**Test Stack**:
+- Jest with TypeScript (ts-jest)
+- React Testing Library for component tests
+- axios-mock-adapter for API mocking
+
+**Test Locations**:
+- Entity mutations: `_entities/*/mutations.test.ts`
+- Auth library: `_lib/auth/*.test.ts`
+- API instance: `_lib/api/axios-instance.test.ts`
+- Feature components: `[feature]/_components/*.test.tsx`
+- Feature hooks: `[feature]/_hooks/*.test.tsx`
+- Validation schemas: `[feature]/_config/*.test.ts`
 
 ## Git Workflow
 

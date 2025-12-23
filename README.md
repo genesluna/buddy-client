@@ -71,10 +71,9 @@ O projeto utiliza uma arquitetura híbrida **Feature-Sliced Design (FSD)** adapt
 ```
 app/
 ├── _entities/        # Camada 1: Modelos de domínio e API
-│   ├── pet/
-│   │   ├── model.ts     # Interfaces (Pet, PetImage, etc.)
-│   │   ├── queries.ts   # Operações de leitura (fetch)
-│   │   └── mutations.ts # Operações de escrita (create, update, delete)
+│   ├── account/      # Registro de conta e verificação de email
+│   ├── auth/         # Autenticação (login, logout)
+│   ├── pet/          # Interfaces e queries de pets
 │   ├── shelter/      # Interfaces de abrigos
 │   └── user/         # Interfaces de usuários
 │
@@ -83,18 +82,23 @@ app/
 │   └── page-footer/  # Footer com links sociais
 │
 ├── _components/      # Camada 3: Componentes base compartilhados
-│   └── ui/           # Button, Input, Combobox, etc.
+│   ├── ui/           # Button, Input, Combobox, etc.
+│   ├── horizontal-layout.tsx  # Layout para páginas de auth
+│   └── vertical-layout.tsx    # Layout principal (header, content, footer)
 │
 ├── _hooks/           # Hooks customizados compartilhados
 ├── _lib/             # Utilitários e providers
+│   ├── api/          # Configuração do Axios
+│   ├── auth/         # Context e hooks de autenticação
+│   └── providers/    # React Query provider
 ├── _types/           # Tipos TypeScript compartilhados
 ├── _assets/          # Assets estáticos (imagens, SVGs)
 │
 └── [feature]/        # Camada 4: Rotas de features (páginas)
-    ├── pet/
-    ├── auth/
-    ├── contact/
-    └── about/
+    ├── pet/          # Listagem, detalhes e adoção de pets
+    ├── auth/         # Login, registro, verificação de email
+    ├── contact/      # Formulário de contato
+    └── about/        # Página sobre
 ```
 
 > Pastas prefixadas com underscore (`_`) são privadas e não são tratadas como rotas pelo Next.js.
