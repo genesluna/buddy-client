@@ -12,7 +12,7 @@ import Input from '@/app/_components/ui/input';
 import { useRegister } from '../_hooks/use-register';
 import { useForm, Controller } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { AxiosError } from 'axios';
 import {
   registerSchema,
@@ -23,11 +23,10 @@ import Link from 'next/link';
 export default function RegisterForm() {
   const router = useRouter();
   const [apiError, setApiError] = useState<string | null>(null);
-  const pendingEmailRef = useRef<string>('');
 
   const { mutate: registerMutate, isPending } = useRegister({
-    onSuccess: () => {
-      const encodedEmail = encodeURIComponent(pendingEmailRef.current);
+    onSuccess: (data) => {
+      const encodedEmail = encodeURIComponent(data.email);
       router.push(`/auth/verification-pending?email=${encodedEmail}`);
     },
     onError: (error) => {
@@ -57,18 +56,17 @@ export default function RegisterForm() {
     criteriaMode: 'all',
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      termsOfUserConsent: false,
+      termsOfUseAndPrivacyConsent: false,
     },
   });
 
   function handleRegister(data: RegisterFormData) {
     setApiError(null);
-    pendingEmailRef.current = data.email;
     registerMutate({
       email: data.email,
       phoneNumber: data.phoneNumber,
       password: data.password,
-      termsOfUserConsent: data.termsOfUserConsent,
+      termsOfUseAndPrivacyConsent: data.termsOfUseAndPrivacyConsent,
     });
   }
 
@@ -153,7 +151,7 @@ export default function RegisterForm() {
       <div className='flex flex-col gap-2'>
         <div className='flex items-start gap-3'>
           <Controller
-            name='termsOfUserConsent'
+            name='termsOfUseAndPrivacyConsent'
             control={control}
             render={({ field }) => (
               <input
@@ -192,9 +190,9 @@ export default function RegisterForm() {
             </Link>
           </label>
         </div>
-        {errors.termsOfUserConsent && (
+        {errors.termsOfUseAndPrivacyConsent && (
           <p className='ms-3 text-sm text-error'>
-            {errors.termsOfUserConsent.message}
+            {errors.termsOfUseAndPrivacyConsent.message}
           </p>
         )}
       </div>

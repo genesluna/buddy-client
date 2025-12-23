@@ -13,7 +13,7 @@ export const registerSchema = z
       .min(6, 'A senha deve ter pelo menos 6 caracteres')
       .max(16, 'A senha deve ter no máximo 16 caracteres'),
     confirmPassword: z.string(),
-    termsOfUserConsent: z
+    termsOfUseAndPrivacyConsent: z
       .boolean()
       .refine((val) => val === true, {
         message: 'Você deve aceitar os termos de uso',

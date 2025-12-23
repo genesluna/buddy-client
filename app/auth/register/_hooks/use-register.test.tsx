@@ -29,7 +29,7 @@ describe('useRegister', () => {
     email: 'test@test.com',
     phoneNumber: '11999999999',
     password: 'password123',
-    termsOfUserConsent: true as const,
+    termsOfUseAndPrivacyConsent: true as const,
   };
 
   beforeEach(() => {
@@ -51,7 +51,7 @@ describe('useRegister', () => {
     });
 
     expect(mockAccountMutations.registerAccount).toHaveBeenCalledWith(validAccountData);
-    expect(onSuccess).toHaveBeenCalled();
+    expect(onSuccess).toHaveBeenCalledWith(validAccountData);
   });
 
   it('calls onError callback on failure', async () => {
