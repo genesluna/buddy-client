@@ -1,4 +1,4 @@
-import VerticalLayout from '@/app/_components/vertical-layout';
+import { VerticalLayout } from '@/app/_widgets/layouts';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

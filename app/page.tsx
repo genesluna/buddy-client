@@ -1,5 +1,5 @@
 import { PetListFilter } from '@/app/pet/_components/pet-list-filter';
-import VerticalLayout from './_components/vertical-layout';
+import { VerticalLayout } from '@/app/_widgets/layouts';
 import PetsList from '@/app/pet/_components/pets-list';
 import { SearchParams } from './_types/props';
 

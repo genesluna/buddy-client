@@ -70,21 +70,20 @@ O projeto utiliza uma arquitetura híbrida **Feature-Sliced Design (FSD)** adapt
 
 ```
 app/
-├── _entities/        # Camada 1: Modelos de domínio e API
-│   ├── account/      # Registro de conta e verificação de email
-│   ├── auth/         # Autenticação (login, logout)
-│   ├── pet/          # Interfaces e queries de pets
-│   ├── shelter/      # Interfaces de abrigos
-│   └── user/         # Interfaces de usuários
+├── _entities/        # Camada 1: Modelos de domínio e operações de dados
+│   ├── account/      # Models e mutations de registro/verificação de email
+│   ├── auth/         # Models e mutations de autenticação (API operations)
+│   ├── pet/          # Models, queries e query-keys de pets
+│   ├── shelter/      # Models de abrigos
+│   └── user/         # Models de usuários
 │
 ├── _widgets/         # Camada 2: Blocos de UI compostos
+│   ├── layouts/      # Componentes de layout (horizontal, vertical)
 │   ├── page-header/  # Header com navegação
 │   └── page-footer/  # Footer com links sociais
 │
 ├── _components/      # Camada 3: Componentes base compartilhados
-│   ├── ui/           # Button, Input, Combobox, etc.
-│   ├── horizontal-layout.tsx  # Layout para páginas de auth
-│   └── vertical-layout.tsx    # Layout principal (header, content, footer)
+│   └── ui/           # Button, Input, Combobox, etc.
 │
 ├── _hooks/           # Hooks customizados compartilhados
 ├── _lib/             # Utilitários e providers
@@ -94,11 +93,11 @@ app/
 ├── _types/           # Tipos TypeScript compartilhados
 ├── _assets/          # Assets estáticos (imagens, SVGs)
 │
-└── [feature]/        # Camada 4: Rotas de features (páginas)
-    ├── pet/          # Listagem, detalhes e adoção de pets
-    ├── auth/         # Login, registro, verificação de email
-    ├── contact/      # Formulário de contato
-    └── about/        # Página sobre
+└── [feature]/        # Camada 4: Rotas de features (UI e páginas)
+    ├── pet/          # UI: listagem, detalhes e adoção de pets
+    ├── auth/         # UI: páginas de login, registro, verificação (fluxos)
+    ├── contact/      # UI: formulário de contato
+    └── about/        # UI: página sobre
 ```
 
 > Pastas prefixadas com underscore (`_`) são privadas e não são tratadas como rotas pelo Next.js.

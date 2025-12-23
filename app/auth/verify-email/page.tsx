@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import HorizontalLayout from '@/app/_components/horizontal-layout';
+import { HorizontalLayout } from '@/app/_widgets/layouts';
 import VerifyEmailContent from './_components/verify-email-content';
 
 function LoadingFallback() {

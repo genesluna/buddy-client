@@ -27,13 +27,13 @@ The project uses a hybrid Feature-Sliced Design architecture adapted for Next.js
 
 ```
 app/
-├── _entities/        # Layer 1: Domain models and API
+├── _entities/        # Layer 1: Domain models and data operations (queries/mutations)
 │   ├── account/
 │   │   ├── model.ts     # AccountRequest, ConfirmEmailRequest, ResendVerificationRequest
 │   │   └── mutations.ts # registerAccount, requestEmailVerification, confirmEmailVerification
 │   ├── auth/
 │   │   ├── model.ts     # AuthRequest, AuthResponse, ProfileResponse, ProfileType
-│   │   └── mutations.ts # login, logout
+│   │   └── mutations.ts # login, logout (API operations only, no UI)
 │   ├── pet/
 │   │   ├── model.ts     # Pet, PetImage, PetPage, PetInfiniteResponse interfaces
 │   │   ├── queries.ts   # Read operations (fetchPets, fetchPetById, fetchPetsInfinite)
@@ -45,13 +45,14 @@ app/
 │       └── model.ts     # User, UserCredentials, UserRegistration interfaces
 │
 ├── _widgets/         # Layer 2: Composed UI blocks
+│   ├── layouts/      # Layout components
+│   │   ├── horizontal-layout.tsx  # Layout for auth pages (logo left, content right)
+│   │   └── vertical-layout.tsx    # Main page layout (header, content, footer)
 │   ├── page-header/  # Header with navigation (main-nav, hamburger-nav)
 │   └── page-footer/  # Footer with social links
 │
 ├── _components/      # Layer 3: Shared base UI components
 │   ├── ui/           # Button, Input, Combobox, BackButton, ImageSkeleton
-│   ├── horizontal-layout.tsx  # Layout for auth pages (logo left, content right)
-│   ├── vertical-layout.tsx    # Main page layout (header, content, footer)
 │   └── loading-spinner.tsx    # Generic loading spinner
 │
 ├── _hooks/           # Shared custom hooks (use-scroll-top)
@@ -70,14 +71,14 @@ app/
 ├── _types/           # Shared TypeScript types
 ├── _assets/          # Static assets (images, SVGs)
 │
-└── [feature]/        # Layer 4: Feature routes (pages)
+└── [feature]/        # Layer 4: Feature routes (UI, pages, flow orchestration)
     ├── pet/
-    │   ├── _components/   # Feature-specific components
+    │   ├── _components/   # Feature-specific UI components
     │   ├── _hooks/        # Feature-specific hooks (use-pet-data)
     │   ├── _config/       # Feature config (filter-options)
     │   ├── details/       # Pet detail page
     │   └── adoption/      # Pet adoption form
-    ├── auth/
+    ├── auth/              # UI pages and user flows (uses _entities/auth for API)
     │   ├── login/         # Login page with _components/, _hooks/
     │   ├── register/      # Registration page with _components/, _hooks/, _config/
     │   ├── verify-email/  # Email verification page
