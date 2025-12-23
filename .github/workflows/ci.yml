@@ -39,6 +39,11 @@ jobs:
         env:
           NEXT_PUBLIC_API_URL: https://api.example.com
 
+      - name: Build
+        run: pnpm build
+        env:
+          NEXT_PUBLIC_API_URL: https://api.example.com
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@v6
         env:
@@ -47,8 +52,3 @@ jobs:
         with:
           args: >
             -Dsonar.host.url=https://sonarcloud.io
-
-      - name: Build
-        run: pnpm build
-        env:
-          NEXT_PUBLIC_API_URL: https://api.example.com
