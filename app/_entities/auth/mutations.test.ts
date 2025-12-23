@@ -5,12 +5,16 @@ import { login, logout } from './mutations';
 describe('auth mutations', () => {
   let mockApi: MockAdapter;
 
-  beforeEach(() => {
+  beforeAll(() => {
     mockApi = new MockAdapter(api);
   });
 
-  afterEach(() => {
+  afterAll(() => {
     mockApi.restore();
+  });
+
+  beforeEach(() => {
+    mockApi.reset();
   });
 
   describe('login', () => {
