@@ -210,7 +210,7 @@ describe('AuthContext', () => {
       });
     });
 
-    it('cleans up event listener on unmount', async () => {
+    it('cleans up event listener on unmount with same function reference', async () => {
       const addEventListenerSpy = jest.spyOn(window, 'addEventListener');
       const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
 
@@ -226,9 +226,15 @@ describe('AuthContext', () => {
 
       expect(addEventListenerSpy).toHaveBeenCalledWith('auth:logout', expect.any(Function));
 
+      const addCall = addEventListenerSpy.mock.calls.find(
+        (call) => call[0] === 'auth:logout'
+      );
+      const handler = addCall?.[1];
+      expect(handler).toBeDefined();
+
       unmount();
 
-      expect(removeEventListenerSpy).toHaveBeenCalledWith('auth:logout', expect.any(Function));
+      expect(removeEventListenerSpy).toHaveBeenCalledWith('auth:logout', handler);
 
       addEventListenerSpy.mockRestore();
       removeEventListenerSpy.mockRestore();
