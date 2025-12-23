@@ -30,12 +30,12 @@ export default function ContactForm() {
 
   type ContactData = z.infer<typeof contactSchema>;
 
-  function handleLogin(data: ContactData) {
-    console.log(data);
+  function handleContact(_data: ContactData) {
+    // TODO: Implement contact form submission
   }
   return (
     <form
-      onSubmit={handleSubmit(handleLogin)}
+      onSubmit={handleSubmit(handleContact)}
       className='mt-8 flex w-full max-w-[467px] flex-col gap-4 lg:gap-8'
     >
       <Input

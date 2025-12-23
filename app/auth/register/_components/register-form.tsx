@@ -41,8 +41,8 @@ export default function RegisterForm() {
 
   type registerData = z.infer<typeof registerSchema>;
 
-  function handleRegister(data: registerData) {
-    console.log(data);
+  function handleRegister(_data: registerData) {
+    // TODO: Implement registration API call
   }
   return (
     <form

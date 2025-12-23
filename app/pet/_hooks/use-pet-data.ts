@@ -1,4 +1,5 @@
 import { fetchPetById, fetchPetsInfinite } from '@/app/_entities/pet/queries';
+import { PET_QUERY_KEYS } from '@/app/_entities/pet/query-keys';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
 export function useFetchPetsListInfinite(
@@ -6,7 +7,7 @@ export function useFetchPetsListInfinite(
   pageLimit: number
 ) {
   const query = useInfiniteQuery({
-    queryKey: ['pets', searchParamsPath],
+    queryKey: PET_QUERY_KEYS.list(searchParamsPath),
     queryFn: (pageParams) =>
       fetchPetsInfinite(pageParams.pageParam, searchParamsPath, pageLimit),
     initialPageParam: 0,
@@ -19,7 +20,7 @@ export function useFetchPetsListInfinite(
 
 export function useFetchPetById(petId: string) {
   const query = useQuery({
-    queryKey: ['pet', petId],
+    queryKey: PET_QUERY_KEYS.detail(petId),
     queryFn: () => fetchPetById(petId),
     enabled: !!petId,
   });

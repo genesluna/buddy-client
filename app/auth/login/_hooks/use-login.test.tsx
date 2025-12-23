@@ -38,7 +38,6 @@ describe('useLogin', () => {
       isLoading: false,
       storageError: null,
       login: mockLoginFn,
-      logout: jest.fn(),
       clearAuthState: jest.fn(),
       clearStorageError: jest.fn(),
     });

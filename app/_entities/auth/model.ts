@@ -3,10 +3,12 @@ export interface AuthRequest {
   password: string;
 }
 
+export type ProfileType = 'SHELTER' | 'ADOPTER' | 'ADMIN';
+
 export interface ProfileResponse {
   name: string;
   description: string;
-  profileType: string;
+  profileType: ProfileType;
 }
 
 export interface AuthResponse {

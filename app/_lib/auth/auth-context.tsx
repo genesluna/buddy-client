@@ -8,8 +8,8 @@ import {
   useState,
 } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { PUBLIC_QUERY_KEYS } from '@/app/_entities/pet/query-keys';
 import { AuthResponse } from '@/app/_entities/auth/model';
-import { logout as logoutApi } from '@/app/_entities/auth/mutations';
 import {
   clearStoredUser,
   getStoredUser,
@@ -26,7 +26,6 @@ export interface AuthContextValue {
   isLoading: boolean;
   storageError: UserStorageError | null;
   login: (authResponse: AuthResponse) => void;
-  logout: () => Promise<void>;
   clearAuthState: () => void;
   clearStorageError: () => void;
 }
@@ -49,10 +48,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     queryClient.removeQueries({
       predicate: (query) => {
         const key = query.queryKey[0];
-        return typeof key === 'string' && !['pets', 'pet'].includes(key);
+        return (
+          typeof key === 'string' &&
+          !PUBLIC_QUERY_KEYS.includes(key as (typeof PUBLIC_QUERY_KEYS)[number])
+        );
       },
     });
-    queryClient.invalidateQueries();
   }, [queryClient]);
 
   useEffect(() => {
@@ -93,16 +94,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const logout = useCallback(async () => {
-    try {
-      await logoutApi();
-    } catch (error) {
-      console.error('Logout API call failed:', error);
-    } finally {
-      clearAuthState();
-    }
-  }, [clearAuthState]);
-
   const clearStorageError = useCallback(() => {
     setStorageError(null);
   }, []);
@@ -114,11 +105,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       isLoading,
       storageError,
       login,
-      logout,
       clearAuthState,
       clearStorageError,
     }),
-    [user, isLoading, storageError, login, logout, clearAuthState, clearStorageError]
+    [user, isLoading, storageError, login, clearAuthState, clearStorageError]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

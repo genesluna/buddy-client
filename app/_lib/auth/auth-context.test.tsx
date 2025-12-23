@@ -7,7 +7,6 @@ import { UserStorageError } from './user-storage';
 const mockGetStoredUser = jest.fn();
 const mockSaveUser = jest.fn();
 const mockClearStoredUser = jest.fn();
-const mockLogoutApi = jest.fn();
 
 jest.mock('./user-storage', () => ({
   ...jest.requireActual('./user-storage'),
@@ -16,8 +15,8 @@ jest.mock('./user-storage', () => ({
   clearStoredUser: () => mockClearStoredUser(),
 }));
 
-jest.mock('../../_entities/auth/mutations', () => ({
-  logout: () => mockLogoutApi(),
+jest.mock('../../_entities/pet/query-keys', () => ({
+  PUBLIC_QUERY_KEYS: ['pets', 'pet'],
 }));
 
 function TestConsumer() {
@@ -33,7 +32,6 @@ function TestConsumer() {
       <button onClick={() => auth.login({ profiles: [{ name: 'Test', description: 'desc', profileType: 'SHELTER' }] })}>
         Login
       </button>
-      <button onClick={() => auth.logout()}>Logout</button>
       <button onClick={() => auth.clearAuthState()}>Clear</button>
     </div>
   );
@@ -60,7 +58,6 @@ describe('AuthContext', () => {
     mockGetStoredUser.mockReturnValue({ data: null });
     mockSaveUser.mockReturnValue({ success: true });
     mockClearStoredUser.mockImplementation(() => {});
-    mockLogoutApi.mockResolvedValue(undefined);
   });
 
   describe('AuthProvider', () => {
@@ -161,66 +158,7 @@ describe('AuthContext', () => {
       expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('true');
     });
 
-    it('logout calls API and clears state', async () => {
-      const storedUser = {
-        profiles: [{ name: 'Test', description: 'desc', profileType: 'SHELTER' }],
-      };
-      mockGetStoredUser.mockReturnValue({ data: storedUser });
-
-      renderWithProviders(
-        <AuthProvider>
-          <TestConsumer />
-        </AuthProvider>
-      );
-
-      await waitFor(() => {
-        expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('true');
-      });
-
-      await act(async () => {
-        screen.getByText('Logout').click();
-      });
-
-      await waitFor(() => {
-        expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('false');
-      });
-
-      expect(mockLogoutApi).toHaveBeenCalled();
-      expect(mockClearStoredUser).toHaveBeenCalled();
-    });
-
-    it('logout clears state even when API fails', async () => {
-      const storedUser = {
-        profiles: [{ name: 'Test', description: 'desc', profileType: 'SHELTER' }],
-      };
-      mockGetStoredUser.mockReturnValue({ data: storedUser });
-      mockLogoutApi.mockRejectedValue(new Error('API error'));
-
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-      renderWithProviders(
-        <AuthProvider>
-          <TestConsumer />
-        </AuthProvider>
-      );
-
-      await waitFor(() => {
-        expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('true');
-      });
-
-      await act(async () => {
-        screen.getByText('Logout').click();
-      });
-
-      await waitFor(() => {
-        expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('false');
-      });
-
-      expect(mockClearStoredUser).toHaveBeenCalled();
-      consoleSpy.mockRestore();
-    });
-
-    it('clearAuthState clears user without calling API', async () => {
+    it('clearAuthState clears user and storage', async () => {
       const storedUser = {
         profiles: [{ name: 'Test', description: 'desc', profileType: 'SHELTER' }],
       };
@@ -244,7 +182,6 @@ describe('AuthContext', () => {
         expect(screen.getByTestId('isAuthenticated')).toHaveTextContent('false');
       });
 
-      expect(mockLogoutApi).not.toHaveBeenCalled();
       expect(mockClearStoredUser).toHaveBeenCalled();
     });
 

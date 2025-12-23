@@ -35,12 +35,12 @@ export default function PetAdoptionForm({ petId }: AdoptionFormProps) {
 
   type AdoptionData = z.infer<typeof adoptionSchema>;
 
-  function handleLogin(data: AdoptionData) {
-    console.log(data);
+  function handleAdoption(_data: AdoptionData) {
+    // TODO: Implement adoption form submission
   }
   return (
     <form
-      onSubmit={handleSubmit(handleLogin)}
+      onSubmit={handleSubmit(handleAdoption)}
       className='mt-8 flex w-full max-w-[467px] flex-col gap-4 lg:gap-8'
     >
       <Input

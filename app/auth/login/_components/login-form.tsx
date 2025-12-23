@@ -101,7 +101,9 @@ export default function LoginForm() {
       />
 
       {apiError && (
-        <p className='text-center text-sm text-error'>{apiError}</p>
+        <p className='text-center text-sm text-error' role='alert' aria-live='polite'>
+          {apiError}
+        </p>
       )}
 
       <div className='flex flex-col items-center justify-center gap-4 lg:flex-row'>
