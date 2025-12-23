@@ -1,4 +1,5 @@
 import ReactQueryProvider from '@/app/_lib/providers/react-query-provider';
+import { AuthProvider } from '@/app/_lib/auth/auth-context';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Poppins as FontSans } from 'next/font/google';
 import type { Metadata, Viewport } from 'next';
@@ -38,9 +39,11 @@ export default function RootLayout({
         )}
       >
         <ReactQueryProvider>
-          {children}
-          <Toaster position='bottom-right' />
-          <SpeedInsights />
+          <AuthProvider>
+            {children}
+            <Toaster position='bottom-right' />
+            <SpeedInsights />
+          </AuthProvider>
         </ReactQueryProvider>
         <Script
           id="tracker-collector"

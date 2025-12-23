@@ -16,6 +16,17 @@ const config: Config = {
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
   modulePaths: ['<rootDir>'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  // Coverage configuration
+  collectCoverageFrom: [
+    'app/**/*.{ts,tsx}',
+    '!app/**/*.d.ts',
+    '!app/**/*.test.{ts,tsx}',
+    '!app/**/index.ts',
+    '!app/layout.tsx',
+    '!app/**/page.tsx',
+  ],
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov', 'json-summary'],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

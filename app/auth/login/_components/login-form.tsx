@@ -1,34 +1,73 @@
 'use client';
 
-import { Envelope, LockSimple, SignIn } from '@phosphor-icons/react/dist/ssr';
+import {
+  EnvelopeIcon,
+  LockSimpleIcon,
+  SignInIcon,
+} from '@phosphor-icons/react/dist/ssr';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@/app/_components/ui/button';
 import Input from '@/app/_components/ui/input';
+import { useLogin } from '../_hooks/use-login';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { string, z } from 'zod';
-import Link from 'next/link';
+import { useState } from 'react';
+import { AxiosError } from 'axios';
 
 const loginSchema = z.object({
-  email: string().email('Insira um email válido'),
+  email: string().email('Insira um email válido'),
   password: string().min(8, 'A senha deve ter pelo menos 8 caracteres'),
 });
 
+type LoginData = z.infer<typeof loginSchema>;
+
 export default function LoginForm() {
+  const router = useRouter();
+  const [apiError, setApiError] = useState<string | null>(null);
+
+  const { mutate: loginMutate, isPending } = useLogin({
+    onSuccess: () => {
+      router.push('/');
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          setApiError('Email ou senha inválidos');
+        } else if (error.response?.status === 429) {
+          setApiError('Muitas tentativas. Aguarde antes de tentar novamente.');
+        } else {
+          setApiError('Erro ao fazer login. Tente novamente.');
+        }
+      } else {
+        setApiError('Erro ao fazer login. Tente novamente.');
+      }
+    },
+  });
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isLoading, isValid },
+    formState: { errors, isValid },
   } = useForm<LoginData>({
-    mode: 'all',
+    mode: 'onBlur',
     criteriaMode: 'all',
     resolver: zodResolver(loginSchema),
   });
 
-  type LoginData = z.infer<typeof loginSchema>;
-
   function handleLogin(data: LoginData) {
-    console.log(data);
+    setApiError(null);
+    loginMutate(data);
   }
+
+  function clearApiError() {
+    if (apiError) {
+      setApiError(null);
+    }
+  }
+
+  const emailRegister = register('email');
+  const passwordRegister = register('password');
 
   return (
     <form
@@ -39,20 +78,38 @@ export default function LoginForm() {
         id='email'
         placeholder='Email'
         type='email'
+        autoComplete='email'
         className='w-full max-w-[467px]'
-        icon={<Envelope size={28} className='text-content-200/75' />}
+        icon={<EnvelopeIcon size={28} className='text-content-200/75' />}
         errorMessage={errors.email?.message}
-        {...register('email')}
+        disabled={isPending}
+        {...emailRegister}
+        onChange={(e) => {
+          clearApiError();
+          emailRegister.onChange(e);
+        }}
       />
       <Input
         id='password'
         placeholder='Senha'
         type='password'
+        autoComplete='current-password'
         className='w-full max-w-[467px]'
-        icon={<LockSimple size={28} className='text-content-200/75' />}
+        icon={<LockSimpleIcon size={28} className='text-content-200/75' />}
         errorMessage={errors.password?.message}
-        {...register('password')}
+        disabled={isPending}
+        {...passwordRegister}
+        onChange={(e) => {
+          clearApiError();
+          passwordRegister.onChange(e);
+        }}
       />
+
+      {apiError && (
+        <p className='text-center text-sm text-error' role='alert' aria-live='polite'>
+          {apiError}
+        </p>
+      )}
 
       <div className='flex flex-col items-center justify-center gap-4 lg:flex-row'>
         <Button
@@ -60,25 +117,37 @@ export default function LoginForm() {
           type='submit'
           label='Entrar'
           className='w-full xl:w-40'
-          icon={<SignIn size={28} />}
-          isLoading={isLoading}
-          disabled={!isValid}
+          icon={<SignInIcon size={28} />}
+          isLoading={isPending}
+          disabled={!isValid || isPending}
         />
         <Button
           aria-label='Resetar a senha'
+          type='button'
           label='Resetar a senha'
           className='w-full xl:w-72'
           outline
+          disabled={isPending}
+          onClick={() => {
+            if (!isPending) {
+              router.push('/auth/reset-password');
+            }
+          }}
         />
       </div>
-      <Link href='/auth/register'>
-        <Button
-          aria-label='Registrar novo abrigo'
-          label='Registrar novo abrigo'
-          className='mb-10 w-full lg:mb-auto xl:w-72'
-          outline
-        />
-      </Link>
+      <Button
+        aria-label='Registrar novo abrigo'
+        type='button'
+        label='Registrar novo abrigo'
+        className='mb-10 w-full lg:mb-auto xl:w-72'
+        outline
+        disabled={isPending}
+        onClick={() => {
+          if (!isPending) {
+            router.push('/auth/register');
+          }
+        }}
+      />
     </form>
   );
 }

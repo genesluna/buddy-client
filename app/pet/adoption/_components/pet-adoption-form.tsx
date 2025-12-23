@@ -22,6 +22,8 @@ const adoptionSchema = z.object({
   message: string().min(10, 'A mensagem deve ter pelo menos 10 caracteres'),
 });
 
+type AdoptionData = z.infer<typeof adoptionSchema>;
+
 export default function PetAdoptionForm({ petId }: AdoptionFormProps) {
   const {
     register,
@@ -33,14 +35,12 @@ export default function PetAdoptionForm({ petId }: AdoptionFormProps) {
     resolver: zodResolver(adoptionSchema),
   });
 
-  type AdoptionData = z.infer<typeof adoptionSchema>;
-
-  function handleLogin(data: AdoptionData) {
-    console.log(data);
+  function handleAdoption(_data: AdoptionData) {
+    // TODO: Implement adoption form submission
   }
   return (
     <form
-      onSubmit={handleSubmit(handleLogin)}
+      onSubmit={handleSubmit(handleAdoption)}
       className='mt-8 flex w-full max-w-[467px] flex-col gap-4 lg:gap-8'
     >
       <Input
