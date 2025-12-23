@@ -23,7 +23,7 @@ describe('account mutations', () => {
     email: 'test@test.com',
     phoneNumber: '11999999999',
     password: 'password123',
-    termsOfUseAndPrivacyConsent: true,
+    termsOfUserConsent: true,
   };
 
   beforeEach(() => {
