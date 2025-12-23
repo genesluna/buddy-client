@@ -1,20 +1,25 @@
 import MockAdapter from 'axios-mock-adapter';
-import api from '@/app/_lib/api/axios-instance';
+
+jest.mock('../../_lib/api/axios-instance', () => {
+  const axios = jest.requireActual('axios');
+  return {
+    __esModule: true,
+    default: axios.create(),
+  };
+});
+
+import api from '../../_lib/api/axios-instance';
 import { login, logout } from './mutations';
 
 describe('auth mutations', () => {
   let mockApi: MockAdapter;
 
-  beforeAll(() => {
+  beforeEach(() => {
     mockApi = new MockAdapter(api);
   });
 
-  afterAll(() => {
+  afterEach(() => {
     mockApi.restore();
-  });
-
-  beforeEach(() => {
-    mockApi.reset();
   });
 
   describe('login', () => {
