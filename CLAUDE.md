@@ -29,8 +29,9 @@ The project uses a hybrid Feature-Sliced Design architecture adapted for Next.js
 app/
 ├── _entities/        # Layer 1: Domain models and API
 │   ├── pet/
-│   │   ├── model.ts  # Pet, PetImage, PetPage interfaces
-│   │   └── api.ts    # fetchPets, fetchPetById, fetchPetsInfinite
+│   │   ├── model.ts     # Pet, PetImage, PetPage interfaces
+│   │   ├── queries.ts   # Read operations (fetchPets, fetchPetById, fetchPetsInfinite)
+│   │   └── mutations.ts # Write operations (create, update, delete)
 │   ├── shelter/
 │   │   └── model.ts  # Shelter interfaces
 │   └── user/
@@ -68,7 +69,7 @@ Underscore-prefixed folders are private and not treated as routes by Next.js.
 
 **Data Fetching**: Uses TanStack Query (React Query) with custom hooks in `_hooks/` directories. The `ReactQueryProvider` in `app/_lib/providers/` wraps the app with a 60-second default stale time.
 
-**API Layer**: Entity API functions in `_entities/[entity]/api.ts` use Axios. API base URL is configured via `NEXT_PUBLIC_API_URL` environment variable.
+**API Layer**: Entity data functions are split by operation type - `queries.ts` for read operations and `mutations.ts` for write operations. Both use Axios. API base URL is configured via `NEXT_PUBLIC_API_URL` environment variable.
 
 **Styling**: Tailwind CSS 4 with CSS-based theme configuration in `styles/globals.css` using `@theme` directive. Custom colors, fonts, and utilities are defined as CSS variables. The `cn()` utility in `app/_lib/utils.ts` merges Tailwind classes using clsx and tailwind-merge.
 
