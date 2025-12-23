@@ -2,7 +2,7 @@ export interface AccountRequest {
   email: string;
   phoneNumber: string;
   password: string;
-  termsOfUserConsent: boolean;
+  termsOfUseAndPrivacyConsent: boolean;
 }
 
 export interface ConfirmEmailRequest {
