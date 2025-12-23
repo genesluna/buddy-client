@@ -71,7 +71,10 @@ O projeto utiliza uma arquitetura híbrida **Feature-Sliced Design (FSD)** adapt
 ```
 app/
 ├── _entities/        # Camada 1: Modelos de domínio e API
-│   ├── pet/          # Interfaces e API de pets
+│   ├── pet/
+│   │   ├── model.ts     # Interfaces (Pet, PetImage, etc.)
+│   │   ├── queries.ts   # Operações de leitura (fetch)
+│   │   └── mutations.ts # Operações de escrita (create, update, delete)
 │   ├── shelter/      # Interfaces de abrigos
 │   └── user/         # Interfaces de usuários
 │
