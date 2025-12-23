@@ -7,6 +7,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { AuthResponse } from '@/app/_entities/auth/model';
 import { logout as logoutApi } from '@/app/_entities/auth/mutations';
 import {
@@ -32,6 +33,7 @@ export interface AuthContextValue {
 export const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const queryClient = useQueryClient();
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [storageError, setStorageError] = useState<UserStorageError | null>(
@@ -42,14 +44,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     clearStoredUser();
     setUser(null);
     setStorageError(null);
-  }, []);
+    queryClient.cancelQueries();
+    queryClient.clear();
+  }, [queryClient]);
 
   useEffect(() => {
-    const storedUser = getStoredUser();
-    if (storedUser) {
-      setUser(storedUser);
+    try {
+      const result = getStoredUser();
+      if (result.data) {
+        setUser(result.data);
+      }
+      if (result.error) {
+        setStorageError(result.error);
+      }
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, []);
 
   useEffect(() => {

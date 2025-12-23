@@ -41,6 +41,10 @@ function processQueue(error: Error | null) {
 api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
+    if (!error.config) {
+      return Promise.reject(error);
+    }
+
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };

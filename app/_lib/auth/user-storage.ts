@@ -38,24 +38,39 @@ function isValidStoredUser(data: unknown): data is StoredUser {
   );
 }
 
-export function getStoredUser(): StoredUser | null {
-  if (!isClient()) return null;
+export interface GetStoredUserResult {
+  data: StoredUser | null;
+  error?: UserStorageError;
+}
+
+export function getStoredUser(): GetStoredUserResult {
+  if (!isClient()) {
+    return { data: null };
+  }
 
   try {
     const stored = localStorage.getItem(USER_STORAGE_KEY);
-    if (!stored) return null;
+    if (!stored) {
+      return { data: null };
+    }
 
     const parsed: unknown = JSON.parse(stored);
 
     if (!isValidStoredUser(parsed)) {
       localStorage.removeItem(USER_STORAGE_KEY);
-      return null;
+      return {
+        data: null,
+        error: new UserStorageError('Invalid stored user data. Data has been cleared.'),
+      };
     }
 
-    return parsed;
+    return { data: parsed };
   } catch {
     localStorage.removeItem(USER_STORAGE_KEY);
-    return null;
+    return {
+      data: null,
+      error: new UserStorageError('Failed to read stored user data. Data has been cleared.'),
+    };
   }
 }
 
