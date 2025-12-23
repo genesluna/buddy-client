@@ -3,9 +3,11 @@ import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import RegisterForm from './register-form';
 
+const mockPush = jest.fn();
+
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
-    push: jest.fn(),
+    push: mockPush,
   }),
 }));
 
@@ -119,11 +121,6 @@ describe('RegisterForm', () => {
   });
 
   it('navigates to login page when clicking "Já tenho uma conta"', async () => {
-    const mockPush = jest.fn();
-    jest.spyOn(require('next/navigation'), 'useRouter').mockReturnValue({
-      push: mockPush,
-    });
-
     const user = userEvent.setup();
     render(<RegisterForm />, { wrapper: createWrapper() });
 

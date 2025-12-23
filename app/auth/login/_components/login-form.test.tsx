@@ -4,9 +4,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/app/_lib/auth/auth-context';
 import LoginForm from './login-form';
 
+const mockPush = jest.fn();
+
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
-    push: jest.fn(),
+    push: mockPush,
   }),
 }));
 
@@ -76,11 +78,6 @@ describe('LoginForm', () => {
   });
 
   it('navigates to reset-password when clicking "Resetar a senha"', async () => {
-    const mockPush = jest.fn();
-    jest.spyOn(require('next/navigation'), 'useRouter').mockReturnValue({
-      push: mockPush,
-    });
-
     const user = userEvent.setup();
     render(<LoginForm />, { wrapper: createWrapper() });
 
@@ -91,11 +88,6 @@ describe('LoginForm', () => {
   });
 
   it('navigates to register when clicking "Registrar novo abrigo"', async () => {
-    const mockPush = jest.fn();
-    jest.spyOn(require('next/navigation'), 'useRouter').mockReturnValue({
-      push: mockPush,
-    });
-
     const user = userEvent.setup();
     render(<LoginForm />, { wrapper: createWrapper() });
 
