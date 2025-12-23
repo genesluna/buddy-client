@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { PUBLIC_QUERY_KEYS } from '@/app/_entities/pet/query-keys';
+import { PUBLIC_QUERY_KEYS } from '@/app/_lib/query-keys';
 import { AuthResponse } from '@/app/_entities/auth/model';
 import {
   clearStoredUser,

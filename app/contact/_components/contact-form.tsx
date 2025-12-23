@@ -17,6 +17,8 @@ const contactSchema = z.object({
   message: string().min(10, 'A mensagem deve ter pelo menos 10 caracteres'),
 });
 
+type ContactData = z.infer<typeof contactSchema>;
+
 export default function ContactForm() {
   const {
     register,
@@ -27,8 +29,6 @@ export default function ContactForm() {
     criteriaMode: 'all',
     resolver: zodResolver(contactSchema),
   });
-
-  type ContactData = z.infer<typeof contactSchema>;
 
   function handleContact(_data: ContactData) {
     // TODO: Implement contact form submission

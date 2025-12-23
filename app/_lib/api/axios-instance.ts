@@ -2,9 +2,6 @@ import axios, { AxiosError, CreateAxiosDefaults, InternalAxiosRequestConfig } fr
 
 function getApiUrl(): string {
   const url = process.env.NEXT_PUBLIC_API_URL;
-  if (typeof window === 'undefined') {
-    return url || '';
-  }
   if (!url || typeof url !== 'string' || url.trim().length === 0) {
     throw new Error(
       'NEXT_PUBLIC_API_URL environment variable is not configured. ' +

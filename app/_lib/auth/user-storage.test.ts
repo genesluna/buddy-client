@@ -82,6 +82,7 @@ describe('user-storage', () => {
       const result = getStoredUser();
       expect(result.data).toBeNull();
       expect(result.error).toBeInstanceOf(UserStorageError);
+      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('buddy_user');
     });
 
     it('returns error when profile has wrong property types', () => {

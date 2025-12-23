@@ -1,9 +1,9 @@
 export const PET_QUERY_KEYS = {
   all: 'pets',
   lists: () => [PET_QUERY_KEYS.all] as const,
-  list: (params: string) => [PET_QUERY_KEYS.all, params] as const,
-  details: () => ['pet'] as const,
-  detail: (id: string) => ['pet', id] as const,
+  list: (params: string) => [PET_QUERY_KEYS.all, 'list', params] as const,
+  details: () => [PET_QUERY_KEYS.all, 'detail'] as const,
+  detail: (id: string) => [PET_QUERY_KEYS.all, 'detail', id] as const,
 } as const;
 
-export const PUBLIC_QUERY_KEYS = [PET_QUERY_KEYS.all, 'pet'] as const;
+export const PET_PUBLIC_QUERY_KEYS = [PET_QUERY_KEYS.all] as const;
