@@ -6,7 +6,7 @@ describe('registerSchema', () => {
     phoneNumber: '11999999999',
     password: 'password123',
     confirmPassword: 'password123',
-    termsOfUseAndPrivacyConsent: true,
+    termsOfUserConsent: true,
   };
 
   function expectValidationError(
@@ -118,11 +118,11 @@ describe('registerSchema', () => {
     });
   });
 
-  describe('termsOfUseAndPrivacyConsent validation', () => {
+  describe('termsOfUserConsent validation', () => {
     it('rejects when terms are not accepted', () => {
       expectValidationError(
-        { termsOfUseAndPrivacyConsent: false },
-        'termsOfUseAndPrivacyConsent',
+        { termsOfUserConsent: false },
+        'termsOfUserConsent',
         'Você deve aceitar os termos de uso'
       );
     });

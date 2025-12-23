@@ -29,7 +29,7 @@ describe('useRegister', () => {
     email: 'test@test.com',
     phoneNumber: '11999999999',
     password: 'password123',
-    termsOfUseAndPrivacyConsent: true as const,
+    termsOfUserConsent: true as const,
   };
 
   beforeEach(() => {

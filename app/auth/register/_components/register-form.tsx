@@ -56,7 +56,7 @@ export default function RegisterForm() {
     criteriaMode: 'all',
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      termsOfUseAndPrivacyConsent: false,
+      termsOfUserConsent: false,
     },
   });
 
@@ -66,7 +66,7 @@ export default function RegisterForm() {
       email: data.email,
       phoneNumber: data.phoneNumber,
       password: data.password,
-      termsOfUseAndPrivacyConsent: data.termsOfUseAndPrivacyConsent,
+      termsOfUserConsent: data.termsOfUserConsent,
     });
   }
 
@@ -151,7 +151,7 @@ export default function RegisterForm() {
       <div className='flex flex-col gap-2'>
         <div className='flex items-start gap-3'>
           <Controller
-            name='termsOfUseAndPrivacyConsent'
+            name='termsOfUserConsent'
             control={control}
             render={({ field }) => (
               <input
@@ -190,9 +190,9 @@ export default function RegisterForm() {
             </Link>
           </label>
         </div>
-        {errors.termsOfUseAndPrivacyConsent && (
+        {errors.termsOfUserConsent && (
           <p className='ms-3 text-sm text-error'>
-            {errors.termsOfUseAndPrivacyConsent.message}
+            {errors.termsOfUserConsent.message}
           </p>
         )}
       </div>
