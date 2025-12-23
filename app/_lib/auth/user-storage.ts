@@ -28,14 +28,17 @@ function isValidStoredUser(data: unknown): data is StoredUser {
     return false;
   }
 
-  return obj.profiles.every(
-    (profile) =>
-      typeof profile === 'object' &&
-      profile !== null &&
-      'name' in profile &&
-      'description' in profile &&
-      'profileType' in profile
-  );
+  return obj.profiles.every((profile) => {
+    if (typeof profile !== 'object' || profile === null) {
+      return false;
+    }
+    const p = profile as Record<string, unknown>;
+    return (
+      typeof p.name === 'string' &&
+      typeof p.description === 'string' &&
+      typeof p.profileType === 'string'
+    );
+  });
 }
 
 export interface GetStoredUserResult {

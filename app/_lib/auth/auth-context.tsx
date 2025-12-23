@@ -27,6 +27,7 @@ export interface AuthContextValue {
   storageError: UserStorageError | null;
   login: (authResponse: AuthResponse) => void;
   logout: () => Promise<void>;
+  clearAuthState: () => void;
   clearStorageError: () => void;
 }
 
@@ -45,7 +46,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
     setStorageError(null);
     queryClient.cancelQueries();
-    queryClient.clear();
+    queryClient.removeQueries({
+      predicate: (query) => {
+        const key = query.queryKey[0];
+        return typeof key === 'string' && !['pets', 'pet'].includes(key);
+      },
+    });
+    queryClient.invalidateQueries();
   }, [queryClient]);
 
   useEffect(() => {
@@ -108,9 +115,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       storageError,
       login,
       logout,
+      clearAuthState,
       clearStorageError,
     }),
-    [user, isLoading, storageError, login, logout, clearStorageError]
+    [user, isLoading, storageError, login, logout, clearAuthState, clearStorageError]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

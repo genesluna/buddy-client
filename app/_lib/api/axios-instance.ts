@@ -1,5 +1,4 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-import { refreshToken } from '@/app/_entities/auth/mutations';
 
 function getApiUrl(): string {
   const url = process.env.NEXT_PUBLIC_API_URL;
@@ -13,6 +12,15 @@ function getApiUrl(): string {
 }
 
 const api = axios.create({
+  baseURL: getApiUrl(),
+  withCredentials: true,
+  timeout: 30000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+export const refreshApi = axios.create({
   baseURL: getApiUrl(),
   withCredentials: true,
   timeout: 30000,
@@ -63,7 +71,7 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        await refreshToken();
+        await refreshApi.post('/auth/refresh');
         processQueue(null);
         return api(originalRequest);
       } catch (refreshError) {

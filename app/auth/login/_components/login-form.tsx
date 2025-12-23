@@ -13,7 +13,6 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { string, z } from 'zod';
 import { useState } from 'react';
-import Link from 'next/link';
 
 const loginSchema = z.object({
   email: string().email('Insira um email válido'),
@@ -33,6 +32,8 @@ export default function LoginForm() {
     onError: (error) => {
       if (error.response?.status === 401) {
         setApiError('Email ou senha inválidos');
+      } else if (error.response?.status === 429) {
+        setApiError('Muitas tentativas. Aguarde antes de tentar novamente.');
       } else {
         setApiError('Erro ao fazer login. Tente novamente.');
       }
@@ -127,15 +128,19 @@ export default function LoginForm() {
           }}
         />
       </div>
-      <Link href='/auth/register'>
-        <Button
-          aria-label='Registrar novo abrigo'
-          label='Registrar novo abrigo'
-          className='mb-10 w-full lg:mb-auto xl:w-72'
-          outline
-          disabled={isPending}
-        />
-      </Link>
+      <Button
+        aria-label='Registrar novo abrigo'
+        type='button'
+        label='Registrar novo abrigo'
+        className='mb-10 w-full lg:mb-auto xl:w-72'
+        outline
+        disabled={isPending}
+        onClick={() => {
+          if (!isPending) {
+            router.push('/auth/register');
+          }
+        }}
+      />
     </form>
   );
 }

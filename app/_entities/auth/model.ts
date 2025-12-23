@@ -11,6 +11,4 @@ export interface ProfileResponse {
 
 export interface AuthResponse {
   profiles: ProfileResponse[];
-  accessToken: string;
-  refreshToken: string;
 }

@@ -4,14 +4,15 @@ import { useMutation } from '@tanstack/react-query';
 import { logout } from '@/app/_entities/auth/mutations';
 import { useAuth } from './use-auth';
 import { useRouter } from 'next/navigation';
+import { AxiosError } from 'axios';
 
 interface UseLogoutOptions {
   redirectTo?: string;
-  onError?: (error: Error) => void;
+  onError?: (error: AxiosError) => void;
 }
 
 export function useLogout(options?: UseLogoutOptions) {
-  const { logout: clearAuthState } = useAuth();
+  const { clearAuthState } = useAuth();
   const router = useRouter();
 
   return useMutation({
@@ -22,7 +23,7 @@ export function useLogout(options?: UseLogoutOptions) {
         router.push(options.redirectTo);
       }
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError) => {
       console.error('Logout API call failed:', error);
       clearAuthState();
       if (options?.redirectTo) {
