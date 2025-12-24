@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { EnvelopeSimple } from '@phosphor-icons/react/dist/ssr';
-import HorizontalLayout from '@/app/_components/horizontal-layout';
+import { HorizontalLayout } from '@/app/_widgets/layouts';
 import VerificationPendingContent from './_components/verification-pending-content';
 
 function LoadingFallback() {

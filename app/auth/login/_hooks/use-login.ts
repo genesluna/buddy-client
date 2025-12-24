@@ -1,9 +1,7 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { login } from '@/app/_entities/auth/mutations';
-import { AuthRequest } from '@/app/_entities/auth/model';
-import { useAuth } from '@/app/_lib/auth/use-auth';
+import { login, AuthRequest, useAuth } from '@/app/_entities/auth';
 
 interface UseLoginOptions {
   onSuccess?: () => void;

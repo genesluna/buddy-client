@@ -1,5 +1,5 @@
 import PetDetails from '@/app/pet/details/_components/pet-details';
-import VerticalLayout from '@/app/_components/vertical-layout';
+import { VerticalLayout } from '@/app/_widgets/layouts';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

@@ -1,5 +1,5 @@
 import ReactQueryProvider from '@/app/_lib/providers/react-query-provider';
-import { AuthProvider } from '@/app/_lib/auth/auth-context';
+import { AuthProvider } from '@/app/_entities/auth';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Poppins as FontSans } from 'next/font/google';
 import type { Metadata, Viewport } from 'next';
