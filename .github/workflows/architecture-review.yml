@@ -1,0 +1,64 @@
+name: Architecture Review
+
+on:
+  pull_request:
+    branches: [develop, main]
+    paths:
+      - 'app/**'
+      - 'scripts/validate-architecture.ts'
+
+concurrency:
+  group: architecture-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate Architecture Conventions
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run architecture validation
+        run: pnpm validate:architecture
+
+      - name: Comment on PR (on failure)
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = context.payload.pull_request.number;
+
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: prNumber,
+              body: `## Architecture Review Failed
+
+            The architecture validation found issues with your code. Please check the workflow logs for details.
+
+            ### Common Issues:
+            - **File naming**: Files should use kebab-case (e.g., \`login-form.tsx\`)
+            - **Hook naming**: Hooks should start with \`use-\` prefix (e.g., \`use-login.ts\`)
+            - **Folder naming**: Folders should use kebab-case, private folders should start with \`_\`
+            - **Import rules**: Layers cannot import from higher layers (see ARCHITECTURE.md)
+            - **Cross-feature imports**: Features cannot import from other features
+
+            Please review [ARCHITECTURE.md](https://github.com/${owner}/${repo}/blob/develop/ARCHITECTURE.md) for the complete guidelines.`
+            });
