@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect } from 'react';
-import { LockKey } from '@phosphor-icons/react/dist/ssr';
+import { LockKey } from '@phosphor-icons/react';
 import Button from '@/app/_components/ui/button';
 import { reportError } from '@/app/_lib/error-reporting';
 
@@ -18,7 +18,7 @@ export default function AuthError({ error, reset }: ErrorProps) {
 
   return (
     <main className='grid min-h-screen place-content-center bg-gradient-to-b from-primary to-content-500 px-4'>
-      <section className='text-center' role='alert' aria-live='polite'>
+      <section className='text-center' role='alert'>
         <h1 className='text-7xl font-black text-secondary'>
           Erro de autenticação
         </h1>

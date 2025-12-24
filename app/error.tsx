@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { SmileySad } from '@phosphor-icons/react/dist/ssr';
+import { SmileySad } from '@phosphor-icons/react';
 import Button from '@/app/_components/ui/button';
 import { reportError } from '@/app/_lib/error-reporting';
 
@@ -17,7 +17,7 @@ export default function GlobalError({ error, reset }: ErrorProps) {
 
   return (
     <main className='grid min-h-screen place-content-center bg-gradient-to-b from-primary to-content-500 px-4'>
-      <section className='text-center' role='alert' aria-live='polite'>
+      <section className='text-center' role='alert'>
         <h1 className='text-9xl font-black text-secondary'>Oops!</h1>
 
         <SmileySad size={64} className='mx-auto mt-8 text-secondary' weight='fill' />
