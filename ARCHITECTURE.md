@@ -338,7 +338,7 @@ export function useFetchPetsListInfinite(searchParams: string) { ... }
 export async function login(credentials: AuthRequest): Promise<AuthResponse> { ... }
 export async function logout(): Promise<void> { ... }
 export async function fetchPets(params?: string): Promise<{ pets: Pet[] }> { ... }
-export async function fetchPetById(id: string): Promise<Pet[]> { ... }
+export async function fetchPetById(id: string): Promise<Pet> { ... }
 export async function registerAccount(data: AccountRequest): Promise<void> { ... }
 
 
@@ -688,8 +688,8 @@ export async function fetchPetsInfinite(
   };
 }
 
-export async function fetchPetById(id: string): Promise<Pet[]> {
-  const response = await api.get<Pet[]>(`/pets/${id}`);
+export async function fetchPetById(id: string): Promise<Pet> {
+  const response = await api.get<Pet>(`/pets/${id}`);
   return response.data;
 }
 ```
