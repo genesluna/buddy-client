@@ -56,12 +56,13 @@ NEXT_PUBLIC_API_URL=https://buddy.propresto.app/api
 ### Comandos
 
 ```bash
-pnpm dev           # Inicia o servidor de desenvolvimento com Turbopack
-pnpm build         # Build de produção
-pnpm lint          # Executa o ESLint
-pnpm test          # Executa os testes Jest
-pnpm test:watch    # Executa os testes em modo watch
-pnpm test:coverage # Executa os testes com relatório de cobertura
+pnpm dev                    # Inicia o servidor de desenvolvimento com Turbopack
+pnpm build                  # Build de produção
+pnpm lint                   # Executa o ESLint
+pnpm test                   # Executa os testes Jest
+pnpm test:watch             # Executa os testes em modo watch
+pnpm test:coverage          # Executa os testes com relatório de cobertura
+pnpm validate:architecture  # Valida convenções de arquitetura
 ```
 
 ## 📁 Estrutura do Projeto
@@ -103,7 +104,7 @@ app/
 
 ## 📄 Documentação
 
-Em construção... Estamos organizando nossas documentações para que sejam disponibilizadas para todos que desejam contribuir.
+- **[Guia de Arquitetura](ARCHITECTURE.md)** - Convenções de nomenclatura, padrões de código e regras de importação entre camadas
 
 ## 💬 Como contribuir
 
