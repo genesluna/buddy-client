@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { SmileyXEyes } from '@phosphor-icons/react/dist/ssr';
+import { SmileySad } from '@phosphor-icons/react/dist/ssr';
 import Button from '@/app/_components/ui/button';
 import { reportError } from '@/app/_lib/error-reporting';
 
@@ -20,7 +20,7 @@ export default function GlobalError({ error, reset }: ErrorProps) {
       <section className='text-center' role='alert' aria-live='polite'>
         <h1 className='text-9xl font-black text-secondary'>Oops!</h1>
 
-        <SmileyXEyes size={64} className='mx-auto mt-8 text-secondary' weight='fill' />
+        <SmileySad size={64} className='mx-auto mt-8 text-secondary' weight='fill' />
 
         <p className='mt-4 text-content-300'>
           Algo deu errado. Por favor, tente novamente.

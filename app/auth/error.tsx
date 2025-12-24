@@ -39,8 +39,11 @@ export default function AuthError({ error, reset }: ErrorProps) {
         <div className='mt-10 flex justify-center gap-4'>
           <Button onClick={reset} label='Tentar novamente' className='w-auto px-5' />
 
-          <Link href='/'>
-            <Button outline label='Voltar para home' className='w-auto px-5' />
+          <Link
+            href='/'
+            className='inline-flex h-[3.125rem] w-auto items-center justify-center rounded-[1.25rem] border border-accent bg-transparent px-5 text-center text-md text-accent duration-300 hover:border-none hover:bg-secondary hover:text-white'
+          >
+            Voltar para home
           </Link>
         </div>
       </section>
