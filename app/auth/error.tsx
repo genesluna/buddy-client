@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect } from 'react';
 import { LockKey } from '@phosphor-icons/react';
 import Button from '@/app/_components/ui/button';
@@ -38,13 +37,7 @@ export default function AuthError({ error, reset }: ErrorProps) {
 
         <div className='mt-10 flex justify-center gap-4'>
           <Button onClick={reset} label='Tentar novamente' className='w-auto px-5' />
-
-          <Link
-            href='/'
-            className='inline-flex h-[3.125rem] w-auto items-center justify-center rounded-[1.25rem] border border-accent bg-transparent px-5 text-center text-md text-accent duration-300 hover:border-none hover:bg-secondary hover:text-white'
-          >
-            Voltar para home
-          </Link>
+          <Button href='/' label='Voltar para home' outline className='w-auto px-5' />
         </div>
       </section>
     </main>

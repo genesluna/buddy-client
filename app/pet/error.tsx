@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect } from 'react';
 import { PawPrint } from '@phosphor-icons/react';
 import Button from '@/app/_components/ui/button';
@@ -41,18 +40,8 @@ export default function PetError({ error, reset }: ErrorProps) {
         )}
 
         <div className='mt-10 flex justify-center gap-4'>
-          <Button
-            onClick={reset}
-            label='Tentar novamente'
-            className='w-auto px-5'
-          />
-
-          <Link
-            href='/'
-            className='border-accent text-md text-accent hover:bg-secondary inline-flex h-[3.125rem] w-auto items-center justify-center rounded-[1.25rem] border bg-transparent px-5 text-center duration-300 hover:border-none hover:text-white'
-          >
-            Voltar para home
-          </Link>
+          <Button onClick={reset} label='Tentar novamente' className='w-auto px-5' />
+          <Button href='/' label='Voltar para home' outline className='w-auto px-5' />
         </div>
       </section>
     </main>
