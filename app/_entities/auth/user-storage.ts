@@ -1,11 +1,32 @@
 'use client';
 
+/**
+ * User Storage Module
+ *
+ * SECURITY NOTES:
+ * - Only non-sensitive profile display data is stored (name, description, profileType)
+ * - Auth tokens are managed via httpOnly cookies by the backend (not accessible to JS)
+ * - No PII, passwords, or sensitive credentials are persisted in localStorage
+ * - localStorage is vulnerable to XSS attacks - ensure CSP headers are configured
+ *   to mitigate script injection (see next.config.js security headers)
+ * - If sensitive data storage becomes necessary, consider:
+ *   1. Server-managed httpOnly cookies (preferred for tokens)
+ *   2. sessionStorage for non-persistent sensitive data
+ *   3. Encryption before persisting (with secure key management)
+ */
+
 import { ProfileResponse, ProfileType } from './model';
 
 const VALID_PROFILE_TYPES: ProfileType[] = ['SHELTER', 'ADOPTER', 'ADMIN'];
 
 const USER_STORAGE_KEY = 'buddy_user';
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
+/**
+ * Stored user data - intentionally limited to non-sensitive profile display info.
+ * Auth tokens and credentials are never stored here.
+ */
 export interface StoredUser {
   profiles: ProfileResponse[];
 }
@@ -21,6 +42,33 @@ function isClient(): boolean {
   return typeof window !== 'undefined';
 }
 
+/**
+ * Type guard for ProfileResponse.
+ * Validates all required fields match the ProfileResponse interface from model.ts.
+ * Update this guard if ProfileResponse changes to include additional fields
+ * (e.g., id, userId, createdAt).
+ */
+function isProfileResponse(value: unknown): value is ProfileResponse {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+
+  const obj = value as Record<string, unknown>;
+
+  // Validate all required ProfileResponse fields and their types
+  const hasValidName = typeof obj.name === 'string' && obj.name.length > 0;
+  const hasValidDescription = typeof obj.description === 'string';
+  const hasValidProfileType =
+    typeof obj.profileType === 'string' &&
+    VALID_PROFILE_TYPES.includes(obj.profileType as ProfileType);
+
+  return hasValidName && hasValidDescription && hasValidProfileType;
+}
+
+/**
+ * Type guard for StoredUser.
+ * Validates the structure matches what we expect from localStorage.
+ */
 function isValidStoredUser(data: unknown): data is StoredUser {
   if (typeof data !== 'object' || data === null) {
     return false;
@@ -32,18 +80,8 @@ function isValidStoredUser(data: unknown): data is StoredUser {
     return false;
   }
 
-  return obj.profiles.every((profile) => {
-    if (typeof profile !== 'object' || profile === null) {
-      return false;
-    }
-    const p = profile as Record<string, unknown>;
-    return (
-      typeof p.name === 'string' &&
-      typeof p.description === 'string' &&
-      typeof p.profileType === 'string' &&
-      VALID_PROFILE_TYPES.includes(p.profileType as ProfileType)
-    );
-  });
+  // Validate each profile using the ProfileResponse type guard
+  return obj.profiles.every(isProfileResponse);
 }
 
 export interface GetStoredUserResult {
@@ -73,7 +111,10 @@ export function getStoredUser(): GetStoredUserResult {
     }
 
     return { data: parsed };
-  } catch {
+  } catch (err) {
+    if (isDevelopment) {
+      console.error('[user-storage] Failed to read stored user:', err);
+    }
     localStorage.removeItem(USER_STORAGE_KEY);
     return {
       data: null,
@@ -95,7 +136,10 @@ export function saveUser(
   try {
     localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
     return { success: true };
-  } catch {
+  } catch (err) {
+    if (isDevelopment) {
+      console.error('[user-storage] Failed to save user:', err);
+    }
     return {
       success: false,
       error: new UserStorageError(
@@ -110,7 +154,10 @@ export function clearStoredUser(): void {
 
   try {
     localStorage.removeItem(USER_STORAGE_KEY);
-  } catch {
-    // Silently fail on removal
+  } catch (err) {
+    // Log in development for debugging, silently fail in production
+    if (isDevelopment) {
+      console.error('[user-storage] Failed to clear stored user:', err);
+    }
   }
 }
