@@ -8,6 +8,9 @@ import { ReactNode } from 'react';
 
 jest.mock('./mutations');
 jest.mock('./use-auth');
+jest.mock('../../_lib/error-reporting', () => ({
+  reportError: jest.fn(),
+}));
 
 const mockAuthMutations = authMutations as jest.Mocked<typeof authMutations>;
 const mockUseAuth = useAuthModule as jest.Mocked<typeof useAuthModule>;
@@ -83,12 +86,10 @@ describe('useLogout', () => {
     expect(mockPush).toHaveBeenCalledWith('/auth/login');
   });
 
-  it('clears auth state even on API failure (optimistic logout)', async () => {
+  it('clears auth state even on API failure (fail-safe logout)', async () => {
     const axiosError = new AxiosError('Server error');
     axiosError.response = { status: 500 } as AxiosError['response'];
     mockAuthMutations.logout.mockRejectedValue(axiosError);
-
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
     const { result } = renderHook(() => useLogout(), {
       wrapper: createWrapper(),
@@ -100,15 +101,14 @@ describe('useLogout', () => {
       expect(result.current.isError).toBe(true);
     });
 
+    // Fail-safe: auth state is cleared even when server logout fails
     expect(mockClearAuthState).toHaveBeenCalled();
-    consoleSpy.mockRestore();
   });
 
   it('calls onError callback on failure', async () => {
     const axiosError = new AxiosError('Server error');
     mockAuthMutations.logout.mockRejectedValue(axiosError);
 
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     const onError = jest.fn();
 
     const { result } = renderHook(() => useLogout({ onError }), {
@@ -122,13 +122,10 @@ describe('useLogout', () => {
     });
 
     expect(onError).toHaveBeenCalledWith(axiosError);
-    consoleSpy.mockRestore();
   });
 
-  it('redirects on error when redirectTo is provided (optimistic logout)', async () => {
+  it('redirects on error when redirectTo is provided (fail-safe logout)', async () => {
     mockAuthMutations.logout.mockRejectedValue(new AxiosError('Error'));
-
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
     const { result } = renderHook(() => useLogout({ redirectTo: '/auth/login' }), {
       wrapper: createWrapper(),
@@ -141,6 +138,5 @@ describe('useLogout', () => {
     });
 
     expect(mockPush).toHaveBeenCalledWith('/auth/login');
-    consoleSpy.mockRestore();
   });
 });
