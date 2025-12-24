@@ -144,6 +144,8 @@ As importações devem seguir uma hierarquia unidirecional. Camadas inferiores *
 └─────────────────────────────────────────────────────────────┘
 ```
 
+> **Nota**: Embora `_hooks` e `_entities` estejam no mesmo nível visual, `_hooks` pode importar de `_entities`, colocando-o efetivamente em uma camada conceitual superior.
+
 #### Exemplos de Importações
 
 ```typescript
