@@ -39,12 +39,17 @@ export default function Button({
   href,
   ...props
 }: ButtonProps) {
+  const isDisabled = isLoading || (props as ButtonAsButton).disabled;
+
   const buttonClassName = cn(
-    'text-md inline-flex h-[3.125rem] w-40 items-center justify-center gap-2 rounded-[1.25rem] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:bg-accent',
+    'text-md inline-flex h-[3.125rem] w-40 items-center justify-center gap-2 rounded-[1.25rem]',
     {
       'border border-accent bg-transparent text-accent duration-300 hover:border-none hover:bg-secondary hover:text-white':
-        outline,
-      'bg-accent text-white duration-300 hover:bg-secondary': !outline,
+        outline && !isDisabled,
+      'bg-accent text-white duration-300 hover:bg-secondary': !outline && !isDisabled,
+      'border border-accent bg-transparent text-accent': outline && isDisabled,
+      'bg-accent text-white': !outline && isDisabled,
+      'cursor-not-allowed opacity-70': isDisabled,
     },
     className
   );
@@ -70,6 +75,21 @@ export default function Button({
 
   // Render as Link when href is provided
   if (href) {
+    // When loading, prevent navigation and indicate disabled state
+    if (isLoading) {
+      return (
+        <span
+          className={buttonClassName}
+          aria-disabled="true"
+          tabIndex={-1}
+          role="link"
+        >
+          {content}
+          {label}
+        </span>
+      );
+    }
+
     return (
       <Link href={href} className={buttonClassName}>
         {content}

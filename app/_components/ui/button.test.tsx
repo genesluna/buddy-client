@@ -154,5 +154,30 @@ describe('Button', () => {
       render(<Button label="Link" href="/test" icon={<MockIcon />} />);
       expect(screen.getByTestId('mock-icon')).toBeInTheDocument();
     });
+
+    it('disables link interaction when loading', () => {
+      render(<Button label="Link" href="/test" isLoading />);
+
+      // Should render as span (not a real link) to prevent navigation
+      const element = screen.getByRole('link', { name: /Link/ });
+      expect(element.tagName).toBe('SPAN');
+      expect(element).not.toHaveAttribute('href');
+    });
+
+    it('applies disabled accessibility attributes when loading', () => {
+      render(<Button label="Link" href="/test" isLoading />);
+
+      const element = screen.getByRole('link', { name: /Link/ });
+      expect(element).toHaveAttribute('aria-disabled', 'true');
+      expect(element).toHaveAttribute('tabIndex', '-1');
+    });
+
+    it('applies disabled visual styles when loading', () => {
+      render(<Button label="Link" href="/test" isLoading />);
+
+      const element = screen.getByRole('link', { name: /Link/ });
+      expect(element).toHaveClass('cursor-not-allowed');
+      expect(element).toHaveClass('opacity-70');
+    });
   });
 });
