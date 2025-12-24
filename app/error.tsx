@@ -32,8 +32,9 @@ export default function GlobalError({ error, reset }: ErrorProps) {
           </p>
         )}
 
-        <div className='mt-10'>
+        <div className='mt-10 flex justify-center gap-4'>
           <Button onClick={reset} label='Tentar novamente' className='w-auto px-5' />
+          <Button href='/' label='Voltar para home' outline className='w-auto px-5' />
         </div>
       </section>
     </main>

@@ -133,6 +133,13 @@ const eslintConfig = [
       ],
     },
   },
+  // Disable boundary rules for test files (tests naturally import across layers)
+  {
+    files: ['**/*.test.ts', '**/*.test.tsx'],
+    rules: {
+      'boundaries/element-types': 'off',
+    },
+  },
   {
     ignores: [
       'node_modules/**',
