@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { logout } from './mutations';
 import { useAuth } from './use-auth';
@@ -30,12 +31,18 @@ export function useLogout(options?: UseLogoutOptions) {
   const { clearAuthState } = useAuth();
   const router = useRouter();
 
+  // Use ref to avoid stale closures in mutation callbacks
+  const optionsRef = useRef(options);
+  useEffect(() => {
+    optionsRef.current = options;
+  }, [options]);
+
   return useMutation({
     mutationFn: logout,
     onSuccess: () => {
       clearAuthState();
-      if (options?.redirectTo) {
-        router.push(options.redirectTo);
+      if (optionsRef.current?.redirectTo) {
+        router.push(optionsRef.current.redirectTo);
       }
     },
     onError: (error: AxiosError) => {
@@ -50,12 +57,12 @@ export function useLogout(options?: UseLogoutOptions) {
       // User intent to log out takes priority over server confirmation
       clearAuthState();
 
-      if (options?.redirectTo) {
-        router.push(options.redirectTo);
+      if (optionsRef.current?.redirectTo) {
+        router.push(optionsRef.current.redirectTo);
       }
 
       // Notify caller of the error (they can show a toast if needed)
-      options?.onError?.(error);
+      optionsRef.current?.onError?.(error);
     },
   });
 }
