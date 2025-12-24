@@ -1,4 +1,4 @@
-import HorizontalLayout from '@/app/_components/horizontal-layout';
+import { HorizontalLayout } from '@/app/_widgets/layouts';
 import LoginForm from '@/app/auth/login/_components/login-form';
 
 export default function LoginPage() {

@@ -1,4 +1,4 @@
-import HorizontalLayout from '@/app/_components/horizontal-layout';
+import { HorizontalLayout } from '@/app/_widgets/layouts';
 import PetAdoptionForm from './_components/pet-adoption-form';
 
 interface AdoptionPageProps {

@@ -70,15 +70,15 @@ O projeto utiliza uma arquitetura híbrida **Feature-Sliced Design (FSD)** adapt
 
 ```
 app/
-├── _entities/        # Camada 1: Modelos de domínio e API
-│   ├── pet/
-│   │   ├── model.ts     # Interfaces (Pet, PetImage, etc.)
-│   │   ├── queries.ts   # Operações de leitura (fetch)
-│   │   └── mutations.ts # Operações de escrita (create, update, delete)
-│   ├── shelter/      # Interfaces de abrigos
-│   └── user/         # Interfaces de usuários
+├── _entities/        # Camada 1: Modelos de domínio, operações e estado de domínio
+│   ├── account/      # Models e mutations de registro/verificação de email
+│   ├── auth/         # Models, mutations, context e hooks de autenticação
+│   ├── pet/          # Models, queries e query-keys de pets
+│   ├── shelter/      # Models de abrigos
+│   └── user/         # Models de usuários
 │
 ├── _widgets/         # Camada 2: Blocos de UI compostos
+│   ├── layouts/      # Componentes de layout (horizontal, vertical)
 │   ├── page-header/  # Header com navegação
 │   └── page-footer/  # Footer com links sociais
 │
@@ -86,15 +86,17 @@ app/
 │   └── ui/           # Button, Input, Combobox, etc.
 │
 ├── _hooks/           # Hooks customizados compartilhados
-├── _lib/             # Utilitários e providers
+├── _lib/             # Utilitários puros e providers (sem dependências de entidades)
+│   ├── api/          # Configuração do Axios
+│   └── providers/    # React Query provider
 ├── _types/           # Tipos TypeScript compartilhados
 ├── _assets/          # Assets estáticos (imagens, SVGs)
 │
-└── [feature]/        # Camada 4: Rotas de features (páginas)
-    ├── pet/
-    ├── auth/
-    ├── contact/
-    └── about/
+└── [feature]/        # Camada 4: Rotas de features (UI e páginas)
+    ├── pet/          # UI: listagem, detalhes e adoção de pets
+    ├── auth/         # UI: páginas de login, registro, verificação (fluxos)
+    ├── contact/      # UI: formulário de contato
+    └── about/        # UI: página sobre
 ```
 
 > Pastas prefixadas com underscore (`_`) são privadas e não são tratadas como rotas pelo Next.js.

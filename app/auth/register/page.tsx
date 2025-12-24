@@ -1,5 +1,5 @@
 import RegisterForm from '@/app/auth/register/_components/register-form';
-import HorizontalLayout from '@/app/_components/horizontal-layout';
+import { HorizontalLayout } from '@/app/_widgets/layouts';
 
 export default function RegisterPage() {
   return (

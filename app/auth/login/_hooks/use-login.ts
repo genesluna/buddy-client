@@ -1,9 +1,8 @@
 'use client';
 
+import { useRef, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { login } from '@/app/_entities/auth/mutations';
-import { AuthRequest } from '@/app/_entities/auth/model';
-import { useAuth } from '@/app/_lib/auth/use-auth';
+import { login, AuthRequest, useAuth } from '@/app/_entities/auth';
 
 interface UseLoginOptions {
   onSuccess?: () => void;
@@ -13,14 +12,22 @@ interface UseLoginOptions {
 export function useLogin(options?: UseLoginOptions) {
   const { setAuthUser } = useAuth();
 
+  // Use ref to avoid stale closures in mutation callbacks
+  // Dependencies use individual properties to avoid re-runs when inline objects are passed
+  const optionsRef = useRef(options);
+  useEffect(() => {
+    optionsRef.current = options;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [options?.onSuccess, options?.onError]);
+
   return useMutation({
     mutationFn: (credentials: AuthRequest) => login(credentials),
     onSuccess: (data) => {
       setAuthUser(data);
-      options?.onSuccess?.();
+      optionsRef.current?.onSuccess?.();
     },
     onError: (error: Error) => {
-      options?.onError?.(error);
+      optionsRef.current?.onError?.(error);
     },
   });
 }

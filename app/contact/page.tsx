@@ -1,4 +1,4 @@
-import HorizontalLayout from '@/app/_components/horizontal-layout';
+import { HorizontalLayout } from '@/app/_widgets/layouts';
 import ContactForm from './_components/contact-form';
 
 export default function ContactPage() {
