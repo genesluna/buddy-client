@@ -86,7 +86,7 @@ describe('Button', () => {
     });
 
     it('renders icon-only button', () => {
-      const MockIcon = () => <span data-testid="mock-icon" aria-label="Settings">icon</span>;
+      const MockIcon = () => <span data-testid="mock-icon">icon</span>;
       render(<Button icon={<MockIcon />} aria-label="Settings" />);
       expect(screen.getByRole('button')).toBeInTheDocument();
       expect(screen.getByTestId('mock-icon')).toBeInTheDocument();
