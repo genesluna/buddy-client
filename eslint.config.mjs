@@ -35,17 +35,9 @@ const eslintConfig = [
         // Widget layer - composed UI blocks
         { type: 'widgets', pattern: 'app/_widgets/**', mode: 'folder' },
 
-        // Feature routes - can import from all layers
-        {
-          type: 'features',
-          pattern: [
-            'app/pet/**',
-            'app/auth/**',
-            'app/contact/**',
-            'app/about/**',
-          ],
-          mode: 'folder',
-        },
+        // Feature routes - any directory in app/ not starting with underscore
+        // This automatically includes new features without config changes
+        { type: 'features', pattern: 'app/[!_]*/**', mode: 'folder' },
 
         // App root files
         { type: 'app', pattern: 'app/*.{ts,tsx}', mode: 'file' },
