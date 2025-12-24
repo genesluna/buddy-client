@@ -32,10 +32,12 @@ export function useLogout(options?: UseLogoutOptions) {
   const router = useRouter();
 
   // Use ref to avoid stale closures in mutation callbacks
+  // Dependencies use individual properties to avoid re-runs when inline objects are passed
   const optionsRef = useRef(options);
   useEffect(() => {
     optionsRef.current = options;
-  }, [options]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [options?.redirectTo, options?.onError]);
 
   return useMutation({
     mutationFn: logout,
