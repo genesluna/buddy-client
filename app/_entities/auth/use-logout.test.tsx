@@ -1,12 +1,12 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useLogout } from './use-logout';
-import * as authMutations from '../../_entities/auth/mutations';
+import * as authMutations from './mutations';
 import * as useAuthModule from './use-auth';
 import { AxiosError } from 'axios';
 import { ReactNode } from 'react';
 
-jest.mock('../../_entities/auth/mutations');
+jest.mock('./mutations');
 jest.mock('./use-auth');
 
 const mockAuthMutations = authMutations as jest.Mocked<typeof authMutations>;

@@ -15,8 +15,8 @@ jest.mock('./user-storage', () => ({
   clearStoredUser: () => mockClearStoredUser(),
 }));
 
-jest.mock('../query-keys', () => ({
-  PUBLIC_QUERY_KEYS: ['pets'],
+jest.mock('../pet/query-keys', () => ({
+  PET_PUBLIC_QUERY_KEYS: ['pets'],
 }));
 
 function TestConsumer() {

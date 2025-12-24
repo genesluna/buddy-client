@@ -1,6 +1,6 @@
 'use client';
 
-import { ProfileResponse, ProfileType } from '@/app/_entities/auth/model';
+import { ProfileResponse, ProfileType } from './model';
 
 const VALID_PROFILE_TYPES: ProfileType[] = ['SHELTER', 'ADOPTER', 'ADMIN'];
 

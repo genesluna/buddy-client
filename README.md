@@ -70,9 +70,9 @@ O projeto utiliza uma arquitetura híbrida **Feature-Sliced Design (FSD)** adapt
 
 ```
 app/
-├── _entities/        # Camada 1: Modelos de domínio e operações de dados
+├── _entities/        # Camada 1: Modelos de domínio, operações e estado de domínio
 │   ├── account/      # Models e mutations de registro/verificação de email
-│   ├── auth/         # Models e mutations de autenticação (API operations)
+│   ├── auth/         # Models, mutations, context e hooks de autenticação
 │   ├── pet/          # Models, queries e query-keys de pets
 │   ├── shelter/      # Models de abrigos
 │   └── user/         # Models de usuários
@@ -86,9 +86,8 @@ app/
 │   └── ui/           # Button, Input, Combobox, etc.
 │
 ├── _hooks/           # Hooks customizados compartilhados
-├── _lib/             # Utilitários e providers
+├── _lib/             # Utilitários puros e providers (sem dependências de entidades)
 │   ├── api/          # Configuração do Axios
-│   ├── auth/         # Context e hooks de autenticação
 │   └── providers/    # React Query provider
 ├── _types/           # Tipos TypeScript compartilhados
 ├── _assets/          # Assets estáticos (imagens, SVGs)

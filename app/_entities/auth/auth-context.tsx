@@ -8,8 +8,8 @@ import {
   useState,
 } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { PUBLIC_QUERY_KEYS } from '@/app/_lib/query-keys';
-import { AuthResponse } from '@/app/_entities/auth/model';
+import { PET_PUBLIC_QUERY_KEYS } from '@/app/_entities/pet/query-keys';
+import { AuthResponse } from './model';
 import {
   clearStoredUser,
   getStoredUser,
@@ -31,6 +31,8 @@ export interface AuthContextValue {
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
+
+const PUBLIC_QUERY_KEYS = [...PET_PUBLIC_QUERY_KEYS] as const;
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();

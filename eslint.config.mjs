@@ -18,7 +18,7 @@ const eslintConfig = [
     },
     settings: {
       'boundaries/elements': [
-        // Foundation layer - can import from entities (for auth context) and types
+        // Foundation layer - pure utilities, no entity dependencies
         { type: 'lib', pattern: 'app/_lib/**', mode: 'folder' },
         { type: 'types', pattern: 'app/_types/**', mode: 'folder' },
         { type: 'assets', pattern: 'app/_assets/**', mode: 'folder' },
@@ -69,8 +69,8 @@ const eslintConfig = [
         {
           default: 'disallow',
           rules: [
-            // lib can import from entities (for auth context) and types
-            { from: 'lib', allow: ['entities', 'types'] },
+            // lib can only import from types (no entity dependencies)
+            { from: 'lib', allow: ['types'] },
 
             // types cannot import from internal layers
             { from: 'types', allow: [] },

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { logout } from '@/app/_entities/auth/mutations';
+import { logout } from './mutations';
 import { useAuth } from './use-auth';
 import { useRouter } from 'next/navigation';
 import { AxiosError } from 'axios';

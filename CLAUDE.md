@@ -27,13 +27,17 @@ The project uses a hybrid Feature-Sliced Design architecture adapted for Next.js
 
 ```
 app/
-├── _entities/        # Layer 1: Domain models and data operations (queries/mutations)
+├── _entities/        # Layer 1: Domain models, data operations, and domain state
 │   ├── account/
 │   │   ├── model.ts     # AccountRequest, ConfirmEmailRequest, ResendVerificationRequest
 │   │   └── mutations.ts # registerAccount, requestEmailVerification, confirmEmailVerification
 │   ├── auth/
-│   │   ├── model.ts     # AuthRequest, AuthResponse, ProfileResponse, ProfileType
-│   │   └── mutations.ts # login, logout (API operations only, no UI)
+│   │   ├── model.ts        # AuthRequest, AuthResponse, ProfileResponse, ProfileType
+│   │   ├── mutations.ts    # login, logout API operations
+│   │   ├── auth-context.tsx # React Context for auth state
+│   │   ├── use-auth.ts     # useAuth hook
+│   │   ├── use-logout.ts   # useLogout hook
+│   │   └── user-storage.ts # localStorage management for user data
 │   ├── pet/
 │   │   ├── model.ts     # Pet, PetImage, PetPage, PetInfiniteResponse interfaces
 │   │   ├── queries.ts   # Read operations (fetchPets, fetchPetById, fetchPetsInfinite)
@@ -56,17 +60,12 @@ app/
 │   └── loading-spinner.tsx    # Generic loading spinner
 │
 ├── _hooks/           # Shared custom hooks (use-scroll-top)
-├── _lib/             # Utilities and providers
+├── _lib/             # Pure utilities and providers (no entity dependencies)
 │   ├── api/
 │   │   └── axios-instance.ts  # Configured axios with 401 refresh interceptor
-│   ├── auth/
-│   │   ├── auth-context.tsx   # React Context for auth state
-│   │   ├── use-auth.ts        # useAuth hook
-│   │   ├── user-storage.ts    # localStorage management for user data
-│   │   └── use-logout.ts      # useLogout hook
 │   ├── providers/
 │   │   └── react-query-provider.tsx  # TanStack Query setup
-│   ├── query-keys.ts  # Public query key aggregator
+│   ├── error-reporting.ts  # Error reporting utility
 │   └── utils.ts       # cn(), calculateAge(), buildSearchParamsPath()
 ├── _types/           # Shared TypeScript types
 ├── _assets/          # Static assets (images, SVGs)
@@ -91,9 +90,11 @@ Underscore-prefixed folders are private and not treated as routes by Next.js.
 
 ### Layer Import Rules
 
-- `_entities/` → Can only import from `_lib/`, `_types/`
-- `_widgets/` → Can import from `_entities/`, `_components/`, `_lib/`
-- `_components/` → Can import from `_lib/`, `_types/`
+- `_lib/` → Can only import from `_types/` (pure utilities, no entity dependencies)
+- `_entities/` → Can import from `_lib/`, `_types/`
+- `_components/` → Can import from `_lib/`, `_types/`, `_assets/`
+- `_hooks/` → Can import from `_lib/`, `_types/`, `_entities/`
+- `_widgets/` → Can import from `_entities/`, `_components/`, `_hooks/`, `_lib/`, `_types/`, `_assets/`
 - Feature routes → Can import from all layers above
 
 ### Key Patterns
@@ -155,7 +156,7 @@ Tests are co-located with source files using the `.test.ts` or `.test.tsx` exten
 
 **Test Locations**:
 - Entity mutations: `_entities/*/mutations.test.ts`
-- Auth library: `_lib/auth/*.test.ts`
+- Auth entity: `_entities/auth/*.test.ts` (context, hooks, storage)
 - API instance: `_lib/api/axios-instance.test.ts`
 - Feature components: `[feature]/_components/*.test.tsx`
 - Feature hooks: `[feature]/_hooks/*.test.tsx`
