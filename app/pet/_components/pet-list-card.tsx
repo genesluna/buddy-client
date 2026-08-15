@@ -3,12 +3,16 @@ import { birthDateToHumanReadableAge } from '@/app/_lib/utils';
 import { Pet } from '@/app/_entities/pet/model';
 import Image from 'next/image';
 import Link from 'next/link';
+import noImg from '@/app/_assets/noimg.webp';
 
 interface PetCardProps {
   pet: Pet;
 }
 
 export default function PetListCard({ pet }: PetCardProps) {
+  const isAvatarValid = typeof pet.avatar === 'string' && (pet.avatar.startsWith('http://') || pet.avatar.startsWith('https://') || pet.avatar.startsWith('/'));
+  const avatarSrc = isAvatarValid ? pet.avatar : noImg;
+
   return (
     <Link
       href={`pet/details?id=${pet.id}#`}
@@ -17,7 +21,7 @@ export default function PetListCard({ pet }: PetCardProps) {
     >
       <div className='relative h-[200px] w-full'>
         <Image
-          src={pet.avatar}
+          src={avatarSrc}
           alt='pet photo'
           sizes='(max-width: 768px) 90vw, (max-width: 1280px) 40vw, (max-width: 1536px) 26vw, 18vw'
           fill

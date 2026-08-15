@@ -7,25 +7,34 @@ interface ImgGalleryProps {
   pet: Pet;
 }
 
+function getValidImageSrc(url: string | undefined | null) {
+  if (typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/'))) {
+    return url;
+  }
+  return noImg;
+}
+
 export default function PetDetailsImgageGallery({ pet }: ImgGalleryProps) {
-  const [mainImg, setMainImg] = useState<string>('');
+  const [mainImg, setMainImg] = useState<string | null>(null);
+  
+  const avatarSrc = getValidImageSrc(pet?.avatar);
 
   function handleImgChange(e: EventTarget) {
     // Can't use the src attribute because of the way Next.js Image component works
     const imgAlt = (e as HTMLImageElement).getAttribute('alt') as string;
 
     if (imgAlt === 'pet avatar') {
-      setMainImg(pet.avatar);
+      setMainImg(avatarSrc === noImg ? null : (avatarSrc as string));
       return;
     }
 
     const imgNumber = imgAlt.split(' ')[2] as unknown as number;
 
-    const src = pet?.images[imgNumber - 1]?.imageUrl
-      ? pet.images[imgNumber - 1].imageUrl
-      : noImg;
+    const rawSrc = pet?.images[imgNumber - 1]?.imageUrl;
+    const src = getValidImageSrc(rawSrc);
 
     if (src === noImg) {
+      setMainImg(null);
       return;
     }
 
@@ -36,7 +45,7 @@ export default function PetDetailsImgageGallery({ pet }: ImgGalleryProps) {
     <>
       <div className='h-full w-full overflow-hidden'>
         <Image
-          src={mainImg || pet.avatar}
+          src={mainImg || avatarSrc}
           width={480}
           height={320}
           alt='pet main image'
@@ -46,7 +55,7 @@ export default function PetDetailsImgageGallery({ pet }: ImgGalleryProps) {
       </div>
       <div className='flex w-full items-center justify-between 2xl:h-full 2xl:w-40 2xl:flex-col'>
         <Image
-          src={pet?.avatar}
+          src={avatarSrc}
           width={150}
           height={150}
           onClick={({ target }) => handleImgChange(target)}
@@ -56,9 +65,7 @@ export default function PetDetailsImgageGallery({ pet }: ImgGalleryProps) {
         {Array.from({ length: 3 }).map((_, index) => (
           <Image
             key={index}
-            src={
-              pet?.images?.length > index ? pet.images[index].imageUrl : noImg
-            }
+            src={getValidImageSrc(pet?.images?.[index]?.imageUrl)}
             width={150}
             height={150}
             onClick={({ target }) => handleImgChange(target)}
