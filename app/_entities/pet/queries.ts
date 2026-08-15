@@ -3,7 +3,8 @@ import { Pet, PetInfiniteResponse } from './model';
 
 export async function fetchPets(params?: string): Promise<{ pets: Pet[] }> {
   const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/pets${params}`
+    `${process.env.NEXT_PUBLIC_API_URL}/pets${params || ''}`,
+    { headers: { Accept: 'application/hal+json' } }
   );
 
   const pets = response.data._embedded.petParamsResponseList;
@@ -17,7 +18,8 @@ export async function fetchPetsInfinite(
   pageLimit: number
 ): Promise<PetInfiniteResponse> {
   const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/pets${searchParams}&page=${pageParam}&size=${pageLimit}&sort=createDate,asc`
+    `${process.env.NEXT_PUBLIC_API_URL}/pets${searchParams}&page=${pageParam}&size=${pageLimit}&sort=createDate,asc`,
+    { headers: { Accept: 'application/hal+json' } }
   );
 
   return {
@@ -32,7 +34,8 @@ export async function fetchPetsInfinite(
 
 export async function fetchPetById(id: string): Promise<Pet[]> {
   const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/pets?id=${id}`
+    `${process.env.NEXT_PUBLIC_API_URL}/pets?id=${id}`,
+    { headers: { Accept: 'application/hal+json' } }
   );
 
   const pet = response.data._embedded.petParamsResponseList;
