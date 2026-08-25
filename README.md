@@ -28,8 +28,10 @@ A Buddy foi criada para facilitar e tornar mais seguro o processo de adoção de
 
 ### Pré-requisitos
 
-- Node.js 18+
-- pnpm 8+
+- Node.js 22.13+
+- pnpm 11+ (o projeto fixa a versão em `packageManager`; use `corepack enable`)
+
+> Versões anteriores do pnpm ignoram o `pnpm-workspace.yaml` e instalam dependências transitivas vulneráveis sem avisar.
 
 ### Instalação
 
