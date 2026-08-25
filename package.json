@@ -2,10 +2,7 @@
   "name": "buddy-client",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@11.6.0",
-  "engines": {
-    "node": ">=22.13"
-  },
+  "packageManager": "pnpm@9.15.9",
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
@@ -56,5 +53,32 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
     "typescript": "^5.7"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp"
+    ],
+    "overrides": {
+      "@babel/core": "^7.29.6",
+      "@tootallnate/once": "^2.0.1",
+      "ajv@6": "^6.14.0",
+      "brace-expansion@1": "^1.1.17",
+      "brace-expansion@2": "^2.1.4",
+      "diff@4": "^4.0.4",
+      "flatted": "^3.4.2",
+      "follow-redirects": "^1.16.0",
+      "form-data@4": "^4.0.6",
+      "handlebars": "^4.7.9",
+      "js-yaml@3": "^3.15.1",
+      "js-yaml@4": "^4.3.1",
+      "minimatch@3": "^3.1.4",
+      "minimatch@9": "^9.0.7",
+      "nanoid@3": "^3.3.18",
+      "picomatch@2": "^2.3.2",
+      "picomatch@4": "^4.0.4",
+      "postcss": "^8.5.23",
+      "sharp": "^0.35.3",
+      "ws@8": "^8.21.0"
+    }
   }
 }

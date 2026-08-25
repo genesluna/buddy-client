@@ -1,4 +1,4 @@
-FROM node:22.22.3-slim
+FROM node:20.15.0-slim
 
 USER node
 
