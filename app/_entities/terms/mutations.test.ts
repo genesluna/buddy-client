@@ -15,13 +15,13 @@ describe('terms mutations', () => {
 
   describe('acceptTerms', () => {
     it('should call accept terms endpoint successfully', async () => {
-      mock.onPost('/v1/terms/accept').reply(200);
+      mock.onPost('/terms/accept').reply(200);
 
       await expect(acceptTerms()).resolves.toBeUndefined();
     });
 
     it('should throw error when accept fails', async () => {
-      mock.onPost('/v1/terms/accept').reply(401);
+      mock.onPost('/terms/accept').reply(401);
 
       await expect(acceptTerms()).rejects.toThrow();
     });

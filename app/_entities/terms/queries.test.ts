@@ -24,7 +24,7 @@ describe('terms queries', () => {
         publicationDate: '2026-08-26',
       };
 
-      mock.onGet('/v1/terms/active').reply(200, mockResponse);
+      mock.onGet('/terms/active').reply(200, mockResponse);
 
       const result = await fetchActiveTerms();
       expect(result).toEqual(mockResponse);
@@ -32,7 +32,7 @@ describe('terms queries', () => {
     });
 
     it('should throw error when api returns error', async () => {
-      mock.onGet('/v1/terms/active').reply(500);
+      mock.onGet('/terms/active').reply(500);
 
       await expect(fetchActiveTerms()).rejects.toThrow();
     });

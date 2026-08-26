@@ -43,7 +43,7 @@ describe('TermsModal', () => {
   });
 
   it('renders modal and displays terms content when open', async () => {
-    mock.onGet('/v1/terms/active').reply(200, {
+    mock.onGet('/terms/active').reply(200, {
       termsVersionId: '123-uuid',
       versionTag: 'v1.0.0',
       content: 'Estes sao os termos oficiais de adocao responsavel.',
@@ -68,7 +68,7 @@ describe('TermsModal', () => {
 
   it('calls onClose when close button or Esc is pressed', async () => {
     const handleClose = jest.fn();
-    mock.onGet('/v1/terms/active').reply(200, {
+    mock.onGet('/terms/active').reply(200, {
       termsVersionId: '123-uuid',
       versionTag: 'v1.0.0',
       content: 'Conteudo',
@@ -89,7 +89,7 @@ describe('TermsModal', () => {
 
   it('renders and triggers onAccept callback when enabled', async () => {
     const handleAccept = jest.fn();
-    mock.onGet('/v1/terms/active').reply(200, {
+    mock.onGet('/terms/active').reply(200, {
       termsVersionId: '123-uuid',
       versionTag: 'v1.0.0',
       content: 'Conteudo',
