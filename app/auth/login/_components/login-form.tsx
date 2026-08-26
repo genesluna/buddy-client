@@ -130,7 +130,7 @@ export default function LoginForm() {
           disabled={isPending}
           onClick={() => {
             if (!isPending) {
-              router.push('/auth/reset-password');
+              router.push('/auth/forgot-password');
             }
           }}
         />
