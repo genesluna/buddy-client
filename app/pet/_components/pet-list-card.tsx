@@ -1,6 +1,7 @@
 import { CalendarBlank, MapPin } from '@phosphor-icons/react/dist/ssr';
-import { birthDateToHumanReadableAge } from '@/app/_lib/utils';
+import { birthDateToHumanReadableAge, isValidImageUrl } from '@/app/_lib/utils';
 import { Pet } from '@/app/_entities/pet/model';
+import noImg from '@/app/_assets/noimg.webp';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -9,6 +10,8 @@ interface PetCardProps {
 }
 
 export default function PetListCard({ pet }: PetCardProps) {
+  const avatarSrc = isValidImageUrl(pet.avatar) ? pet.avatar : noImg;
+
   return (
     <Link
       href={`pet/details?id=${pet.id}#`}
@@ -17,8 +20,8 @@ export default function PetListCard({ pet }: PetCardProps) {
     >
       <div className='relative h-[200px] w-full'>
         <Image
-          src={pet.avatar}
-          alt='pet photo'
+          src={avatarSrc}
+          alt={pet.name || 'pet photo'}
           sizes='(max-width: 768px) 90vw, (max-width: 1280px) 40vw, (max-width: 1536px) 26vw, 18vw'
           fill
           className='rounded-2xl object-cover grayscale-0 transition duration-700 ease-in-out hover:grayscale'
