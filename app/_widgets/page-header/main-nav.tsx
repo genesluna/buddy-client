@@ -14,24 +14,46 @@ export function MainNav({ navLinks, ...props }: MainNavProps) {
 
   return (
     <nav {...props}>
-      <ul className='flex items-center space-x-[3rem]'>
-        {navLinks.map(({ name, href }) =>
-          name.toLowerCase() === 'login' ? (
-            <li
-              key={name}
-              className='flex h-[3.25rem] w-[5.625rem] cursor-pointer items-center justify-center rounded-[1.25rem] bg-white duration-300 ease-in-out hover:drop-shadow-glow'
-            >
-              <Link
-                href={href}
-                className='text-xl font-medium capitalize text-content-200'
+      <ul className='flex items-center space-x-4 xl:space-x-6'>
+        {navLinks.map(({ name, href }) => {
+          const lowerName = name.toLowerCase();
+
+          if (lowerName === 'login' || lowerName === 'entrar') {
+            return (
+              <li
+                key={name}
+                className='flex h-[2.5rem] cursor-pointer items-center justify-center rounded-[1.25rem] border border-white px-4 duration-300 ease-in-out hover:bg-white/10'
               >
-                {name}
-              </Link>
-            </li>
-          ) : (
+                <Link
+                  href={href}
+                  className='text-base font-medium capitalize text-white'
+                >
+                  {name}
+                </Link>
+              </li>
+            );
+          }
+
+          if (lowerName === 'cadastre-se' || lowerName === 'cadastrar') {
+            return (
+              <li
+                key={name}
+                className='flex h-[2.5rem] cursor-pointer items-center justify-center rounded-[1.25rem] bg-white px-4 duration-300 ease-in-out hover:bg-primary hover:drop-shadow-glow'
+              >
+                <Link
+                  href={href}
+                  className='text-base font-semibold capitalize text-accent'
+                >
+                  {name}
+                </Link>
+              </li>
+            );
+          }
+
+          return (
             <li
               key={name}
-              className='text-xl font-medium capitalize text-white duration-300 ease-in-out hover:drop-shadow-glow'
+              className='text-lg font-medium capitalize text-white duration-300 ease-in-out hover:drop-shadow-glow'
             >
               <Link
                 href={href}
@@ -42,8 +64,8 @@ export function MainNav({ navLinks, ...props }: MainNavProps) {
                 {name}
               </Link>
             </li>
-          )
-        )}
+          );
+        })}
       </ul>
     </nav>
   );

@@ -10,6 +10,7 @@ export function PageHeader() {
     { name: 'sobre', href: '/about' },
     { name: 'contato', href: '/contact' },
     { name: 'login', href: '/auth/login' },
+    { name: 'cadastre-se', href: '/auth/register' },
   ];
 
   return (

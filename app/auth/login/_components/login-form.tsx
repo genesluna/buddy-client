@@ -136,9 +136,9 @@ export default function LoginForm() {
         />
       </div>
       <Button
-        aria-label='Registrar novo abrigo'
+        aria-label='Criar uma conta'
         type='button'
-        label='Registrar novo abrigo'
+        label='Criar uma conta'
         className='mb-10 w-full lg:mb-auto xl:w-72'
         outline
         disabled={isPending}
