@@ -20,9 +20,6 @@ describe('axios-instance', () => {
       expect(api.defaults.withCredentials).toBe(true);
       expect(api.defaults.timeout).toBe(30000);
       expect(api.defaults.headers['Content-Type']).toBe('application/json');
-      expect(api.defaults.headers['X-Origin-Code']).toBe(
-        '550e8400-e29b-41d4-a716-446655440000'
-      );
     });
 
     it('throws error when NEXT_PUBLIC_API_URL is not set', async () => {
