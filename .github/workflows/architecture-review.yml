@@ -3,9 +3,6 @@ name: Architecture Review
 on:
   pull_request:
     branches: [develop, main]
-    paths:
-      - 'app/**'
-      - 'scripts/validate-architecture.ts'
 
 concurrency:
   group: architecture-${{ github.head_ref || github.run_id }}
