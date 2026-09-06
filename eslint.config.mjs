@@ -132,6 +132,13 @@ const eslintConfig = [
       'boundaries/element-types': 'off',
     },
   },
+  // CLI scripts report their results on stdout, so console is the output channel
+  {
+    files: ['scripts/**/*.ts'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
   {
     ignores: [
       'node_modules/**',
