@@ -4,7 +4,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Buddy is a pet adoption web application built with Next.js 15 (App Router), React 19, and Tailwind CSS 4. The project connects animal shelters with potential adopters in Brazil. The backend API is separate (https://github.com/hywenklis/buddy-backend).
+Buddy is a pet adoption web application built with Next.js 15 (App Router), React 19, and Tailwind CSS 4. The project connects animal shelters with potential adopters in Brazil.
+
+### Backend API
+
+The backend is a separate Spring Boot service: **https://github.com/hywenklis/buddy-api** (public).
+
+Clone it when you need to check the real contract instead of guessing: endpoint paths, request and response shapes, enum values, auth rules and CORS.
+
+Useful paths inside that repo:
+
+| What | Where |
+|---|---|
+| Endpoints | `src/main/java/com/buddy/api/web/**/controllers/*Controller.java` |
+| Request and response shapes | `src/main/java/com/buddy/api/web/**/{requests,responses}/` |
+| Enums (for example `ProfileTypeEnum`) | `src/main/java/com/buddy/api/domains/**/enums/` |
+| Public vs authenticated routes | `src/main/java/com/buddy/api/commons/configurations/security/SecurityConfig.java` |
+| CORS allowlist | `src/main/resources/application-local.yml` under `buddy.security.cors.allowed-origins` |
+
+Two gotchas that cost time:
+
+- Controllers map to `/v1/...`, and `application-local.yml` sets `server.servlet.context-path: /api`. So the full path is `/api/v1/...`, which is why `NEXT_PUBLIC_API_URL` already ends in `/api/v1`.
+- The deployed backend does not always match `application-local.yml`. Verify the live behaviour with curl before blaming the client. Example: `curl -s -o /dev/null -w "%{http_code}" -H "Origin: http://localhost:3000" "$NEXT_PUBLIC_API_URL/pets"`. A 403 with body `Invalid CORS request` means the origin is not on the backend allowlist.
 
 ## Commands
 
@@ -146,7 +167,11 @@ The theme is defined in `styles/globals.css` using the Tailwind CSS 4 `@theme` d
 
 ### Environment Variables
 
-- `NEXT_PUBLIC_API_URL` - Backend API base URL
+- `NEXT_PUBLIC_API_URL` - Backend API base URL, including the `/api/v1` suffix
+
+Local development needs a `.env.local` file (gitignored). Copy `.env.example` and fill it in.
+
+Anything prefixed with `NEXT_PUBLIC_` is inlined into the JavaScript that ships to the browser, so it is readable by anyone who opens devtools. Never put a credential, shared secret or client identity token behind that prefix. Caller identity belongs in the JWT that the backend already issues on `/auth/login` and stores in httpOnly cookies.
 
 ### Testing
 
