@@ -38,7 +38,7 @@ describe('RegisterForm', () => {
     expect(screen.getByPlaceholderText('Telefone (apenas números)')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Senha (6-16 caracteres)')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Confirme a senha')).toBeInTheDocument();
-    expect(screen.getByLabelText(/Li e aceito os/)).toBeInTheDocument();
+    expect(screen.getByRole('checkbox')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Criar conta' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Já tenho uma conta' })).toBeInTheDocument();
   });
@@ -105,19 +105,20 @@ describe('RegisterForm', () => {
     });
   });
 
-  it('renders terms of service and privacy policy links', () => {
+  it('renders terms of service button and privacy policy link', async () => {
+    const user = userEvent.setup();
     render(<RegisterForm />, { wrapper: createWrapper() });
 
-    const termsLink = screen.getByRole('link', { name: 'Termos de Uso' });
+    const termsButton = screen.getByRole('button', { name: 'Termos de Uso' });
     const privacyLink = screen.getByRole('link', { name: 'Política de Privacidade' });
 
-    expect(termsLink).toHaveAttribute('href', '/terms-of-service');
-    expect(termsLink).toHaveAttribute('target', '_blank');
-    expect(termsLink).toHaveAttribute('rel', 'noopener noreferrer');
-
+    expect(termsButton).toBeInTheDocument();
     expect(privacyLink).toHaveAttribute('href', '/privacy-policy');
     expect(privacyLink).toHaveAttribute('target', '_blank');
     expect(privacyLink).toHaveAttribute('rel', 'noopener noreferrer');
+
+    await user.click(termsButton);
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
   });
 
   it('navigates to login page when clicking "Já tenho uma conta"', async () => {
