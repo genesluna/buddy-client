@@ -4,6 +4,8 @@ import { ComponentProps, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/app/_lib/utils';
 import Link from 'next/link';
+import { useAuth, useLogout } from '@/app/_entities/auth';
+import { SignOut, PlusCircle } from '@phosphor-icons/react';
 
 interface HamburgerNavProps extends ComponentProps<'div'> {
   menuLinks: { name: string; href: string }[];
@@ -14,8 +16,13 @@ export default function HamburgerNav({
   ...props
 }: HamburgerNavProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
   const pathname = usePathname();
+  const { user, isAuthenticated, isLoading } = useAuth();
+  const { mutate: handleLogout } = useLogout({ redirectTo: '/auth/login' });
+
+  const activeProfile = user?.profiles?.[0];
+  const displayName = activeProfile?.name || 'Minha Conta';
+  const hasProfiles = user?.profiles && user.profiles.length > 0;
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -67,22 +74,82 @@ export default function HamburgerNav({
             </svg>
           </button>
 
-          {menuLinks.map(({ name, href }) => (
-            <li
-              key={name}
-              className='flex w-full justify-center py-4 capitalize hover:bg-secondary'
-            >
+          {isAuthenticated && (
+            <div className='mx-6 mb-2 rounded-xl bg-white/10 p-4 text-center'>
+              <p className='text-xs text-white/70'>Conectado como</p>
+              <p className='font-bold text-white'>{displayName}</p>
+              {activeProfile?.profileType && (
+                <span className='mt-1 inline-block rounded-full bg-white/20 px-2.5 py-0.5 text-xs text-white'>
+                  {activeProfile.profileType === 'SHELTER' ? '🏠 Abrigo' : '🐾 Adotante'}
+                </span>
+              )}
+            </div>
+          )}
+
+          {menuLinks
+            .filter(({ name }) => name.toLowerCase() !== 'login')
+            .map(({ name, href }) => (
+              <li
+                key={name}
+                className='flex w-full justify-center py-4 capitalize hover:bg-secondary'
+              >
+                <Link
+                  href={href}
+                  onClick={() => setIsOpen(false)}
+                  aria-label={`Menu item ${name}`}
+                  className={cn({
+                    'border-b-2 border-solid border-white': pathname === href,
+                  })}
+                >
+                  {name}
+                </Link>
+              </li>
+            ))}
+
+          {!isLoading && !isAuthenticated && (
+            <li className='flex w-full justify-center py-4 capitalize hover:bg-secondary'>
               <Link
-                href={href}
-                aria-label={`Menu item ${name}`}
+                href='/auth/login'
+                onClick={() => setIsOpen(false)}
+                aria-label='Menu item login'
                 className={cn({
-                  'border-b-2 border-solid border-white': pathname === href,
+                  'border-b-2 border-solid border-white': pathname === '/auth/login',
                 })}
               >
-                {name}
+                login
               </Link>
             </li>
-          ))}
+          )}
+
+          {!isLoading && isAuthenticated && (
+            <>
+              {!hasProfiles && (
+                <li className='flex w-full justify-center py-4 hover:bg-secondary'>
+                  <Link
+                    href='/profile/create'
+                    onClick={() => setIsOpen(false)}
+                    className='flex items-center gap-2 text-white font-medium'
+                  >
+                    <PlusCircle size={20} />
+                    Criar meu perfil
+                  </Link>
+                </li>
+              )}
+              <li className='flex w-full justify-center py-4 hover:bg-secondary'>
+                <button
+                  type='button'
+                  onClick={() => {
+                    setIsOpen(false);
+                    handleLogout();
+                  }}
+                  className='flex items-center gap-2 text-white/90 hover:text-white font-medium'
+                >
+                  <SignOut size={20} />
+                  Sair da conta
+                </button>
+              </li>
+            </>
+          )}
         </div>
       )}
     </div>

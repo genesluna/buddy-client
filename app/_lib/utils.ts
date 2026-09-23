@@ -6,6 +6,18 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function isValidImageUrl(url?: string | null | object): boolean {
+  if (!url || typeof url !== 'string') return false;
+  const trimmed = url.trim();
+  if (trimmed === 'string' || trimmed.length === 0) return false;
+  try {
+    const parsed = new URL(trimmed);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+  } catch {
+    return trimmed.startsWith('/');
+  }
+}
+
 export function calculateAgeFromBirthDate(birthDate: string): number {
   const birth = new Date(birthDate);
   const today = new Date();
