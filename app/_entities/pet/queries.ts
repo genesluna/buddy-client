@@ -1,14 +1,13 @@
-import axios from 'axios';
+import api from '@/app/_lib/api/axios-instance';
 import { Pet, PetInfiniteResponse } from './model';
 
 export async function fetchPets(params?: string): Promise<{ pets: Pet[] }> {
-  const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/pets${params}`
+  const query = params ? (params.startsWith('?') ? params : `?${params}`) : '';
+  const response = await api.get<{ _embedded?: { petParamsResponseList?: Pet[] } }>(
+    `/pets${query}`
   );
 
-  const pets = response.data._embedded.petParamsResponseList;
-
-  return pets;
+  return { pets: response.data._embedded?.petParamsResponseList || [] };
 }
 
 export async function fetchPetsInfinite(
@@ -16,26 +15,39 @@ export async function fetchPetsInfinite(
   searchParams: string,
   pageLimit: number
 ): Promise<PetInfiniteResponse> {
-  const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/pets${searchParams}&page=${pageParam}&size=${pageLimit}&sort=createDate,asc`
-  );
+  const cleanParams = searchParams?.startsWith('?')
+    ? searchParams.slice(1)
+    : (searchParams || '');
+  const prefix = cleanParams ? `${cleanParams}&` : '';
+  const url = `/pets?${prefix}page=${pageParam}&size=${pageLimit}&sort=createDate,desc`;
+
+  const response = await api.get<{
+    _embedded?: { petParamsResponseList?: Pet[] };
+    page?: {
+      number: number;
+      totalPages: number;
+      totalElements: number;
+      size: number;
+    };
+  }>(url);
+
+  const data = response.data._embedded?.petParamsResponseList || [];
+  const page = response.data.page;
 
   return {
-    data: response.data._embedded?.petParamsResponseList || [],
-    currentPage: response.data.page.number,
+    data,
+    currentPage: page?.number ?? 0,
     nextPage:
-      response.data.page.number + 1 < response.data.page.totalPages
-        ? response.data.page.number + 1
+      page && page.number + 1 < page.totalPages
+        ? page.number + 1
         : null,
   };
 }
 
 export async function fetchPetById(id: string): Promise<Pet[]> {
-  const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/pets?id=${id}`
+  const response = await api.get<{ _embedded?: { petParamsResponseList?: Pet[] } }>(
+    `/pets?id=${id}`
   );
 
-  const pet = response.data._embedded.petParamsResponseList;
-
-  return pet;
+  return response.data._embedded?.petParamsResponseList || [];
 }

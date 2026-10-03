@@ -41,7 +41,7 @@ describe('LoginForm', () => {
     expect(screen.getByPlaceholderText('Senha')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Entrar' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Resetar a senha' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Registrar novo abrigo' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Criar uma conta' })).toBeInTheDocument();
   });
 
   it('submit button is disabled initially', () => {
@@ -77,21 +77,21 @@ describe('LoginForm', () => {
     });
   });
 
-  it('navigates to reset-password when clicking "Resetar a senha"', async () => {
+  it('navigates to forgot-password when clicking "Resetar a senha"', async () => {
     const user = userEvent.setup();
     render(<LoginForm />, { wrapper: createWrapper() });
 
     const resetButton = screen.getByRole('button', { name: 'Resetar a senha' });
     await user.click(resetButton);
 
-    expect(mockPush).toHaveBeenCalledWith('/auth/reset-password');
+    expect(mockPush).toHaveBeenCalledWith('/auth/forgot-password');
   });
 
-  it('navigates to register when clicking "Registrar novo abrigo"', async () => {
+  it('navigates to register when clicking "Criar uma conta"', async () => {
     const user = userEvent.setup();
     render(<LoginForm />, { wrapper: createWrapper() });
 
-    const registerButton = screen.getByRole('button', { name: 'Registrar novo abrigo' });
+    const registerButton = screen.getByRole('button', { name: 'Criar uma conta' });
     await user.click(registerButton);
 
     expect(mockPush).toHaveBeenCalledWith('/auth/register');
