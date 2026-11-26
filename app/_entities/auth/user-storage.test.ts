@@ -111,6 +111,43 @@ describe('user-storage', () => {
       expect(result.error).toBeInstanceOf(UserStorageError);
     });
 
+    it('returns stored user when valid USER profile exists across reload', () => {
+      const user: StoredUser = {
+        profiles: [
+          { name: 'Adotante', description: 'Perfil adotante', profileType: 'USER' },
+        ],
+      };
+      mockLocalStorage.setItem('buddy_user', JSON.stringify(user));
+
+      const result = getStoredUser();
+      expect(result.data).toEqual(user);
+      expect(result.error).toBeUndefined();
+      expect(mockLocalStorage.removeItem).not.toHaveBeenCalled();
+    });
+
+    it('returns stored user when profiles array is empty', () => {
+      const user: StoredUser = { profiles: [] };
+      mockLocalStorage.setItem('buddy_user', JSON.stringify(user));
+
+      const result = getStoredUser();
+      expect(result.data).toEqual(user);
+      expect(result.error).toBeUndefined();
+    });
+
+    it('returns error and clears storage when legacy ADOPTER profileType is stored', () => {
+      mockLocalStorage.setItem(
+        'buddy_user',
+        JSON.stringify({
+          profiles: [{ name: 'Test', description: 'desc', profileType: 'ADOPTER' }],
+        })
+      );
+
+      const result = getStoredUser();
+      expect(result.data).toBeNull();
+      expect(result.error).toBeInstanceOf(UserStorageError);
+      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith('buddy_user');
+    });
+
     it('returns error and clears storage when profileType is invalid', () => {
       mockLocalStorage.setItem(
         'buddy_user',

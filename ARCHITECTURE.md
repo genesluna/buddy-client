@@ -287,7 +287,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 // =====================================================
 // Types - PascalCase
 // =====================================================
-export type ProfileType = 'SHELTER' | 'ADOPTER' | 'ADMIN';
+export type ProfileType = 'USER' | 'SHELTER' | 'ADMIN';
 
 export type PetSpecies = 'dog' | 'cat' | 'bird' | 'other';
 

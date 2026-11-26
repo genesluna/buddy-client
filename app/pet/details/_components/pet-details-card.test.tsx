@@ -103,7 +103,7 @@ describe('PetDetailsCard', () => {
     ).toBeInTheDocument();
   });
 
-  it('shows create profile prompt when authenticated user has no profiles', () => {
+  it('shows informative notice without broken profile link when authenticated user has no profiles', () => {
     mockUseAuth.useAuth.mockReturnValue({
       user: {
         profiles: [],
@@ -121,18 +121,50 @@ describe('PetDetailsCard', () => {
     const button = screen.getByRole('button', { name: 'Solicitar adoção' });
     expect(button).toBeDisabled();
     expect(
-      screen.getByText(/Você ainda não possui um perfil/i)
+      screen.getByText(/Você ainda não possui um perfil de adotante cadastrado/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: /perfil/i })
+    ).not.toBeInTheDocument();
+  });
+
+  it('shows admin notice when user only has an ADMIN profile', () => {
+    mockUseAuth.useAuth.mockReturnValue({
+      user: {
+        profiles: [
+          {
+            name: 'Admin Buddy',
+            description: 'Administrador',
+            profileType: 'ADMIN',
+          },
+        ],
+      },
+      isAuthenticated: true,
+      isLoading: false,
+      storageError: null,
+      setAuthUser: jest.fn(),
+      clearAuthState: jest.fn(),
+      clearStorageError: jest.fn(),
+    });
+
+    render(<PetDetailsCard pet={mockPet} />);
+
+    const button = screen.getByRole('button', { name: 'Solicitar adoção' });
+    expect(button).toBeDisabled();
+    expect(screen.getByText('Administrador')).toBeInTheDocument();
+    expect(
+      screen.getByText(/Apenas perfis de adotante podem solicitar adoção/i)
     ).toBeInTheDocument();
   });
 
-  it('enables adoption button and renders link when user is an adopter', () => {
+  it('enables adoption button and renders link when user has USER profile', () => {
     mockUseAuth.useAuth.mockReturnValue({
       user: {
         profiles: [
           {
             name: 'João Silva',
             description: 'Amante de animais',
-            profileType: 'ADOPTER',
+            profileType: 'USER',
           },
         ],
       },
@@ -153,5 +185,35 @@ describe('PetDetailsCard', () => {
       'href',
       `/pet/adoption?id=${mockPet.id}&name=${mockPet.name}&gender=${mockPet.gender}`
     );
+  });
+
+  it('enables adoption button when user has both SHELTER and USER profiles', () => {
+    mockUseAuth.useAuth.mockReturnValue({
+      user: {
+        profiles: [
+          {
+            name: 'Abrigo Amigo',
+            description: 'ONG de Resgate',
+            profileType: 'SHELTER',
+          },
+          {
+            name: 'João Silva',
+            description: 'Adotante',
+            profileType: 'USER',
+          },
+        ],
+      },
+      isAuthenticated: true,
+      isLoading: false,
+      storageError: null,
+      setAuthUser: jest.fn(),
+      clearAuthState: jest.fn(),
+      clearStorageError: jest.fn(),
+    });
+
+    render(<PetDetailsCard pet={mockPet} />);
+
+    const button = screen.getByRole('button', { name: 'Solicitar adoção' });
+    expect(button).not.toBeDisabled();
   });
 });

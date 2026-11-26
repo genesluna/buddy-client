@@ -1,13 +1,25 @@
 import api from '@/app/_lib/api/axios-instance';
 import { Pet, PetInfiniteResponse } from './model';
 
+interface HalEmbeddedPetsResponse {
+  _embedded?: Record<string, Pet[] | undefined>;
+}
+
+function extractEmbeddedPets(
+  embedded?: Record<string, Pet[] | undefined>
+): Pet[] {
+  if (!embedded) {
+    return [];
+  }
+  const firstCollection = Object.values(embedded).find(Array.isArray);
+  return firstCollection ?? [];
+}
+
 export async function fetchPets(params?: string): Promise<{ pets: Pet[] }> {
   const query = params ? (params.startsWith('?') ? params : `?${params}`) : '';
-  const response = await api.get<{ _embedded?: { petParamsResponseList?: Pet[] } }>(
-    `/pets${query}`
-  );
+  const response = await api.get<HalEmbeddedPetsResponse>(`/pets${query}`);
 
-  return { pets: response.data._embedded?.petParamsResponseList || [] };
+  return { pets: extractEmbeddedPets(response.data._embedded) };
 }
 
 export async function fetchPetsInfinite(
@@ -21,17 +33,18 @@ export async function fetchPetsInfinite(
   const prefix = cleanParams ? `${cleanParams}&` : '';
   const url = `/pets?${prefix}page=${pageParam}&size=${pageLimit}&sort=createDate,desc`;
 
-  const response = await api.get<{
-    _embedded?: { petParamsResponseList?: Pet[] };
-    page?: {
-      number: number;
-      totalPages: number;
-      totalElements: number;
-      size: number;
-    };
-  }>(url);
+  const response = await api.get<
+    HalEmbeddedPetsResponse & {
+      page?: {
+        number: number;
+        totalPages: number;
+        totalElements: number;
+        size: number;
+      };
+    }
+  >(url);
 
-  const data = response.data._embedded?.petParamsResponseList || [];
+  const data = extractEmbeddedPets(response.data._embedded);
   const page = response.data.page;
 
   return {
@@ -45,9 +58,7 @@ export async function fetchPetsInfinite(
 }
 
 export async function fetchPetById(id: string): Promise<Pet[]> {
-  const response = await api.get<{ _embedded?: { petParamsResponseList?: Pet[] } }>(
-    `/pets?id=${id}`
-  );
+  const response = await api.get<HalEmbeddedPetsResponse>(`/pets?id=${id}`);
 
-  return response.data._embedded?.petParamsResponseList || [];
+  return extractEmbeddedPets(response.data._embedded);
 }

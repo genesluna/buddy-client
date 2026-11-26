@@ -21,16 +21,17 @@ interface PetDetailsCardProps {
 export default function PetDetailsCard({ pet }: PetDetailsCardProps) {
   const { user, isAuthenticated, isLoading } = useAuth();
 
-  const isAdopter = user?.profiles?.some(
-    (p) => p.profileType === 'ADOPTER' || (p.profileType as string) === 'USER'
+  const isAdopter = Boolean(
+    user?.profiles?.some((p) => p.profileType === 'USER')
   );
-  const isShelterOnly =
-    user?.profiles &&
-    user.profiles.length > 0 &&
-    !isAdopter &&
-    user.profiles.some((p) => p.profileType === 'SHELTER');
-  const hasNoProfiles =
-    isAuthenticated && (!user?.profiles || user.profiles.length === 0);
+  const hasProfiles = Boolean(user?.profiles && user.profiles.length > 0);
+  const isNonAdopterProfile = Boolean(
+    isAuthenticated && hasProfiles && !isAdopter
+  );
+  const isShelterProfile = Boolean(
+    user?.profiles?.some((p) => p.profileType === 'SHELTER')
+  );
+  const hasNoProfiles = Boolean(isAuthenticated && !hasProfiles);
 
   return (
     <div className='min-h-[480px] w-full rounded-[1.875rem] bg-white px-10 py-7.5 xl:-mt-17.25'>
@@ -105,7 +106,7 @@ export default function PetDetailsCard({ pet }: PetDetailsCardProps) {
             </div>
           )}
 
-          {!isLoading && isShelterOnly && (
+          {!isLoading && isNonAdopterProfile && (
             <div className='flex w-full flex-col items-center rounded-2xl bg-amber-50 p-4 text-center border border-amber-200'>
               <Button
                 aria-label='Solicitar adoção'
@@ -117,8 +118,9 @@ export default function PetDetailsCard({ pet }: PetDetailsCardProps) {
               <div className='mt-2 flex items-center justify-center gap-1.5 text-xs text-amber-800 font-medium'>
                 <Info size={16} weight='bold' className='shrink-0' />
                 <span>
-                  Você está conectado como <strong>Abrigo</strong>. Apenas
-                  perfis de adotante podem solicitar adoção.
+                  Você está conectado como{' '}
+                  <strong>{isShelterProfile ? 'Abrigo' : 'Administrador'}</strong>.
+                  Apenas perfis de adotante podem solicitar adoção.
                 </span>
               </div>
             </div>
@@ -134,14 +136,8 @@ export default function PetDetailsCard({ pet }: PetDetailsCardProps) {
                 icon={<PawPrint size={24} />}
               />
               <p className='mt-3 text-xs text-content-300'>
-                Você ainda não possui um perfil.{' '}
-                <Link
-                  href='/profile/create'
-                  className='font-semibold text-accent underline hover:text-accent/80'
-                >
-                  Crie seu perfil de adotante
-                </Link>{' '}
-                para poder solicitar a adoção.
+                Você ainda não possui um perfil de adotante cadastrado. Apenas
+                perfis de adotante podem solicitar a adoção.
               </p>
             </div>
           )}

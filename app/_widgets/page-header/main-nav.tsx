@@ -4,8 +4,8 @@ import { usePathname } from 'next/navigation';
 import { ComponentProps, useState, useRef, useEffect } from 'react';
 import { cn } from '@/app/_lib/utils';
 import Link from 'next/link';
-import { useAuth, useLogout } from '@/app/_entities/auth';
-import { User, SignOut, CaretDown, PlusCircle } from '@phosphor-icons/react';
+import { PROFILE_TYPE_LABELS, useAuth, useLogout } from '@/app/_entities/auth';
+import { User, SignOut, CaretDown } from '@phosphor-icons/react';
 
 interface MainNavProps extends ComponentProps<'nav'> {
   navLinks: { name: string; href: string }[];
@@ -95,22 +95,15 @@ export function MainNav({ navLinks, ...props }: MainNavProps) {
                   </p>
                   {activeProfile?.profileType && (
                     <span className='mt-1 inline-block rounded-full bg-tertiary/40 px-2 py-0.5 text-xs font-semibold text-accent'>
-                      {activeProfile.profileType === 'SHELTER'
-                        ? '🏠 Abrigo'
-                        : '🐾 Adotante'}
+                      {PROFILE_TYPE_LABELS[activeProfile.profileType]}
                     </span>
                   )}
                 </div>
 
                 {!hasProfiles && (
-                  <Link
-                    href='/profile/create'
-                    onClick={() => setDropdownOpen(false)}
-                    className='mt-1 flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-accent hover:bg-primary/60 transition-colors'
-                  >
-                    <PlusCircle size={18} weight='bold' />
-                    Criar meu perfil
-                  </Link>
+                  <p className='mt-1 rounded-xl bg-primary/40 px-3 py-2 text-xs text-content-300'>
+                    Nenhum perfil cadastrado ainda
+                  </p>
                 )}
 
                 <button

@@ -3,7 +3,13 @@ export interface AuthRequest {
   password: string;
 }
 
-export type ProfileType = 'SHELTER' | 'ADOPTER' | 'ADMIN';
+export type ProfileType = 'USER' | 'SHELTER' | 'ADMIN';
+
+export const PROFILE_TYPE_LABELS: Record<ProfileType, string> = {
+  USER: '🐾 Adotante',
+  SHELTER: '🏠 Abrigo',
+  ADMIN: '🛡️ Admin',
+};
 
 export interface ProfileResponse {
   name: string;

@@ -4,6 +4,7 @@ export type {
   ProfileResponse,
   ProfileType,
 } from './model';
+export { PROFILE_TYPE_LABELS } from './model';
 export { login, logout } from './mutations';
 export { AuthProvider, AuthContext } from './auth-context';
 export type { AuthContextValue, AuthUser } from './auth-context';

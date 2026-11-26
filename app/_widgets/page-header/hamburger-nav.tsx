@@ -4,8 +4,8 @@ import { ComponentProps, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/app/_lib/utils';
 import Link from 'next/link';
-import { useAuth, useLogout } from '@/app/_entities/auth';
-import { SignOut, PlusCircle } from '@phosphor-icons/react';
+import { PROFILE_TYPE_LABELS, useAuth, useLogout } from '@/app/_entities/auth';
+import { SignOut } from '@phosphor-icons/react';
 
 interface HamburgerNavProps extends ComponentProps<'div'> {
   menuLinks: { name: string; href: string }[];
@@ -80,7 +80,7 @@ export default function HamburgerNav({
               <p className='font-bold text-white'>{displayName}</p>
               {activeProfile?.profileType && (
                 <span className='mt-1 inline-block rounded-full bg-white/20 px-2.5 py-0.5 text-xs text-white'>
-                  {activeProfile.profileType === 'SHELTER' ? '🏠 Abrigo' : '🐾 Adotante'}
+                  {PROFILE_TYPE_LABELS[activeProfile.profileType]}
                 </span>
               )}
             </div>
@@ -124,15 +124,8 @@ export default function HamburgerNav({
           {!isLoading && isAuthenticated && (
             <>
               {!hasProfiles && (
-                <li className='flex w-full justify-center py-4 hover:bg-secondary'>
-                  <Link
-                    href='/profile/create'
-                    onClick={() => setIsOpen(false)}
-                    className='flex items-center gap-2 text-white font-medium'
-                  >
-                    <PlusCircle size={20} />
-                    Criar meu perfil
-                  </Link>
+                <li className='flex w-full justify-center px-6 py-2 text-center text-xs text-white/80'>
+                  Nenhum perfil cadastrado ainda
                 </li>
               )}
               <li className='flex w-full justify-center py-4 hover:bg-secondary'>

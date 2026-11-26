@@ -54,6 +54,24 @@ describe('pet queries', () => {
       const result = await fetchPets();
       expect(result.pets).toEqual([]);
     });
+
+    it('returns empty array when _embedded is empty object', async () => {
+      mock.onGet(/\/pets.*/).reply(200, { _embedded: {} });
+
+      const result = await fetchPets();
+      expect(result.pets).toEqual([]);
+    });
+
+    it('extracts pets regardless of HAL _embedded collection key', async () => {
+      mock.onGet(/\/pets.*/).reply(200, {
+        _embedded: {
+          pets: [mockPet],
+        },
+      });
+
+      const result = await fetchPets();
+      expect(result.pets).toEqual([mockPet]);
+    });
   });
 
   describe('fetchPetsInfinite', () => {
@@ -107,6 +125,24 @@ describe('pet queries', () => {
       expect(result.data).toEqual([]);
       expect(result.nextPage).toBeNull();
     });
+
+    it('extracts paginated pets regardless of HAL _embedded collection key', async () => {
+      mock.onGet(/\/pets.*/).reply(200, {
+        _embedded: {
+          pets: [mockPet],
+        },
+        page: {
+          number: 0,
+          totalPages: 1,
+          totalElements: 1,
+          size: 10,
+        },
+      });
+
+      const result = await fetchPetsInfinite(0, '', 10);
+      expect(result.data).toEqual([mockPet]);
+      expect(result.nextPage).toBeNull();
+    });
   });
 
   describe('fetchPetById', () => {
@@ -114,6 +150,17 @@ describe('pet queries', () => {
       mock.onGet('/pets?id=pet-uuid-1').reply(200, {
         _embedded: {
           petParamsResponseList: [mockPet],
+        },
+      });
+
+      const result = await fetchPetById('pet-uuid-1');
+      expect(result).toEqual([mockPet]);
+    });
+
+    it('extracts pet details regardless of HAL _embedded collection key', async () => {
+      mock.onGet('/pets?id=pet-uuid-1').reply(200, {
+        _embedded: {
+          pets: [mockPet],
         },
       });
 

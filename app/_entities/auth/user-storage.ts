@@ -17,7 +17,7 @@
 
 import { ProfileResponse, ProfileType } from './model';
 
-const VALID_PROFILE_TYPES: ProfileType[] = ['SHELTER', 'ADOPTER', 'ADMIN'];
+const VALID_PROFILE_TYPES: ProfileType[] = ['USER', 'SHELTER', 'ADMIN'];
 
 const USER_STORAGE_KEY = 'buddy_user';
 
