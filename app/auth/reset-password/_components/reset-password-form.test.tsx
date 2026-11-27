@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import ResetPasswordForm from './reset-password-form';
 import * as accountModule from '../../../_entities/account';
 
@@ -122,5 +123,55 @@ describe('ResetPasswordForm', () => {
     await user.click(backButton);
 
     expect(mockPush).toHaveBeenCalledWith('/auth/login');
+  });
+
+  it('shows invalid or expired token message on 404 response', async () => {
+    const axiosError = new AxiosError('Not Found');
+    axiosError.response = { status: 404 } as AxiosError['response'];
+    mockAccount.resetPassword.mockRejectedValue(axiosError);
+
+    const user = userEvent.setup();
+    render(<ResetPasswordForm initialToken='token-123' />, {
+      wrapper: createWrapper(),
+    });
+
+    await user.type(screen.getByPlaceholderText('Nova senha'), 'NewPassword123!');
+    await user.type(screen.getByPlaceholderText('Confirme a nova senha'), 'NewPassword123!');
+    await user.tab();
+
+    const submitButton = screen.getByRole('button', { name: 'Redefinir senha' });
+    await waitFor(() => expect(submitButton).not.toBeDisabled());
+    await user.click(submitButton);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Token inválido ou expirado. Solicite uma nova recuperação de senha.')
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('shows rate limit message on 429 response', async () => {
+    const axiosError = new AxiosError('Too Many Requests');
+    axiosError.response = { status: 429 } as AxiosError['response'];
+    mockAccount.resetPassword.mockRejectedValue(axiosError);
+
+    const user = userEvent.setup();
+    render(<ResetPasswordForm initialToken='token-123' />, {
+      wrapper: createWrapper(),
+    });
+
+    await user.type(screen.getByPlaceholderText('Nova senha'), 'NewPassword123!');
+    await user.type(screen.getByPlaceholderText('Confirme a nova senha'), 'NewPassword123!');
+    await user.tab();
+
+    const submitButton = screen.getByRole('button', { name: 'Redefinir senha' });
+    await waitFor(() => expect(submitButton).not.toBeDisabled());
+    await user.click(submitButton);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Muitas tentativas. Aguarde um momento antes de tentar novamente.')
+      ).toBeInTheDocument();
+    });
   });
 });

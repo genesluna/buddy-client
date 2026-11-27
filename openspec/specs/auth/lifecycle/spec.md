@@ -5,7 +5,7 @@ Especificar os requisitos do ciclo de vida de autenticação de contas no `buddy
 ## Requirements
 
 ### Requirement: Recuperação e redefinição de senha
-O sistema SHALL disponibilizar fluxos completos em `/auth/forgot-password` e `/auth/reset-password` para que usuários solicitem link de recuperação por e-mail (`POST /accounts/password/forgot`) e definam uma nova senha com token válido (`POST /accounts/password/reset`), mantendo feedback claro para validação, sucesso e erros da API (incluindo `400`, `422` e `429`).
+O sistema SHALL disponibilizar fluxos completos em `/auth/forgot-password` e `/auth/reset-password` para que usuários solicitem link de recuperação por e-mail (`POST /accounts/password/forgot`) e definam uma nova senha com token válido (`POST /accounts/password/reset`), mantendo feedback claro para validação, sucesso e erros da API (incluindo `400`, `404`, `422` e `429`).
 
 #### Scenario: Solicitação de recuperação de senha com e-mail válido
 - **WHEN** o usuário preenche um e-mail válido em `/auth/forgot-password` e envia o formulário
@@ -22,21 +22,25 @@ O sistema SHALL disponibilizar fluxos completos em `/auth/forgot-password` e `/a
 - **AND** em caso de sucesso exibe toast de confirmação e redireciona para `/auth/login`.
 
 #### Scenario: Token inválido, expirado ou ausente na redefinição de senha
-- **WHEN** o usuário envia a redefinição sem token válido ou a API retorna HTTP `400` ou `422`
+- **WHEN** o usuário envia a redefinição sem token válido ou a API retorna HTTP `400`, `404` ou `422`
 - **THEN** a validação Zod bloqueia o envio sem token ou a interface exibe mensagem de erro informando token inválido ou expirado.
 
 ### Requirement: Pendência e confirmação de verificação de e-mail
-O sistema SHALL manter exclusivamente as rotas canônicas `/auth/verification-pending` e `/auth/verify-email` para reenvio de e-mail de confirmação (`POST /accounts/verifications/request`) e validação do token de verificação (`POST /accounts/verifications/confirm`), sem criar rotas de redirecionamento legado em `next.config.mjs`.
+O sistema SHALL manter exclusivamente as rotas canônicas `/auth/verification-pending` e `/auth/verify-email` para reenvio público anti-enumeração (`POST /accounts/verifications/request`) e confirmação pública do token (`POST /accounts/verifications/confirm`), tratando respostas `200`/`202`, `400`, `404` e `429` com feedback acessível.
 
 #### Scenario: Reenvio de e-mail de verificação em pendência
 - **WHEN** o usuário acessa `/auth/verification-pending?email=<email>` e submete o formulário de reenvio
 - **THEN** o campo de e-mail é pré-preenchido com o parâmetro da URL e dispara `POST /accounts/verifications/request`
-- **AND** a interface trata respostas `200`, `404` e `429` exibindo feedback acessível (`role="alert"`).
+- **AND** em sucesso (`200`/`202`) exibe feedback acessível (`role="alert"`) sem vazar se o e-mail existe ou já foi verificado, tratando também `404` e `429` defensivamente.
 
 #### Scenario: Confirmação automática de e-mail com token válido
 - **WHEN** o usuário acessa `/auth/verify-email?token=<token>` com token compatível com o formato esperado
 - **THEN** o cliente dispara `POST /accounts/verifications/confirm` automaticamente uma única vez
 - **AND** em caso de sucesso exibe confirmação e botão para navegar até `/auth/login`.
+
+#### Scenario: Token inválido, expirado ou rate limit em `/auth/verify-email`
+- **WHEN** a API retorna HTTP `400` ou `404` para `/accounts/verifications/confirm`, ou retorna HTTP `429`
+- **THEN** a interface exibe mensagem clara de token inválido/expirado (`400`/`404`) ou orientação para aguardar antes de tentar novamente (`429`).
 
 #### Scenario: Token ausente ou com formato inválido em `/auth/verify-email`
 - **WHEN** o parâmetro `token` está ausente ou falha em `isValidTokenFormat`

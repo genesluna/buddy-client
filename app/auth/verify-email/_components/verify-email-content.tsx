@@ -32,10 +32,10 @@ export default function VerifyEmailContent() {
     onError: (error) => {
       setStatus('error');
       if (error instanceof AxiosError) {
-        if (error.response?.status === 400) {
+        if (error.response?.status === 400 || error.response?.status === 404) {
           setErrorMessage('Token inválido ou expirado.');
-        } else if (error.response?.status === 404) {
-          setErrorMessage('Verificação não encontrada.');
+        } else if (error.response?.status === 429) {
+          setErrorMessage('Muitas tentativas. Aguarde antes de tentar novamente.');
         } else {
           setErrorMessage('Erro ao verificar email. Tente novamente.');
         }

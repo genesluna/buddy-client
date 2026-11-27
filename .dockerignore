@@ -1,0 +1,10 @@
+node_modules
+.next
+.git
+.idea
+.swc
+coverage
+.env
+.env.*
+!.env.example
+*.log

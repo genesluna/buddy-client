@@ -45,7 +45,11 @@ export default function ResetPasswordForm({ initialToken = '' }: ResetPasswordFo
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
-        if (error.response?.status === 400 || error.response?.status === 422) {
+        if (
+          error.response?.status === 400 ||
+          error.response?.status === 404 ||
+          error.response?.status === 422
+        ) {
           setApiError('Token inválido ou expirado. Solicite uma nova recuperação de senha.');
         } else if (error.response?.status === 429) {
           setApiError('Muitas tentativas. Aguarde um momento antes de tentar novamente.');
