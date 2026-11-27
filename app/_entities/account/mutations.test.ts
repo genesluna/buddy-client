@@ -14,6 +14,8 @@ import {
   registerAccount,
   requestEmailVerification,
   confirmEmailVerification,
+  requestForgotPassword,
+  resetPassword,
 } from './mutations';
 
 describe('account mutations', () => {
@@ -114,6 +116,47 @@ describe('account mutations', () => {
     it('throws error on verification not found (404)', async () => {
       mockApi.onPost(endpoint).reply(404, { message: 'Verification not found' });
       await expectHttpError(confirmEmailVerification({ token: 'unknown-token' }), 404);
+    });
+  });
+
+  describe('requestForgotPassword', () => {
+    const endpoint = '/accounts/password/forgot';
+    const testEmail = { email: 'user@test.com' };
+
+    it('calls correct endpoint with email and receives 202', async () => {
+      mockApi.onPost(endpoint).reply(202);
+
+      await requestForgotPassword(testEmail);
+
+      expect(mockApi.history.post[0].url).toBe(endpoint);
+      expect(JSON.parse(mockApi.history.post[0].data)).toEqual(testEmail);
+    });
+
+    it('throws error on rate limit (429)', async () => {
+      mockApi.onPost(endpoint).reply(429, { message: 'Too many requests' });
+      await expectHttpError(requestForgotPassword(testEmail), 429);
+    });
+  });
+
+  describe('resetPassword', () => {
+    const endpoint = '/accounts/password/reset';
+    const testReset = {
+      token: 'jwt-reset-token',
+      newPassword: 'NewPassword123!',
+    };
+
+    it('calls correct endpoint with token and new password', async () => {
+      mockApi.onPost(endpoint).reply(200);
+
+      await resetPassword(testReset);
+
+      expect(mockApi.history.post[0].url).toBe(endpoint);
+      expect(JSON.parse(mockApi.history.post[0].data)).toEqual(testReset);
+    });
+
+    it('throws error on invalid token (400)', async () => {
+      mockApi.onPost(endpoint).reply(400, { message: 'Invalid token' });
+      await expectHttpError(resetPassword(testReset), 400);
     });
   });
 });

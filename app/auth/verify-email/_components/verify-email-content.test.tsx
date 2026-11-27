@@ -101,7 +101,7 @@ describe('VerifyEmailContent', () => {
     });
   });
 
-  it('shows error state on verification not found (404)', async () => {
+  it('shows error state on token not found or expired (404)', async () => {
     mockGet.mockReturnValue('unknown-token');
     const axiosError = new AxiosError('Not Found');
     axiosError.response = { status: 404 } as AxiosError['response'];
@@ -111,7 +111,23 @@ describe('VerifyEmailContent', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Erro na verificação')).toBeInTheDocument();
-      expect(screen.getByText('Verificação não encontrada.')).toBeInTheDocument();
+      expect(screen.getByText('Token inválido ou expirado.')).toBeInTheDocument();
+    });
+  });
+
+  it('shows rate limit message on 429 response', async () => {
+    mockGet.mockReturnValue('rate-limited-token');
+    const axiosError = new AxiosError('Too Many Requests');
+    axiosError.response = { status: 429 } as AxiosError['response'];
+    mockAccountMutations.confirmEmailVerification.mockRejectedValue(axiosError);
+
+    render(<VerifyEmailContent />, { wrapper: createWrapper() });
+
+    await waitFor(() => {
+      expect(screen.getByText('Erro na verificação')).toBeInTheDocument();
+      expect(
+        screen.getByText('Muitas tentativas. Aguarde antes de tentar novamente.')
+      ).toBeInTheDocument();
     });
   });
 

@@ -1,0 +1,59 @@
+schema: spec-driven
+
+context: |
+  Idioma padrão dos artefatos OpenSpec:
+  - Escreva toda a narrativa, explicações, critérios e tarefas em português (pt-BR).
+  - Mantenha em inglês: termos técnicos consagrados, nomes de arquivos/rotas/componentes/tipos/hooks, cabeçalhos canônicos do OpenSpec (`## Purpose`, `## Requirements`, `### Requirement:`, `#### Scenario:`) e palavras-chave normativas (`SHALL`, `MUST`, `WHEN`, `THEN`, `AND`).
+
+  Tech stack real do projeto (`buddy-client`):
+  - Next.js 15.5.26 (App Router + Turbopack), React 19, TypeScript 5.7, Tailwind CSS 4, pnpm 9.15.9 (Node 22.x).
+  - Estado servidor e requisições: TanStack React Query v5 (`@tanstack/react-query`) + Axios (`withCredentials: true`, instância compartilhada em `app/_lib/api/axios-instance.ts` com interceptor de refresh de cookie `/auth/refresh` e `refreshApi` separada).
+  - Formulários e validação: React Hook Form (`react-hook-form`) + Zod (`@hookform/resolvers/zod`), notificações com `react-hot-toast` e ícones `@phosphor-icons/react`.
+  - Testes: Jest 29.7.0 + React Testing Library (`@testing-library/react`, `@testing-library/user-event`) + `axios-mock-adapter`, co-localizados (`*.test.ts` / `*.test.tsx`).
+  - Linting e fronteiras arquiteturais: ESLint 9 (`eslint-config-next`) + `eslint-plugin-boundaries` + script `pnpm validate:architecture` (`tsx scripts/validate-architecture.ts`).
+
+  Arquitetura Hybrid FSD e regras de dependência unidirecional:
+  - Camadas compartilhadas em `app/`: `_lib/` / `_types/` / `_assets/` / `_config/` -> `_entities/` e `_components/` -> `_hooks/` -> `_widgets/` -> rotas de feature (`app/auth/*`, `app/pet/*`, etc.).
+  - `_entities/<dominio>/` encapsula modelos (`model.ts`), queries/mutations React Query, query keys e storage por domínio (`account`, `auth`, `pet`, `shelter`, `terms`, `adoption`).
+  - `_widgets/` compõe blocos transversais de UI (ex.: `page-header`, `terms-modal`), podendo importar `_entities/`, `_components/` e `_lib/`, mas nunca features específicas.
+  - Imports entre features irmãs e fluxos de dependência reversos são proibidos e validados via `pnpm validate:architecture`.
+
+  Contratos com backend (`buddy-api`), segurança e resiliência:
+  - Contratos de `ProfileType` DEVEM corresponder exatamente aos valores do backend (`'USER' | 'SHELTER' | 'ADMIN'`); qualquer desalinhamento invalida `getStoredUser()` no reload.
+  - Tokens de sessão vivem em cookies `httpOnly` gerenciados pelo backend (`withCredentials: true`); `localStorage` (`buddy_user`) armazena exclusivamente metadados não sensíveis de exibição validados com type guards defensivos (`UserStorageError`).
+  - Nunca expor credenciais, chaves privadas ou tokens de identidade via variáveis `NEXT_PUBLIC_*`.
+  - URLs de imagens externas devem ser validadas antes do render em `next/image` (`isValidImageUrl`) com fallback seguro.
+  - Respostas paginadas HAL (`_embedded`) devem evitar acoplamento rígido a nomes de chaves específicas quando possível, com fallback seguro para lista vazia.
+
+  Quality gates e organização OpenSpec:
+  - Quality gates obrigatórios: `pnpm test`, `pnpm lint`, `pnpm validate:architecture` e `pnpm build`.
+  - Capabilities em `openspec/specs/` seguem a estrutura `<dominio>/<capacidade>/spec.md` (ex.: `auth/lifecycle`, `terms/consent`, `pet/details-and-catalog`).
+
+rules:
+  proposal:
+    - Escrever em português (pt-BR), mantendo termos técnicos, rotas e identificadores de código em inglês.
+    - Escopar cada change a um único concern coeso (equivalente a 1 PR), listando claramente as camadas Hybrid FSD e arquivos impactados.
+    - Incluir explicitamente uma seção de "Fora de Escopo" (Out of Scope).
+  specs:
+    - Escrever descrições e regras em português (pt-BR), mantendo os cabeçalhos canônicos (`## Purpose`, `## Requirements`, `### Requirement:`, `#### Scenario:`) e as palavras-chave normativas (`SHALL`, `MUST`, `WHEN`, `THEN`, `AND`) em inglês.
+    - Organizar delta specs e main specs sob `<dominio>/<capacidade>/spec.md`.
+    - Cobrir cenários de sucesso, estados de erro/carregamento/API (400, 401, 404, 422, 429), validação de formulários, controle de acesso por `ProfileType` e resiliência de dados.
+  design:
+    - Escrever em português (pt-BR) referenciando rotas, componentes, hooks, entities e tipos exatos do projeto.
+    - Respeitar as fronteiras unidirecionais da arquitetura Hybrid FSD (`_lib` -> `_entities`/`_components` -> `_hooks` -> `_widgets` -> features), contratos HTTP com `buddy-api` e estratégia de testes com Jest/RTL/`axios-mock-adapter`.
+  tasks:
+    - Escrever tarefas em português (pt-BR) com caminhos de arquivo e comandos pnpm em inglês.
+    - Dividir em tarefas granulares por camada/arquivo especificando os testes co-localizados (`*.test.ts` / `*.test.tsx`) a atualizar ou criar.
+    - Incluir tarefa final obrigatória executando `pnpm test`, `pnpm lint`, `pnpm validate:architecture` e `pnpm build`.
+
+operations:
+  apply:
+    guidance:
+      - Manter estritamente as regras de importação unidirecional da arquitetura Hybrid FSD (`pnpm validate:architecture`).
+      - Nunca armazenar tokens ou PII em `localStorage` e nunca expor segredos em `NEXT_PUBLIC_*`.
+      - Atualizar ou adicionar testes co-localizados (`*.test.ts` / `*.test.tsx`) com Jest, React Testing Library e `axios-mock-adapter`.
+      - Executar `pnpm test`, `pnpm lint`, `pnpm validate:architecture` e `pnpm build` antes de concluir a implementação.
+  archive:
+    guidance:
+      - Confirmar que todas as tasks estão concluídas e que `pnpm test`, `pnpm lint`, `pnpm validate:architecture` e `pnpm build` passaram antes de arquivar.
+      - Após sincronizar delta specs para `openspec/specs/`, validar todas as specs com `openspec validate --specs --strict` e resumir as capabilities atualizadas.

@@ -19,10 +19,12 @@ import {
   RegisterFormData,
 } from '../_config/register-schema';
 import Link from 'next/link';
+import { TermsModal } from '@/app/_widgets/terms-modal';
 
 export default function RegisterForm() {
   const router = useRouter();
   const [apiError, setApiError] = useState<string | null>(null);
+  const [isTermsOpen, setIsTermsOpen] = useState(false);
 
   const { mutate: registerMutate, isPending } = useRegister({
     onSuccess: (data) => {
@@ -50,6 +52,7 @@ export default function RegisterForm() {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors, isValid },
   } = useForm<RegisterFormData>({
     mode: 'onBlur',
@@ -169,15 +172,16 @@ export default function RegisterForm() {
           />
           <label htmlFor='terms' className='cursor-pointer text-sm text-content-300'>
             Li e aceito os{' '}
-            <Link
-              href='/terms-of-service'
-              className='text-accent underline hover:text-secondary'
-              target='_blank'
-              rel='noopener noreferrer'
-              prefetch={false}
+            <button
+              type='button'
+              onClick={(e) => {
+                e.preventDefault();
+                setIsTermsOpen(true);
+              }}
+              className='text-accent underline hover:text-secondary focus:outline-none'
             >
               Termos de Uso
-            </Link>{' '}
+            </button>{' '}
             e a{' '}
             <Link
               href='/privacy-policy'
@@ -227,6 +231,16 @@ export default function RegisterForm() {
           }}
         />
       </div>
+
+      <TermsModal
+        isOpen={isTermsOpen}
+        onClose={() => setIsTermsOpen(false)}
+        showAcceptButton={true}
+        onAccept={() => {
+          setValue('termsOfUserConsent', true, { shouldValidate: true });
+          setIsTermsOpen(false);
+        }}
+      />
     </form>
   );
 }

@@ -30,7 +30,7 @@ export default function VerificationPendingContent() {
     onSuccess: () => {
       setFeedback({
         type: 'success',
-        message: 'Email de verificação reenviado com sucesso!',
+        message: 'Se o email estiver pendente de verificação, enviaremos um novo link de confirmação.',
       });
     },
     onError: (error) => {

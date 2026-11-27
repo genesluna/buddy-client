@@ -114,7 +114,11 @@ describe('VerificationPendingContent', () => {
     await user.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Email de verificação reenviado com sucesso!')).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          'Se o email estiver pendente de verificação, enviaremos um novo link de confirmação.'
+        )
+      ).toBeInTheDocument();
     });
   });
 
